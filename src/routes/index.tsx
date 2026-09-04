@@ -1,0 +1,321 @@
+// import AuthLayout from "@/layouts/AuthLayout";
+import SuspenseUI from "@/components/ui/SuspenseUI";
+import RootLayout from "@/layouts/RootLayout";
+import MainLayout from './main/layout';
+import { createBrowserRouter, Navigate } from "react-router";
+import { type RouteObject } from "react-router";
+import ErrorBoundary from "@/components/error-boundary";
+import AdminLayout from "@/layouts/AdminLayout";
+
+
+const routes = [
+    {
+        path: "/",
+        Component: RootLayout,
+        ErrorBoundary: ErrorBoundary,
+        hydrateFallbackElement: <SuspenseUI />,
+        handle: {
+            seo: {
+                title: 'UdeSport – Home',
+                description: 'Welcome to Ude Sport - Your source for the latest sports transfers and updates.',
+            },
+        },
+        children: [
+            {
+                Component: MainLayout,
+                children: [
+                    {
+
+                        index: true,
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/home");
+                            return { Component };
+                        }
+                    },
+
+                    {
+                        path: "players",
+                        handle: {
+                            seo: {
+                                title: "Player Information",
+                                description:
+                                    "Explore UdeSport's professional football players, profiles, statistics, and transfer information.",
+                            },
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/player-information");
+                            return { Component };
+                        }
+                    },
+
+                    {
+                        path: "news",
+                        handle: {
+                            seo: {
+                                title: 'News & Transfers',
+                                description: 'Transfer updates, trials, and academy news from UdeSport.',
+                            }
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/articles/news");
+                            return { Component };
+                        }
+                    },
+                    {
+                        path: "news/:id",
+                        handle: {
+                            seo: {
+                                title: 'News',
+                                description: 'Full article — UdeSport News & Transfers.',
+                            }
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/articles/full-news");
+                            return { Component };
+                        }
+                    },
+                    {
+                        path: "gallery",
+                        handle: {
+                            seo: {
+                                title: '',
+                                description: '',
+                            }
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/gallery");
+                            return { Component };
+                        }
+                    }
+                ]
+            },
+        ],
+
+
+    },
+    // admin routes
+    {
+        path: "admin",
+        Component: AdminLayout,
+        hydrateFallbackElement: <SuspenseUI />,
+        children: [
+            {
+                index: true,
+                element: <Navigate to="dashboard" replace />,
+            },
+
+            {
+                path: "dashboard",
+                handle: {
+                    seo: {
+                        title: "Dashboard",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/dashboard");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "player-overview",
+                handle: {
+                    seo: {
+                        title: "Player Overview",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/player-overview");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "player-overview/add",
+                handle: {
+                    seo: {
+                        title: "Add Player",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/add-player");
+                    return { Component };
+                },
+            },
+            {
+                path: "player-overview/edit/:index",
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/add-player");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "gallery",
+                handle: {
+                    seo: {
+                        title: "Gallery",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/gallery");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "gallery/upload",
+                handle: {
+                    seo: {
+                        title: "Gallery Upload",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/gallery-upload");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "news",
+                handle: {
+                    seo: {
+                        title: "News",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/news");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "news/article",
+                handle: {
+                    seo: {
+                        title: "News",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/news-article");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "news/article/:index",
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/news-article");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "settings",
+                handle: {
+                    seo: {
+                        title: "Settings",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/settings");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "notifications",
+                handle: {
+                    seo: {
+                        title: "Notifications",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/notification");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "login",
+                handle: {
+                    seo: {
+                        title: "Login",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/login");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "forgot-password",
+                handle: {
+                    seo: {
+                        title: "Forgot Password",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/forgot-password");
+                    return { Component };
+                },
+            },
+            {
+                path: "verification",
+                handle: {
+                    seo: {
+                        title: "Verification",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/verification");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "new-password",
+                handle: {
+                    seo: {
+                        title: "New Password",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/new-password");
+                    return { Component };
+                },
+            },
+
+        ],
+    },
+
+] satisfies RouteObject[];
+
+export const router = createBrowserRouter(routes)
