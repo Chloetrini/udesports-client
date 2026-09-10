@@ -22,6 +22,31 @@ const CATEGORY_STYLE: Record<NewsCategory, string> = {
   ANNOUNCEMENT: 'bg-emerald-100 text-emerald-700 rounded-full',
 };
 
+// Add near ArticleCard, in the same file
+function ArticleCardSkeleton({ variant }: { variant: 'featured' | 'grid' }) {
+  return (
+    <div className={`${variant === 'featured' ? 'article-card--featured' : 'article-card--grid'} font-manrope py-6 md:py-8 lg:py-10 flex flex-col gap-2`}>
+      <div className={`w-full ${variant === 'featured' ? 'aspect-[16/7]' : 'aspect-[16/9]'} rounded-md bg-[#e9e9e9] animate-pulse`} />
+      <div className="h-6 w-36 rounded-full bg-[#e9e9e9] animate-pulse" />
+      <div className="h-5 w-4/5 rounded bg-[#e9e9e9] animate-pulse" />
+      <div className="flex flex-col gap-1.5">
+        <div className="h-3.5 w-full rounded bg-[#e9e9e9] animate-pulse" />
+        <div className="h-3.5 w-3/4 rounded bg-[#e9e9e9] animate-pulse" />
+      </div>
+      <div className="flex items-center justify-between pt-1">
+        <div className="flex items-center gap-2">
+          <div className="h-12 w-12 md:h-14 md:w-14 lg:h-15 lg:w-15 rounded-full bg-[#e9e9e9] animate-pulse" />
+          <div className="flex flex-col gap-1.5">
+            <div className="h-3.5 w-24 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="h-3 w-32 rounded bg-[#e9e9e9] animate-pulse" />
+          </div>
+        </div>
+        <div className="h-3.5 w-20 rounded bg-[#e9e9e9] animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
 export function ArticleCard({ article, variant }: { article: NewsArticle; variant: 'featured' | 'grid' }) {
   return (
     <article className={`${variant === 'featured' ? 'article-card--featured' : 'article-card--grid'} font-manrope py-6 md:py-8 lg:py-10 flex flex-col gap-2 hover:scale-105 transition-transform`}>
@@ -59,13 +84,11 @@ const News = () => {
     isError,
   } = useGetNewsArticles();
 
-  if (isLoading) return <p>Loading news…</p>;
   if (isError) return <p>Something went wrong loading news.</p>;
 
-  // Only published articles show on the public site.
   const publishedArticles = (articles ?? []).filter((article) => article.published);
 
-  if (publishedArticles.length === 0) return <p>No news yet.</p>;
+  if (!isLoading && publishedArticles.length === 0) return <p>No news yet.</p>;
 
   const sortedArticles = [...publishedArticles].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -84,20 +107,31 @@ const News = () => {
           <h1 className='font-bebas font-semibold leading-none text-[#060A0F] pt-2 text-[40px] md:text-[52px] lg:text-[64px]'>NEWS & TRANSFERS</h1>
           <p className='w-full lg:w-100 text-[#8E8E8E] font-medium'>Transfers. Trials. Academy updates. Everything moves fast, we keep you informed.</p>
 
-          <ArticleCard article={featured} variant="featured" />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {rest.map((article) => (
-              <ArticleCard key={article.id} article={article} variant="grid" />
-            ))}
-          </div>
+          {isLoading ? (
+            <>
+              <ArticleCardSkeleton variant="featured" />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <ArticleCardSkeleton key={i} variant="grid" />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <ArticleCard article={featured} variant="featured" />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {rest.map((article) => (
+                  <ArticleCard key={article.id} article={article} variant="grid" />
+                ))}
+              </div>
+            </>
+          )}
         </div>
-
 
         <div className="w-full lg:w-3/12 lg:sticky lg:top-6 lg:self-start lg:h-[calc(100vh-4rem)] overflow-y-auto [scrollbar-none] [&::-webkit-scrollbar]:hidden">
           <QuickUpdates />
         </div>
       </section>
-      {/* <img src={FuturePlayer} alt="FuturePlayer" /> */}
     </PageWrapper>
   );
 }
