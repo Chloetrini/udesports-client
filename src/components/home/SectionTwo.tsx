@@ -34,10 +34,10 @@ const SectionTwo = () => {
         </p>
       </div>
       <div className="flex flex-col justify-start items-start gap-14 lg:w-[400px]">
-        <h2 className="font-bebas font-semibold text-[#060A0F] text-[clamp(52px,5vw,64px)] leading-0 tracking-normal">
+        <h2 className="font-bebas font-semibold text-[#060A0F] dark:text-white text-[clamp(52px,5vw,64px)] leading-0 tracking-normal">
           FEATURED PLAYERS
         </h2>
-        <p className="font-manrope font-bold text-[#8E8E8E] text-[clamp(14px,2vw,18px)] leading-6.75 tracking-normal max-w-125">
+        <p className="font-manrope font-bold text-[#8E8E8E] dark:text-gray-400 text-[clamp(14px,2vw,18px)] leading-6.75 tracking-normal max-w-125">
           Every player on this roster has been developed, tested, and proven.
           These are not prospects. These are professionals in the making.
         </p>
@@ -47,7 +47,7 @@ const SectionTwo = () => {
         type="button"
         onClick={handleViewPlayers}
       >
-        <p className="font-manrope font-normal text-[#68717D] text-[14px] leading-5.25 tracking-normal">
+        <p className="font-manrope font-normal text-[#68717D] dark:text-gray-300 text-[14px] leading-5.25 tracking-normal">
           View all Players
         </p>
         <img className="w-[17.86px] h-[17.86px]" src={arrow1} alt="" />

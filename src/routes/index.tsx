@@ -47,6 +47,20 @@ const routes = [
                             return { Component };
                         }
                     },
+                     {
+                        path: "contact",
+                        handle: {
+                            seo: {
+                                title: "Contact UdeSport",
+                                description:
+                                    "Get in touch with UdeSport — scouting enquiries, academy questions, or club representation.",
+                            },
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/contact");
+                            return { Component };
+                        }
+                    },
 
                     {
                         path: "players",
