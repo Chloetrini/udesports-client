@@ -1,12 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import type { NewsArticle, NewsCategory } from "@/types/dataTypes";
 // import QuickUpdates from "@/components/QuickUpdates";
-import views from "@/assets/views.png";
-import shares from "@/assets/shares.png";
-import pinterest from "@/assets/pinterest.png";
-import facebook from "@/assets/facebook.png";
 import { useParams } from "react-router";
-import { calculateReadTime, estimateReadTime, formatCount, formatDate } from "@/lib/utils";
+import { calculateReadTime, estimateReadTime, formatDate } from "@/lib/utils";
 import { Seo } from "@/components/seo";
 import { useGetNewsArticles } from "@/hooks/useApi";
 import news from '@/assets/news.jpeg'

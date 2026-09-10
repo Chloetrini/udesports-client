@@ -4,13 +4,12 @@ import prime_twitter from '@/assets/prime_twitter.png';
 import ic_mail from '@/assets/ic_mail.png';
 import ic_phone from '@/assets/ic_phone.png';
 import icons_insta from '@/assets/icons_insta.png';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,8 +21,10 @@ const Footer: React.FC = () => {
     try {
       console.log('Subscribing email:', email);
       setEmail('');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Something went wrong');
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : 'Something went wrong';
+      setError(message);
     }
   };
 

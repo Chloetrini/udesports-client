@@ -34,6 +34,21 @@ const routes = [
                     },
 
                     {
+                        path: "about",
+                        handle: {
+                            seo: {
+                                title: "About UdeSport",
+                                description:
+                                    "UdeSport is Nigeria's most prolific football management and development academy — learn about our scouting methodology, staff, and certifications.",
+                            },
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/about");
+                            return { Component };
+                        }
+                    },
+
+                    {
                         path: "players",
                         handle: {
                             seo: {

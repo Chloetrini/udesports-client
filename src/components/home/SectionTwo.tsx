@@ -1,11 +1,10 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
+import AutoScroll from 'embla-carousel-auto-scroll';
 import arrow1 from '@/assets/arrow1.png';
 import silhouette from '@/assets/silhouette.png';
 import udeSportLogo from '@/assets/udeSportLogo.png';
@@ -152,8 +151,8 @@ const SectionTwo = () => {
               loop: true,
             }}
             plugins={[
-              Autoplay({
-                delay: 5000,
+              AutoScroll({
+                speed: 1,
                 stopOnInteraction: false,
                 stopOnMouseEnter: true,
               }),

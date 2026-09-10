@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import FetchPlayers from '@/components/player-information/FetchPlayers'
 import FilterPlayers, { type AgeGroup, type Status } from '@/components/player-information/FilterPlayers'
@@ -16,11 +16,15 @@ const PlayerInformation = () => {
 
   const playerId = location.state?.playerId
 
-  useEffect(() => {
+  // Adjust state during render instead of in an effect — avoids an extra
+  // post-commit render pass when navigation carries a new playerId.
+  const [prevPlayerId, setPrevPlayerId] = useState(playerId)
+  if (playerId !== prevPlayerId) {
+    setPrevPlayerId(playerId)
     if (playerId) {
       setSelectedPlayerId(playerId)
     }
-  }, [playerId])
+  }
 
   // resets every filter back to its default — passed to FetchPlayers' empty state
   const handleClearFilters = () => {
