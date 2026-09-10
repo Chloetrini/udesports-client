@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
-import imageIcon from "@/assets/imageicon.svg"
+import { ImagePlus } from "lucide-react"
 
 export default function GalleryUpload() {
   const navigate = useNavigate()
@@ -84,7 +84,7 @@ export default function GalleryUpload() {
               <img src={coverImage} className="h-full w-full object-cover rounded-lg" />
         ) : (
            <div className="flex items-center gap-2">
-             <img src={imageIcon} alt="Upload" className="w-5 h-5"/>
+             <ImagePlus className="w-5 h-5" />
              <p className="text-xs text-gray-400">Upload Photo</p>
            </div>
             )}

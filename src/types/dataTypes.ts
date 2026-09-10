@@ -16,7 +16,7 @@ export type Player = {
   assists: number,
   rating: number,
   currentClubName: string,
-  currentClubLogo: any,
+  currentClubLogo: string,
   playerHistory: string,
   playerAppearance: number
   isFeatured:boolean
@@ -67,6 +67,19 @@ export interface Testimonial {
   country: string;
 }
 
+export interface StaffMember {
+  id: number;
+  name: string;
+  role: string;
+  verified: boolean;
+}
+
+export interface Award {
+  id: number;
+  name: string;
+  subtitle: string;
+}
+
 export interface Headlines {
   id: string;
   category: string;
@@ -74,13 +87,11 @@ export interface Headlines {
 }
 
 export interface GalleryImages {
-  id: string;
-  type: "image" | "video";
-  link: string;
-  title: string;
-  description: string;
+ id: number;
+ image: string;
+ title: string;
+ description: string;
 }
-
 export type QuickUpdateCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT' | 'MILESTONE' | 'INTERNATIONAL';
 
 export interface QuickUpdate {

@@ -19,4 +19,15 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Vendored shadcn/ui components — treated as a third-party library, not app code.
+    // carousel.tsx's effect follows embla-carousel's own documented integration pattern
+    // (sync once, then subscribe to its event emitter) and exports a hook (useCarousel)
+    // alongside its components by design.
+    files: ['src/components/ui/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+    },
+  },
 ])
