@@ -12,6 +12,7 @@ import udeSportLogo from '@/assets/udeSportLogo.png';
 import { useGetPlayers } from '@/hooks/useApi';
 import type { Player } from '@/types/dataTypes';
 import { getAge } from '@/hooks/getAge';
+import PageWrapper from '../page-wrapper';
 
 
 const SectionTwo = () => {
@@ -58,7 +59,7 @@ const SectionTwo = () => {
   if (isLoading) {
     return (
       <div className="my-14">
-        <div className="container mx-auto w-11/12 flex flex-col lg:flex-row items-start gap-8">
+        <PageWrapper className="p-[20px] flex flex-col lg:flex-row items-start gap-8">
           {LeftSide}
           {/* Player card skeletons mirroring the carousel row */}
           <div className="w-full min-w-0 lg:max-w-[1123px] lg:mr-[calc((100vw-100%)/-2)]">
@@ -85,7 +86,7 @@ const SectionTwo = () => {
               ))}
             </div>
           </div>
-        </div>
+        </PageWrapper>
       </div>
     );
   }
@@ -93,7 +94,7 @@ const SectionTwo = () => {
   if (error || !players) {
     return (
       <div className="my-14">
-        <div className="container mx-auto w-11/12 flex flex-col lg:flex-row items-start gap-8">
+        <PageWrapper className="p-[20px] flex flex-col lg:flex-row items-start gap-8">
           {LeftSide}
           <div className="w-full min-w-0 flex items-center justify-center" style={{ minHeight: '340px' }}>
             <div className="flex flex-col items-center justify-center text-center gap-4 py-16 px-6 bg-[#FEF2F2] border border-[#FECACA] rounded-2xl w-full max-w-xl">
@@ -129,7 +130,7 @@ const SectionTwo = () => {
               </button>
             </div>
           </div>
-        </div>
+        </PageWrapper>
       </div>
     );
   }
@@ -137,7 +138,7 @@ const SectionTwo = () => {
   return (
     <div className="my-14">
       {/* container holds the left content; carousel sits outside its right padding so it can bleed */}
-      <div className="container mx-auto w-11/12 flex flex-col lg:flex-row items-start gap-8">
+      <PageWrapper className="p-[20px] flex flex-col lg:flex-row items-start gap-8">
         {/* LEFT SIDE */}
         {LeftSide}
 
@@ -246,7 +247,7 @@ const SectionTwo = () => {
             </CarouselContent>
           </Carousel>
         </div>
-      </div>
+      </PageWrapper>
     </div>
   );
 };

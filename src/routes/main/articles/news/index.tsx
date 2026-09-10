@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import type { NewsArticle, NewsCategory } from '@/types/dataTypes';
 import Ellipse from "@/assets/Ellipse 44.png"
-// import QuickUpdates from '@/components/QuickUpdates';
+import QuickUpdates from '@/components/QuickUpdates';
 // import FuturePlayer from "../../assets/FuturePlayer.png"
 import { Link } from 'react-router';
-import { Seo } from '@/components/SEO';
+import { Seo } from '@/components/seo';
 import { useGetNewsArticles } from '@/hooks/useApi';
 import news from '@/assets/news.jpeg'
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import { estimateReadTime } from '@/lib/utils';
+import PageWrapper from '@/components/page-wrapper';
 
 
 const CATEGORY_LABEL: Record<NewsCategory, string> = {
@@ -75,12 +76,12 @@ const News = () => {
   const [featured, ...rest] = sortedArticles;
 
   return (
-    <div className='mx-auto container'>
+    <PageWrapper className="p-[20px]">
       <Seo
         title="News & Transfers"
         description="Transfer updates, trials, and academy news from UdeSport."
       />
-      <section className="mx-auto container px-6 md:px-8 lg:px-8 py-5 flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
+      <section className=" flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className='w-full lg:w-8/12'>
           <div className='bg-[#00D46A4D] w-34 rounded-full flex justify-center items-center gap-2'>
             <img src={Ellipse} alt="Ellipse" />
@@ -99,11 +100,11 @@ const News = () => {
 
 
         <div className="w-full lg:w-3/12 lg:sticky lg:top-6 lg:self-start lg:h-[calc(100vh-4rem)] overflow-y-auto [scrollbar-none] [&::-webkit-scrollbar]:hidden">
-          {/* <QuickUpdates /> */}
+          <QuickUpdates />
         </div>
       </section>
       {/* <img src={FuturePlayer} alt="FuturePlayer" /> */}
-    </div>
+    </PageWrapper>
   );
 }
 

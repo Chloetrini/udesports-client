@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import frame from '@/assets/frame.png';
+import PageWrapper from '../page-wrapper';
 
 const HeroSec: React.FC = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const HeroSec: React.FC = () => {
 
   return (
     <section className="bg-[url(./assets/bgMobile.png)] md:bg-[url(./assets/bgphoto.png)] bg-no-repeat bg-cover bg-center min-h-screen flex items-center py-16">
-      <div className="container mx-auto w-11/12 px-4 md:px-6">
+      <PageWrapper className="p-[20px]">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-8 lg:gap-12 pb-12 md:pb-20">
           {/* Left content */}
           <div className="flex-1">
@@ -82,7 +83,7 @@ const HeroSec: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </PageWrapper>
     </section>
   );
 };

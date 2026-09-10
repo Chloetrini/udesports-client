@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetGalleryImages } from "@/hooks/useApi";
+import PageWrapper from "@/components/page-wrapper";
 
 const positions = [
   { top: "5%", left: "0%", width: "18%", height: "28%", rotate: "-3deg" },
@@ -65,7 +66,7 @@ export default function Gallery() {
 
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden flex justify-center">
-      <div className="max-w-full px-4 md:px-6 py-8 md:py-12">
+      <PageWrapper className=" p-[20px]">
         {/* Header */}
         <div className="mb-8 md:mb-10 relative z-20">
           <span className="inline-flex items-center gap-1.5 border bg-[#00A553] border-green-500 text-green-300 text-xs px-3 py-1 rounded-full mb-4">
@@ -171,7 +172,7 @@ export default function Gallery() {
             </div>
           ))}
         </div>
-      </div>
+      </PageWrapper>
     </main>
   );
 }

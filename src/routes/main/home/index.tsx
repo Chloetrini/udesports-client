@@ -11,9 +11,8 @@ const HomePage: React.FC = () => {
       <HeroSec />
       <SectionTwo />
       <SectionThree />
-      <div className='mb-20 md:mb-30 lg:mb-50'>
-        <SectionFive />
-      </div>
+       <SectionFive />
+    
     </>
   );
 };

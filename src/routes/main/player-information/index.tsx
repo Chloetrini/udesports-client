@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import FetchPlayers from '@/components/player-information/FetchPlayers'
-import FilterPlayers from '@/components/player-information/FilterPlayers'
+import FilterPlayers, { type AgeGroup, type Status } from '@/components/player-information/FilterPlayers'
 import PlayerFullDetails from '@/components/player-information/PlayerFullDetails'
 import ScrollToTopButton from '@/components/ui/ScrollToTopButton'
-
-type AgeGroup = "All" | 17 | 20 | 23
-type Status = "All" | "Free" | "Transferred" | "Negotiation"
+import PageWrapper from '@/components/page-wrapper'
 
 const PlayerInformation = () => {
   const location = useLocation()
@@ -32,7 +30,7 @@ const PlayerInformation = () => {
   }
 
   return (
-    <div className='relative w-full min-h-screen px-5 lg:px-10 monitorAdjust mx-auto container'>
+    <PageWrapper className='relative w-full min-h-screen p-[20px] monitorAdjust '>
 
       <div className='flex flex-col gap-[8px] mt-20 mb-5 relative'>
         <div className='w-[100px] h-[37px] flex gap-[8px] items-center justify-center bg-[#00D46A4D] rounded-full font-manrope text-[#00A553] font-bold'>
@@ -77,7 +75,7 @@ const PlayerInformation = () => {
       )}
 
       <ScrollToTopButton />
-    </div>
+    </PageWrapper>
   )
 }
 

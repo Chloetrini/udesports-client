@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import udeLogo from '@/assets/udeLogo.png';
 import hamburgerLogo from '@/assets/hamburgerLogo.png';
+import PageWrapper from '../page-wrapper';
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const NavBar: React.FC = () => {
 
     return (
         <div className="navbar-wrapper bg-[#000000]">
-            <div className="navbar-inner container mx-auto w-11/12">
+            <PageWrapper className="navbar-inner p-[20px]">
                 <div className="navbar-content flex items-center justify-between px-4 sm:px-6 py-4">
                     {/* Logo */}
                     <div className="">
@@ -174,7 +175,7 @@ const NavBar: React.FC = () => {
                         </button>
                     </div>
                 </div>
-            </div>
+            </PageWrapper>
         </div>
     );
 };

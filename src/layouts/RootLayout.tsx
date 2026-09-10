@@ -4,7 +4,7 @@ import {
   ScrollRestoration,
   useNavigation,
 } from "react-router";
-import { Seo, type SeoHandle } from "@/components/SEO";
+import { Seo, type SeoHandle } from "@/components/seo";
 
 const DEFAULT_SEO: SeoHandle = {
   seo: {

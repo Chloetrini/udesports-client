@@ -7,10 +7,11 @@ import pinterest from "@/assets/pinterest.png";
 import facebook from "@/assets/facebook.png";
 import { useParams } from "react-router";
 import { calculateReadTime, estimateReadTime, formatCount, formatDate } from "@/lib/utils";
-import { Seo } from "@/components/SEO";
+import { Seo } from "@/components/seo";
 import { useGetNewsArticles } from "@/hooks/useApi";
 import news from '@/assets/news.jpeg'
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
+import PageWrapper from "@/components/page-wrapper";
 
 const CATEGORY_LABEL: Record<NewsCategory, string> = {
   TRANSFER: "Transferred",
@@ -100,7 +101,7 @@ const SingleNews = () => {
     .slice(0, 2);
 
   return (
-    <div className="mx-auto container px-6 md:px-8 lg:px-8 py-5">
+    <PageWrapper className="p-[20px]">
       <Seo title={article.headline} description={article.excerpt ?? 'Full article — UdeSport News & Transfers.'} />
       <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className="w-full lg:w-8/12">
@@ -196,7 +197,7 @@ const SingleNews = () => {
           </div>
         </aside>
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 

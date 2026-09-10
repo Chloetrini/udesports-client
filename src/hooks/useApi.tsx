@@ -3,7 +3,8 @@ import { fetchAllPlayers, fetchSinglePlayer } from '../services/Players'
 import { fetchAllTestimonials  } from '../services/Testimonials'
 import { fetchNewsArticles } from '@/services/Articles'
 import { fetchAllHeadlines } from '@/services/Headlines'
-import { fetchGalleryImages } from '@/services/galleryImages'
+import { fetchGalleryImages } from '@/services/GalleryImages'
+import { fetchQuickUpdates } from '@/services/QuickUpdates'
 // import type { Player } from '../components/FetchPlayers'
 
 export const useGetPlayers = () => {
@@ -53,5 +54,12 @@ export const useGetGalleryImages = () => {
   return useQuery({
     queryKey: ["images"],
     queryFn: fetchGalleryImages
+  })
+}
+
+export const useGetQuickUpdates = () => {
+  return useQuery({
+    queryKey: ["quickUpdates"],
+    queryFn: fetchQuickUpdates
   })
 }

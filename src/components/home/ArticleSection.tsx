@@ -6,6 +6,7 @@ import type { NewsArticle } from '@/types/dataTypes';
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import news from '@/assets/news.jpeg'
 import { estimateReadTime } from '@/lib/utils';
+import PageWrapper from '../page-wrapper';
 
 
 const SectionFive: React.FC = () => {
@@ -55,7 +56,7 @@ const SectionFive: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto w-11/12 py-12">
+      <PageWrapper className=" p-[20px]">
         {Header}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
           {[0, 1, 2].map((i) => (
@@ -95,7 +96,7 @@ const SectionFive: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
@@ -142,7 +143,7 @@ const SectionFive: React.FC = () => {
   const topArticles = articles.slice(0, 3);
 
   return (
-    <div className="container mx-auto w-11/12 py-12">
+    <PageWrapper className="p-[20px] mb-11">
       {/* Header */}
       {Header}
 
@@ -198,7 +199,7 @@ const SectionFive: React.FC = () => {
           </div>
         ))}
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 

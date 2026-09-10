@@ -79,3 +79,15 @@ export interface GalleryImages {
  title: string;
  description: string;
 }
+export type QuickUpdateCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT' | 'MILESTONE' | 'INTERNATIONAL';
+
+export interface QuickUpdate {
+  id: string;
+  headline: string;
+  category: QuickUpdateCategory;
+  createdAt: string;
+  author: {
+    name: string;
+    avatarUrl: string;
+  };
+}

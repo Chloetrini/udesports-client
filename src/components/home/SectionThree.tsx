@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { useGetTestimonials } from '@/hooks/useApi';
 import straightQuote from '@/assets/straightQuote.png'
 import leftQuote from '@/assets/leftQuote.png'
-
-interface Testimonial {
-  id: number;
-  quote: string;
-  author: string;
-  club: string;
-  country: string;
-  strightQuote: string;
-  leftQuote: string;
-}
+import PageWrapper from '../page-wrapper';
 
 const SectionThree: React.FC = () => {
   const { data: testimonials, isLoading, error } = useGetTestimonials();
@@ -40,7 +31,7 @@ const SectionThree: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto w-11/12 my-14">
+      <PageWrapper className="p-[20px]">
         <div className="flex flex-col lg:flex-row-reverse items-stretch gap-8 md:gap-20">
           {LeftSide}
           {/* Testimonial card skeleton */}
@@ -72,13 +63,13 @@ const SectionThree: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
   if (error || !testimonials) {
     return (
-      <div className="container mx-auto w-11/12 my-14">
+      <PageWrapper className="p-[20px]">
         <div className="flex flex-col lg:flex-row-reverse items-stretch gap-8 md:gap-20">
           {LeftSide}
           <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] rounded-3xl">
@@ -116,7 +107,7 @@ const SectionThree: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </PageWrapper>
     );
   }
 
@@ -132,7 +123,7 @@ const SectionThree: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto w-11/12 my-14">
+    <PageWrapper className="p-[20px]">
       <div className="flex flex-col lg:flex-row-reverse items-stretch gap-8 md:gap-20">
         {/* LEFT SIDE */}
         {LeftSide}
@@ -148,7 +139,7 @@ const SectionThree: React.FC = () => {
                   className="w-4.75 h-5"
                 />
                 <blockquote className="font-manrope font-medium text-[#060A0F] text-[clamp(18px,3vw,24px)] leading-relaxed text-start max-w-full">
-                  “{current.quote}”
+                  "{current.quote}"
                 </blockquote>
               </div>
 
@@ -202,7 +193,7 @@ const SectionThree: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 
