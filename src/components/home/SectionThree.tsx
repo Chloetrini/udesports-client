@@ -18,10 +18,10 @@ const SectionThree: React.FC = () => {
         </p>
       </div>
       <div className="flex flex-col justify-start items-start gap-10">
-        <h2 className="font-bebas font-semibold text-[#060A0F] text-[clamp(52px,5vw,64px)] leading-12 tracking-normal max-w-[500px]">
+        <h2 className="font-bebas font-semibold text-[#060A0F] dark:text-white text-[clamp(52px,5vw,64px)] leading-12 tracking-normal max-w-[500px]">
           WHAT CLUBS AND FAMILY SAY
         </h2>
-        <p className="font-manrope font-bold text-[#8E8E8E] text-[clamp(14px,2vw,18px)] leading-6.75 tracking-normal uppercase max-w-[500px]">
+        <p className="font-manrope font-bold text-[#8E8E8E] dark:text-gray-400 text-[clamp(14px,2vw,18px)] leading-6.75 tracking-normal uppercase max-w-[500px]">
           Every player on this roster has been developed, tested, and proven.
           These are not prospects. These are professionals in the making.
         </p>
@@ -35,7 +35,7 @@ const SectionThree: React.FC = () => {
         <div className="flex flex-col lg:flex-row-reverse items-stretch gap-8 md:gap-20">
           {LeftSide}
           {/* Testimonial card skeleton */}
-          <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] rounded-3xl">
+          <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] dark:bg-[#0f2e1c] rounded-3xl">
             <div className="p-6 md:p-8 lg:p-12 relative flex flex-col md:flex-row justify-between items-start gap-6 md:gap-10">
               <div className="flex flex-col justify-start items-start gap-6 md:gap-10 flex-1">
                 <div className="flex flex-col justify-start items-start gap-4 w-full">
@@ -72,7 +72,7 @@ const SectionThree: React.FC = () => {
       <PageWrapper className="p-[20px]">
         <div className="flex flex-col lg:flex-row-reverse items-stretch gap-8 md:gap-20">
           {LeftSide}
-          <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] rounded-3xl">
+          <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] dark:bg-[#0f2e1c] rounded-3xl">
             <div className="flex flex-col items-center justify-center text-center gap-4 py-16 px-6 h-full">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +129,7 @@ const SectionThree: React.FC = () => {
         {LeftSide}
 
         {/* RIGHT SIDE: Testimonial Card */}
-        <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] rounded-3xl">
+        <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] dark:bg-[#0f2e1c] rounded-3xl">
           <div className="p-6 md:p-8 lg:p-12 relative flex flex-col md:flex-row justify-between items-start gap-6 md:gap-10">
             <div className="flex flex-col justify-start items-start gap-6 md:gap-10 flex-1 z-20">
               <div className="flex flex-col justify-start items-start gap-4">
@@ -138,7 +138,7 @@ const SectionThree: React.FC = () => {
                   alt=""
                   className="w-4.75 h-5"
                 />
-                <blockquote className="font-manrope font-medium text-[#060A0F] text-[clamp(18px,3vw,24px)] leading-relaxed text-start max-w-full">
+                <blockquote className="font-manrope font-medium text-[#060A0F] dark:text-white text-[clamp(18px,3vw,24px)] leading-relaxed text-start max-w-full">
                   "{current.quote}"
                 </blockquote>
               </div>
@@ -147,7 +147,7 @@ const SectionThree: React.FC = () => {
               <div className="flex-1 flex items-center justify-start gap-4 mt-4">
                 <button
                   onClick={goToPrev}
-                  className="text-[#202020] text-3xl md:text-5xl hover:text-[#00D46A] transition-colors cursor-pointer"
+                  className="text-[#202020] dark:text-white text-3xl md:text-5xl hover:text-[#00D46A] transition-colors cursor-pointer"
                   aria-label="Previous testimonial"
                 >
                   ‹
@@ -155,10 +155,10 @@ const SectionThree: React.FC = () => {
                 <div className='flex justify-center w-30'>
 
                 <div className=''>
-                <span className="font-manrope font-medium text-[#202020] text-[clamp(32px,5vw,56px)]">
+                <span className="font-manrope font-medium text-[#202020] dark:text-white text-[clamp(32px,5vw,56px)]">
                   {String(currentIndex + 1).padStart(2, '0')}
                 </span>
-                <span className="text-[#202020] text-base">/</span>
+                <span className="text-[#202020] dark:text-white text-base">/</span>
                 <span className="font-manrope font-medium text-[#8E8E8E] text-base">
                   {String(total).padStart(2, '0')}
                 </span>
@@ -166,7 +166,7 @@ const SectionThree: React.FC = () => {
                 </div>
                 <button
                   onClick={goToNext}
-                  className="text-[#202020] text-3xl md:text-5xl hover:text-[#00D46A] transition-colors cursor-pointer"
+                  className="text-[#202020] dark:text-white text-3xl md:text-5xl hover:text-[#00D46A] transition-colors cursor-pointer"
                   aria-label="Next testimonial"
                 >
                   ›
@@ -177,7 +177,7 @@ const SectionThree: React.FC = () => {
             {/* Author and left quote */}
             <div className="flex flex-col justify-between items-start gap-6 md:gap-10 relative">
               <div className="flex flex-col items-start gap-2 z-10">
-                <p className="font-manrope font-semibold text-[#060A0F] text-[clamp(22px,2vw,33px)] leading-[100%]">
+                <p className="font-manrope font-semibold text-[#060A0F] dark:text-white text-[clamp(22px,2vw,33px)] leading-[100%]">
                   {current.author}
                 </p>
                 <p className="font-manrope font-normal text-[#68717D] text-[clamp(12px,1.5vw,14px)] leading-[100%]">

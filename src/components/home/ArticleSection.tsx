@@ -28,7 +28,7 @@ const SectionFive: React.FC = () => {
           </p>
         </div>
         <div>
-          <h2 className="font-bebas font-regular text-[#060A0F] text-[clamp(48px,5vw,64px)] max-w-full">
+          <h2 className="font-bebas font-regular text-[#060A0F] dark:text-white text-[clamp(48px,5vw,64px)] max-w-full">
             NEWS & UPDATE
           </h2>
         </div>
@@ -152,7 +152,7 @@ const SectionFive: React.FC = () => {
         {topArticles.map((article: NewsArticle) => (
           <div
             key={article.id}
-            className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
+            className="bg-white dark:bg-[#111820] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
           >
             <img
               src={article.coverImage ? article.coverImage : news}
@@ -166,13 +166,13 @@ const SectionFive: React.FC = () => {
                   {article.subtitle}
                 </h5>
               </div>
-              <p className="font-manrope font-bold text-[#1A1A1A] text-[clamp(18px,2.5vw,20px)] leading-6 mb-3 line-clamp-2 min-h-[3rem]">
+              <p className="font-manrope font-bold text-[#1A1A1A] dark:text-white text-[clamp(18px,2.5vw,20px)] leading-6 mb-3 line-clamp-2 min-h-[3rem]">
                 {article.headline}
               </p>
-              <p className="font-manrope font-normal text-[#68717D] text-sm leading-[180%] mb-4 line-clamp-3">
+              <p className="font-manrope font-normal text-[#68717D] dark:text-gray-400 text-sm leading-[180%] mb-4 line-clamp-3">
                 {article.excerpt}
               </p>
-              <hr className="border-t border-[#E5E7EB] my-4 mt-auto" />
+              <hr className="border-t border-[#E5E7EB] dark:border-white/10 my-4 mt-auto" />
               <div className="flex flex-row justify-between items-center gap-3">
                 <div className="flex items-center gap-3">
                   <img
@@ -180,16 +180,16 @@ const SectionFive: React.FC = () => {
                     src={article.authorPhoto ? article.authorPhoto : noAuthorPhoto} alt={article.author}
                   />
                   <div className='flex flex-col items-start gap-1'>
-                    <p className="font-manrope font-bold text-[#060A0F] text-sm">
+                    <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-sm">
                       {article.author}
                     </p>
-                    <p className="font-manrope font-normal text-[#8E8E8E] text-xs">
+                    <p className="font-manrope font-normal text-[#8E8E8E] dark:text-gray-500 text-xs">
                       {article.date} • {estimateReadTime(article.body)} read
                     </p>
                   </div>
                 </div>
-                <a
-                  href={"/news/" + article.id}
+                
+                  <a href={"/news/" + article.id}
                   className="font-manrope font-bold text-[#00A553] text-sm hover:underline transition-all inline-block whitespace-nowrap"
                 >
                   Read more →

@@ -7,13 +7,12 @@ import SectionFive from '@/components/home/ArticleSection';
 
 const HomePage: React.FC = () => {
   return (
-    <>
+    <div className="dark:bg-[#0B0F14] transition-colors duration-300">
       <HeroSec />
       <SectionTwo />
       <SectionThree />
-       <SectionFive />
-    
-    </>
+      <SectionFive />
+    </div>
   );
 };
 

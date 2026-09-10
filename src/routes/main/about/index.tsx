@@ -14,16 +14,16 @@ const About = () => {
         <div className="flex-1 flex flex-col gap-6">
           <div className="bg-[#00D46A4D] flex flex-row justify-center items-center gap-2 rounded-3xl py-2 px-3 w-fit">
             <span className="bg-[#00D46A] w-2 h-2 rounded-full"></span>
-            <p className="font-manrope font-bold text-[#00A553] text-[13px] leading-[130%]">
+            <p className="font-manrope font-bold text-[#00A553] text-[16px] leading-[1.3]">
               Est. 1998
             </p>
           </div>
 
-          <h1 className="font-bebas font-semibold text-[#060A0F] text-[clamp(44px,6vw,64px)] leading-[0.95]">
+          <h1 className="font-bebas text-[#060A0F] text-[clamp(44px,6vw,64px)] leading-[1.08]">
             ABOUT UDESPORT
           </h1>
 
-          <p className="font-manrope text-[#8E8E8E] text-[clamp(14px,2vw,16px)] leading-6.75 max-w-lg">
+          <p className="font-manrope font-medium text-[#8E8E8E] text-[18px] leading-[27px] max-w-lg">
             Nigeria's most prolific football management and development academy.
             From grassroots to global stages. Uche Dominic Egbukwu Soccer Sports
             Management Ltd is registered with the Corporate Affairs Commission,
@@ -41,24 +41,24 @@ const About = () => {
       {/* Who are we / What we do */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-20">
         <div className="flex flex-col gap-4">
-          <h2 className="font-bebas text-[#060A0F] text-[clamp(28px,3vw,36px)] leading-none">
+          <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none">
             WHO ARE WE?
           </h2>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             UdeSport Management Limited is a licensed football scouting and player
             placement organisation founded by Dominic Egbukwu. Headquartered in
             Nigeria, we have operated for over 25 years identifying, assessing, and
             placing West African talent at professional clubs across Europe, Asia,
             and Africa.
           </p>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             Our scouting methodology is built on systematic player evaluation —
             technical ability, physical profile, positional intelligence, mental
             resilience, and long-term development potential. Every player in our
             database has been assessed against professional standards before any
             club recommendation is made.
           </p>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             Our placement record speaks directly to the quality of our scouting
             process. 38+ verified placements at the highest levels of the game,
             including Vincent Enyeama, Kelechi Iheanacho, Victor Osimhen, Ogenyi
@@ -69,25 +69,25 @@ const About = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h2 className="font-bebas text-[#060A0F] text-[clamp(28px,3vw,36px)] leading-none">
+          <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none">
             WHAT WE DO
           </h2>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             UdeSport operates across three scouting divisions: Talent
             Identification (ages 15–23), Player Assessment and Recommendation,
             and International Club Placement.
           </p>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             Our scouting coverage spans three active centres — Lagos, Abuja, and
             Port Harcourt — running structured observation programmes across the
             U-17, U-20, and U-23 age categories.
           </p>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             Each player in our system carries an individual scouting profile,
             updated on a rolling basis to reflect current form, physical
             development, and positional progress.
           </p>
-          <p className="font-manrope text-[#68717D] text-sm leading-6.5">
+          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
             We maintain established working relationships with club scouts,
             technical directors, and recruitment departments across the Premier
             League, La Liga, Serie A, Bundesliga, Ligue 1, and leagues across Asia
@@ -102,15 +102,15 @@ const About = () => {
       <div className="mb-20">
         <div className="bg-[#00D46A4D] flex flex-row justify-center items-center gap-2 rounded-3xl py-2 px-3 w-fit mb-6">
           <span className="bg-[#00D46A] w-2 h-2 rounded-full"></span>
-          <p className="font-manrope font-bold text-[#00A553] text-[13px] leading-[130%]">
+          <p className="font-manrope font-bold text-[#00A553] text-[16px] leading-[1.3]">
             The Team
           </p>
         </div>
 
-        <h2 className="font-bebas text-[#060A0F] text-[clamp(32px,4vw,48px)] leading-none mb-3">
+        <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none mb-3">
           OUR STAFF
         </h2>
-        <p className="font-manrope text-[#68717D] text-sm max-w-xl mb-8">
+        <p className="font-manrope text-[#68717D] text-[16px] leading-[24px] max-w-xl mb-8">
           25 years of combined expertise in player development, contract
           negotiation, and international placement. This is the team that makes
           it happen.
@@ -133,14 +133,14 @@ const About = () => {
                   <CircleUserRound className="w-8 h-8 text-[#00D46A]" />
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <p className="font-manrope font-bold text-[#060A0F] text-sm">
+                  <p className="font-manrope font-bold text-[#060A0F] text-[14px] leading-[21px]">
                     {member.name}
                   </p>
                   {member.verified && (
                     <BadgeCheck className="w-4 h-4 text-[#00A553] flex-shrink-0" />
                   )}
                 </div>
-                <p className="font-manrope text-[#8E8E8E] text-xs">{member.role}</p>
+                <p className="font-manrope text-[#8E8E8E] text-[12px] leading-[1.3]">{member.role}</p>
               </div>
             ))}
           </div>
@@ -151,12 +151,12 @@ const About = () => {
       <div>
         <div className="bg-[#00D46A4D] flex flex-row justify-center items-center gap-2 rounded-3xl py-2 px-3 w-fit mb-6">
           <span className="bg-[#00D46A] w-2 h-2 rounded-full"></span>
-          <p className="font-manrope font-bold text-[#00A553] text-[13px] leading-[130%]">
+          <p className="font-manrope font-bold text-[#00A553] text-[16px] leading-[1.3]">
             Recognition
           </p>
         </div>
 
-        <h2 className="font-bebas text-[#060A0F] text-[clamp(32px,4vw,48px)] leading-none mb-8">
+        <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none mb-8">
           AWARD &amp; CERTIFICATION
         </h2>
 
@@ -177,8 +177,8 @@ const About = () => {
                   <AwardIcon className="w-5 h-5 text-[#00D46A]" />
                 </div>
                 <div>
-                  <p className="font-manrope font-bold text-white text-sm">{award.name}</p>
-                  <p className="font-manrope text-[#8E8E8E] text-xs">{award.subtitle}</p>
+                  <p className="font-manrope font-bold text-white text-[14px] leading-[21px]">{award.name}</p>
+                  <p className="font-manrope text-[#8E8E8E] text-[12px] leading-[1.3]">{award.subtitle}</p>
                 </div>
               </div>
             ))}

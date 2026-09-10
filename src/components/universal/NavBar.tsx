@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Sun, Moon } from 'lucide-react';
 import udeLogo from '@/assets/udeLogo.png';
 import hamburgerLogo from '@/assets/hamburgerLogo.png';
 import PageWrapper from '../page-wrapper';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
+    const { theme, toggleTheme } = useTheme();
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -22,7 +25,7 @@ const NavBar: React.FC = () => {
     };
 
     return (
-        <div className="navbar-wrapper bg-[#000000] sticky top-0 z-50">
+        <div className="navbar-wrapper bg-black/80 backdrop-blur-xl sticky top-0 z-50">
             <PageWrapper className="navbar-inner p-[20px]">
                 <div className="navbar-content flex items-center justify-between px-4 sm:px-6 py-4">
                     {/* Logo */}
@@ -45,24 +48,37 @@ const NavBar: React.FC = () => {
                         <NavLink to="/news" className={LinkClass}>News</NavLink>
                     </div>
 
-                    {/* Desktop Contact Button */}
-                    <button
-                        className="
-                            hidden md:flex
-                            w-auto min-w-30 lg:w-41 h-11.25 px-4 lg:px-3
-                            bg-[#00D46A] 
-                            rounded-md text-white font-manrope text-sm font-medium
-                            items-center justify-center
-                            cursor-pointer transition-all duration-200
-                            shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C]
-                            hover:bg-[#00c45e]
-                            hover:shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C,0_4px_12px_rgba(0,212,106,0.3)]
-                            active:scale-95
-                        "
-                        onClick={handleContactClick}
-                    >
-                        Contact Us
-                    </button>
+                    {/* Right side: theme toggle + Contact + hamburger */}
+                    <div className="flex items-center gap-3">
+                        {/* Theme Toggle */}
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                            className="w-9 h-9 rounded-md border border-white/15 flex items-center justify-center text-[#D2D2D2] hover:text-[#00D46A] hover:border-[#00D46A] transition-colors cursor-pointer"
+                        >
+                            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                        </button>
+
+                        {/* Desktop Contact Button */}
+                        <button
+                            className="
+                                hidden md:flex
+                                w-auto min-w-30 lg:w-41 h-11.25 px-4 lg:px-3
+                                bg-[#00D46A]
+                                rounded-md text-white font-manrope text-sm font-medium
+                                items-center justify-center
+                                cursor-pointer transition-all duration-200
+                                shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C]
+                                hover:bg-[#00c45e]
+                                hover:shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C,0_4px_12px_rgba(0,212,106,0.3)]
+                                active:scale-95
+                            "
+                            onClick={handleContactClick}
+                        >
+                            Contact Us
+                        </button>
+                    </div>
 
                     {/* Hamburger */}
                     <div className='block md:hidden'>
