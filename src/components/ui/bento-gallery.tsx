@@ -103,7 +103,7 @@ const ImageModal = ({
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
         className="relative w-full max-w-4xl p-4"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
       >
         <MediaThumb
           item={item}
@@ -202,7 +202,7 @@ const InteractiveImageBentoGallery: React.FC<
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 onClick={() => setSelectedItem(item)}
-                onKeyDown={(e) => e.key === "Enter" && setSelectedItem(item)}
+                onKeyDown={(e: React.KeyboardEvent) => e.key === "Enter" && setSelectedItem(item)}
                 tabIndex={0}
                 aria-label={`View ${item.title}`}
               >

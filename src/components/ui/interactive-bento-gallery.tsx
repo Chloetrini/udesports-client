@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type PanInfo } from "framer-motion";
 import { X } from 'lucide-react';
 
 
@@ -212,7 +212,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                 dragElastic={0.1}
                 initial={false}
                 animate={{ x: dockPosition.x, y: dockPosition.y }}
-                onDragEnd={(_, info) => {
+                onDragEnd={(_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
                     setDockPosition(prev => ({
                         x: prev.x + info.offset.x,
                         y: prev.y + info.offset.y
@@ -229,7 +229,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                         {mediaItems.map((item, index) => (
                             <motion.div
                                 key={item.id}
-                                onClick={(e) => {
+                                onClick={(e: React.MouseEvent) => {
                                     e.stopPropagation();
                                     setSelectedItem(item);
                                 }}
@@ -377,7 +377,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
                                 dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                                 dragElastic={1}
                                 onDragStart={() => setIsDragging(true)}
-                                onDragEnd={(e, info) => {
+                                onDragEnd={(_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
                                     setIsDragging(false);
                                     const moveDistance = info.offset.x + info.offset.y;
                                     if (Math.abs(moveDistance) > 50) {
