@@ -77,6 +77,76 @@ function RelatedArticleCard({ article }: { article: NewsArticle }) {
   );
 }
 
+function SingleNewsSkeleton() {
+  return (
+    <PageWrapper className="p-[20px]">
+      <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
+        <div className="w-full lg:w-8/12">
+          {/* cover image */}
+          <div className="h-64 w-full rounded-2xl bg-[#e9e9e9] animate-pulse md:h-80 lg:h-96" />
+
+          {/* headline */}
+          <div className="mt-6 flex flex-col gap-2">
+            <div className="h-7 w-full rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="h-7 w-2/3 rounded bg-[#e9e9e9] animate-pulse" />
+          </div>
+
+          {/* author row */}
+          <div className="mt-4 flex items-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-[#e9e9e9] animate-pulse" />
+            <div className="flex flex-col gap-1.5">
+              <div className="h-3.5 w-28 rounded bg-[#e9e9e9] animate-pulse" />
+              <div className="h-3 w-40 rounded bg-[#e9e9e9] animate-pulse" />
+            </div>
+          </div>
+
+          {/* body */}
+          <div className="mt-8 flex flex-col gap-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className={`h-3.5 rounded bg-[#e9e9e9] animate-pulse ${i === 5 ? 'w-2/3' : 'w-full'}`}
+              />
+            ))}
+          </div>
+
+          {/* related articles */}
+          <div className="mt-12">
+            <div className="h-6 w-44 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="flex flex-col gap-2">
+                  <div className="h-48 w-full rounded-2xl bg-[#e9e9e9] animate-pulse" />
+                  <div className="h-5 w-20 rounded-full bg-[#e9e9e9] animate-pulse" />
+                  <div className="h-5 w-4/5 rounded bg-[#e9e9e9] animate-pulse" />
+                  <div className="h-3.5 w-full rounded bg-[#e9e9e9] animate-pulse" />
+                  <div className="flex items-center gap-2 pt-1">
+                    <div className="h-9 w-9 rounded-full bg-[#e9e9e9] animate-pulse" />
+                    <div className="flex flex-col gap-1.5">
+                      <div className="h-3 w-20 rounded bg-[#e9e9e9] animate-pulse" />
+                      <div className="h-3 w-28 rounded bg-[#e9e9e9] animate-pulse" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <aside className="w-full lg:w-3/12 lg:sticky lg:top-6 lg:self-start">
+          <div className="mt-8">
+            <div className="h-5 w-32 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="mt-3 flex flex-wrap gap-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-6 w-24 rounded-full bg-[#e9e9e9] animate-pulse" />
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </PageWrapper>
+  );
+}
 
 const SingleNews = () => {
   const { id: articleId } = useParams<{ id: string }>();
@@ -87,8 +157,8 @@ const SingleNews = () => {
     isError,
   } = useGetNewsArticles();
 
-  if (isLoading) return <p>Loading article…</p>;
-  if (isError) return <p>Something went wrong loading this article.</p>;
+  if (isLoading) return <SingleNewsSkeleton />;
+  if (isError) return <p  className="min-h-screen text center">Something went wrong loading this article.</p>;
 
   const article = (articles ?? []).find(
     (a) => a.id === articleId && a.published,

@@ -74,11 +74,13 @@ export interface Headlines {
 }
 
 export interface GalleryImages {
- id: number;
- image: string;
- title: string;
- description: string;
+  id: string;
+  type: "image" | "video";
+  link: string;
+  title: string;
+  description: string;
 }
+
 export type QuickUpdateCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT' | 'MILESTONE' | 'INTERNATIONAL';
 
 export interface QuickUpdate {
