@@ -16,7 +16,7 @@ export type Player = {
   assists: number,
   rating: number,
   currentClubName: string,
-  currentClubLogo: any,
+  currentClubLogo: string,
   playerHistory: string,
   playerAppearance: number
   isFeatured:boolean
@@ -65,6 +65,19 @@ export interface Testimonial {
   author: string;
   club: string;
   country: string;
+}
+
+export interface StaffMember {
+  id: number;
+  name: string;
+  role: string;
+  verified: boolean;
+}
+
+export interface Award {
+  id: number;
+  name: string;
+  subtitle: string;
 }
 
 export interface Headlines {

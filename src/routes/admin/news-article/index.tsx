@@ -1,9 +1,7 @@
 // import React from 'react'
 import { useNavigate } from "react-router";
-import { ArrowLeft, List, ListOrdered, Quote, Eye, Share2 } from "lucide-react";
+import { ArrowLeft, List, ListOrdered, Quote, Eye, Share2, ImagePlus, CircleUserRound } from "lucide-react";
 import { useState } from "react";
-import imageIcon from "@/assets/imageicon.svg";
-import authorImage from "@/assets/author's image.svg";
 import { useParams } from "react-router";
 import { articleHistory } from "@/data/articles";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -166,7 +164,7 @@ export default function NewsArticle() {
               ) : (
                 <>
                   <div className="flex items-center gap-2">
-                    <img src={imageIcon} alt="image icon" />
+                    <ImagePlus className="w-6 h-6 text-gray-400" />
                     <p className="text-xs text-gray-400">Upload Photo</p>
                   </div>
                 </>
@@ -356,11 +354,7 @@ export default function NewsArticle() {
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-semibold">
-                      <img
-                        src={authorImage}
-                        alt="author"
-                        className="w-7 h-7 rounded-full object-cover"
-                      />
+                      <CircleUserRound className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <p className="text-xs font-medium text-gray-700">

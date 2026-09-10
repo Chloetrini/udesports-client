@@ -87,7 +87,7 @@ export default function Notifications() {
 
     {/* Notification list */}
     <div className="flex flex-col gap-3">
-       {notificationList.map((notificat, i) =>(
+       {notificationList.map((notificat) =>(
       <div key={notificat.id} className={`rounded-xl border border-gray-50 hover:border-green-400 focus:outline-none shadow-sm p-5 ${notificat.read ? 'opacity-40' : ''}`}>
        <div className="flex items-start gap-3">
 {/* Avatar */}

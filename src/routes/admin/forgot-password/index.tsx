@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import logo from "@/assets/UDELOGO.png";
+import logo from "@/assets/udeLogo.png";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();

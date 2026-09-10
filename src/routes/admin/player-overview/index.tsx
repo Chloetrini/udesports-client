@@ -9,13 +9,13 @@ const statusStyle : Record<string, string> = {
     Negotiation: 'bg-orange-100 text-orange-600',
     Free: 'bg-blue-100 text-blue-700',
 }
-export default function playerOverview() {
+export default function PlayerOverview() {
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
     const [groupFilter, setGroupFilter] = useState('All Groups')
     const [statusFilter, setStatusFilter] = useState('All Statuses')
 
-      const { data: players, isLoading, isError } = useGetPlayers();
+      const { data: players } = useGetPlayers();
 
 
 const filteredPlayers = players?.filter((player) => {

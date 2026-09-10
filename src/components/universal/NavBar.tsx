@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
     };
 
     return (
-        <div className="navbar-wrapper bg-[#000000]">
+        <div className="navbar-wrapper bg-[#000000] sticky top-0 z-50">
             <PageWrapper className="navbar-inner p-[20px]">
                 <div className="navbar-content flex items-center justify-between px-4 sm:px-6 py-4">
                     {/* Logo */}

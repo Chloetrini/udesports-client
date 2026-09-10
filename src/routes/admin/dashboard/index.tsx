@@ -1,6 +1,6 @@
 // import React from 'react'
 import { Users, ArrowLeftRight, Handshake, FileText, Newspaper, RefreshCw, Mail, Trophy, Loader2 } from "lucide-react"
-import { adminUser } from "@/layouts/AdminLayout"
+import { adminUser } from "@/lib/adminUser"
 import { useGetNewsArticles, useGetPlayers } from "@/hooks/useApi";
 
 
@@ -38,10 +38,10 @@ const recentActivity = [
 ]
 
 
-export default function dashboard() {
+export default function Dashboard() {
 
-    const { data: players, isLoading: loadingPlayers, isError: playerError } = useGetPlayers();
-    const { data: articles, isLoading: loadingArticles, isError: articleError } = useGetNewsArticles();
+    const { data: players, isLoading: loadingPlayers } = useGetPlayers();
+    const { data: articles, isLoading: loadingArticles } = useGetNewsArticles();
 
     const freePlayers = players?.filter(
         (player) => player.status === "Free"

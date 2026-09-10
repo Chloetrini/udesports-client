@@ -2,7 +2,6 @@
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
 import { useState } from "react";
-import type { Player } from "@/types/dataTypes";
 import { useGetPlayers } from "@/hooks/useApi";
 import countries from "world-countries";
 

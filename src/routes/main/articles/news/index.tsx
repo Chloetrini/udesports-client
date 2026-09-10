@@ -1,10 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import type { NewsArticle, NewsCategory } from '@/types/dataTypes';
 import Ellipse from "@/assets/Ellipse 44.png"
 import QuickUpdates from '@/components/QuickUpdates';
 // import FuturePlayer from "../../assets/FuturePlayer.png"
 import { Link } from 'react-router';
-import { Seo } from '@/components/seo';
 import { useGetNewsArticles } from '@/hooks/useApi';
 import news from '@/assets/news.jpeg'
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
@@ -77,10 +75,6 @@ const News = () => {
 
   return (
     <PageWrapper className="p-[20px]">
-      <Seo
-        title="News & Transfers"
-        description="Transfer updates, trials, and academy news from UdeSport."
-      />
       <section className=" flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className='w-full lg:w-8/12'>
           <div className='bg-[#00D46A4D] w-34 rounded-full flex justify-center items-center gap-2'>

@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useGetPlayers } from '@/hooks/useApi';
 import Skeleton from '@mui/material/Skeleton';
 import noPlayers from '@/assets/noPlayers.png'

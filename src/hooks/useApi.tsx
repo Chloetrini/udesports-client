@@ -5,6 +5,8 @@ import { fetchNewsArticles } from '@/services/Articles'
 import { fetchAllHeadlines } from '@/services/Headlines'
 import { fetchGalleryImages } from '@/services/GalleryImages'
 import { fetchQuickUpdates } from '@/services/QuickUpdates'
+import { fetchStaff } from '@/services/Staff'
+import { fetchAwards } from '@/services/Awards'
 // import type { Player } from '../components/FetchPlayers'
 
 export const useGetPlayers = () => {
@@ -61,5 +63,19 @@ export const useGetQuickUpdates = () => {
   return useQuery({
     queryKey: ["quickUpdates"],
     queryFn: fetchQuickUpdates
+  })
+}
+
+export const useGetStaff = () => {
+  return useQuery({
+    queryKey: ["staff"],
+    queryFn: fetchStaff
+  })
+}
+
+export const useGetAwards = () => {
+  return useQuery({
+    queryKey: ["awards"],
+    queryFn: fetchAwards
   })
 }

@@ -14,11 +14,7 @@ import {
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import udeLogo from "../assets/udeLogo.png";
-
-export const adminUser = {
-  name: "Dominic E.",
-  role: "Super Admin",
-};
+import { adminUser } from "@/lib/adminUser";
 
 const navItems = [
   {
@@ -51,7 +47,7 @@ function getInitials(name: string) {
 function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
   const navigate = useNavigate();
   return (
-    <div className="h-20 bg-white flex items-center justify-between gap-4 px-6 top-0 z-10 border-b border-gray-100">
+    <div className="h-20 bg-white flex items-center justify-between gap-4 px-6 sticky top-0 z-10 border-b border-gray-100">
       {/* Hamburger — mobile only */}
       <button
         onClick={onMenuClick}
@@ -212,10 +208,12 @@ export default function AdminLayout() {
       )}
 
       <div
-        className={`flex-1 overflow-x-hidden ${!isAuthPage ? "lg:ml-56" : ""}`}
+        className={`flex-1 ${!isAuthPage ? "lg:ml-56" : ""}`}
       >
         {!isAuthPage && <Topbar onMenuClick={() => setSidebarOpen(true)} />}
-        <Outlet />
+        <div className="overflow-x-hidden">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
