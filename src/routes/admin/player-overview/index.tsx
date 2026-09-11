@@ -56,13 +56,13 @@ const filteredPlayers = players?.filter((player) => {
 return(
     <div className="p-6">
 {/* Header */}
-          <div className="flex items-start justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
             <div>
                 <p className="text-sm font-medium text-green-500 mb-1">Overview</p>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">PLAYER</h1>
                 <p className="text-xs text-gray-400 mt-0.5">Add, edit, and manage player profiles and status</p>
             </div>
-            <button onClick={() => navigate("/admin/player-overview/add")} className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-black text-xs font-medium px-4 py-2 rounded-lg transition-colors">
+            <button onClick={() => navigate("/admin/player-overview/add")} className="flex items-center justify-center gap-1 bg-green-500 hover:bg-green-600 text-black text-xs font-medium px-4 py-2 rounded-lg transition-colors shrink-0">
                  <Plus size={10}/>
                  Add Player
             </button>
@@ -70,7 +70,7 @@ return(
 
 {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <div className="relative w-64">
+              <div className="relative w-full sm:w-64">
                   <Search size={15} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"/>
                   <input type="text"
                   placeholder="Search Players"
@@ -79,6 +79,7 @@ return(
                   className="w-full pl-2 py-2 text-xs border border-gray-200 dark:border-white/15 rounded-lg focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500" />
               </div>
 
+              <div className="flex gap-3 flex-wrap">
               <select value={groupFilter} onChange={(e) => setGroupFilter(e.target.value)} className="text-xs border border-gray-200 dark:border-white/15 rounded-lg px-3 py-2 focus:border-green-400 focus:bg-green-100 dark:focus:bg-green-900/30 text-gray-600 dark:text-gray-300 bg-white dark:bg-white/5">
                 <option>All Groups</option>
                 <option>U - 17</option>
@@ -92,6 +93,7 @@ return(
                 <option>Negotiation</option>
                 <option>Free</option>
               </select>
+              </div>
           </div>
 
 {/* Table Section */}
@@ -158,5 +160,6 @@ return(
     </div>
 )
 }
+
 
 

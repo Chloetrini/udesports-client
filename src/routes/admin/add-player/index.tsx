@@ -337,7 +337,7 @@ const AddPlayer = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex items-center gap-3 mt-6">
+        <div className="flex items-center gap-3 mt-6 flex-wrap">
           <button
             onClick={handleSubmit}
             className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors"
@@ -363,5 +363,6 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+
 
 

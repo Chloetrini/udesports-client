@@ -1,7 +1,7 @@
 import { CircleUserRound, BadgeCheck, Award as AwardIcon } from "lucide-react"
 import PageWrapper from "@/components/page-wrapper"
 import { useGetStaff, useGetAwards } from "@/hooks/useApi"
-import udeSportLogo from "@/assets/udeSportLogo.png"
+import udeSportLogo from "@/assets/udess.png"
 
 const About = () => {
   const { data: staff, isLoading: staffLoading } = useGetStaff()
@@ -32,7 +32,7 @@ const About = () => {
         </div>
 
         <div className="flex-1 w-full">
-          <div className="bg-[#060A0F] rounded-2xl border-b-4 border-r-4 border-[#00D46A] w-full aspect-video flex items-center justify-center">
+          <div className="bg-[#060A0F] rounded-2xl border-b-4 border-l-4 border-[#00D46A] w-full aspect-video flex items-center justify-center">
             <img src={udeSportLogo} alt="UdeSport crest" className="w-24 h-24 lg:w-32 lg:h-32" />
           </div>
         </div>

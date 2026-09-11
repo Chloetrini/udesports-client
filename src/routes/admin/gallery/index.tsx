@@ -59,7 +59,7 @@ export default function Gallery() {
             <p className="text-xs font-medium text-green-500 mb-1">
               Content Management
             </p>
-            <h1 className="text-2xl font-bold text-gray-900">GALLERY</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">GALLERY</h1>
             <p className="text-sm text-gray-400 mt-0.5">
               Upload and manage photos shown on the public gallery page
             </p>
@@ -118,7 +118,7 @@ export default function Gallery() {
       {/* View Section */}
       {viewPhoto && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-gray-200">
+          <div className="bg-white dark:bg-[#0d1117] rounded-xl shadow-xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-white/15">
             <img
               src={viewPhoto.image}
               alt={viewPhoto.title}
@@ -126,17 +126,17 @@ export default function Gallery() {
             />
             <div className="p-6">
               <div className="flex items-start justify-between mb-2">
-                <h3 className="text-sm font-semibold text-gray-900">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                   {viewPhoto.title}
                 </h3>
                 <button onClick={() => setViewPhoto(null)}>
-                  <X size={18} className="text-gray-400 hover:text-gray-600" />
+                  <X size={18} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200" />
                 </button>
               </div>
               <p className="text-xs text-gray-400 mb-6">{viewPhoto.caption}</p>
               <button
                 onClick={() => setViewPhoto(null)}
-                className="bg-white hover:bg-gray-200 text-gray-600 hover:text-gray-800 border border-gray-200 text-sm font-medium px-6 py-2 rounded-lg transition-colors"
+                className="bg-white dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white border border-gray-200 dark:border-white/15 text-sm font-medium px-6 py-2 rounded-lg transition-colors"
               >
                 Close
               </button>
@@ -148,22 +148,22 @@ export default function Gallery() {
       {/* Delete Modal */}
       {deletePhoto && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border-2 border-red-500">
+          <div className="bg-white dark:bg-[#0d1117] rounded-xl shadow-xl w-full max-w-lg overflow-hidden border-2 border-red-500">
             <img
               src={deletePhoto.image}
               alt={deletePhoto.title}
               className="w-full h-64 object-cover"
             />
             <div className="p-6">
-              <h3 className="text-sm font-semibold text-gray-900 mb-1">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
                 {deletePhoto.title}
               </h3>
               <p className="text-xs text-gray-400 mb-4">
                 {deletePhoto.caption}
               </p>
-              <p className="text-sm text-gray-600 mb-5">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">
                 Are you sure you want to{" "}
-                <span className="font-semibold text-gray-900">delete</span> this
+                <span className="font-semibold text-gray-900 dark:text-white">delete</span> this
                 photo?
               </p>
               <div className="flex items-center gap-3">
@@ -172,7 +172,7 @@ export default function Gallery() {
                 </button>
                 <button
                   onClick={() => setDeletePhoto(null)}
-                  className="bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 text-sm font-medium px-10 py-1.5 rounded-lg transition-colors"
+                  className="bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 text-sm font-medium px-10 py-1.5 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -184,3 +184,4 @@ export default function Gallery() {
     </>
   );
 }
+

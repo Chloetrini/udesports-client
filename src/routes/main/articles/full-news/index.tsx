@@ -18,9 +18,9 @@ const CATEGORY_LABEL: Record<NewsCategory, string> = {
 };
 
 const CATEGORY_STYLE: Record<NewsCategory, string> = {
-  TRANSFER: "bg-amber-100 text-amber-700",
-  ACADEMY: "bg-blue-100 text-blue-700",
-  ANNOUNCEMENT: "bg-emerald-100 text-emerald-700",
+  TRANSFER: "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300",
+  ACADEMY: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300",
+  ANNOUNCEMENT: "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300",
 };
 
 // Recommended Topic — only the real categories that exist on NewsCategory.
@@ -44,10 +44,10 @@ function RelatedArticleCard({ article }: { article: NewsArticle }) {
       >
         • {CATEGORY_LABEL[article.category]}
       </span>
-      <h3 className="text-lg font-bold leading-snug text-[#1A1A1A]">
+      <h3 className="text-lg font-bold leading-snug text-[#1A1A1A] dark:text-white">
         {article.headline}
       </h3>
-      <p className="text-sm text-[#464646]">{article.excerpt}</p>
+      <p className="text-sm text-[#464646] dark:text-gray-400">{article.excerpt}</p>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <img
@@ -56,17 +56,17 @@ function RelatedArticleCard({ article }: { article: NewsArticle }) {
             className="h-9 w-9 rounded-full"
           />
           <div className="flex flex-col text-sm leading-tight">
-            <span className="font-medium text-[#1A1A1A]">
+            <span className="font-medium text-[#1A1A1A] dark:text-white">
               {article.author}
             </span>
-            <time dateTime={article.createdAt} className="text-[#959595]">
+            <time dateTime={article.createdAt} className="text-[#959595] dark:text-gray-500">
               {formatDate(article.createdAt)} • {estimateReadTime(article.body)} read
             </time>
           </div>
         </div>
         <a
           href={`/news/${article.id}`}
-          className="text-sm font-medium text-[#382E53] hover:text-[#00A553] hover:underline transition-all"
+          className="text-sm font-medium text-[#382E53] dark:text-gray-300 hover:text-[#00A553] dark:hover:text-[#00A553] hover:underline transition-all"
         >
           Read more »
         </a>
@@ -77,24 +77,24 @@ function RelatedArticleCard({ article }: { article: NewsArticle }) {
 
 function SingleNewsSkeleton() {
   return (
-    <PageWrapper className="p-[20px]">
+    <PageWrapper className="p-[20px] bg-white dark:bg-black transition-colors duration-300">
       <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className="w-full lg:w-8/12">
           {/* cover image */}
-          <div className="h-64 w-full rounded-2xl bg-[#e9e9e9] animate-pulse md:h-80 lg:h-96" />
+          <div className="h-64 w-full rounded-2xl bg-[#e9e9e9] dark:bg-white/10 animate-pulse md:h-80 lg:h-96" />
 
           {/* headline */}
           <div className="mt-6 flex flex-col gap-2">
-            <div className="h-7 w-full rounded bg-[#e9e9e9] animate-pulse" />
-            <div className="h-7 w-2/3 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="h-7 w-full rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+            <div className="h-7 w-2/3 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
           </div>
 
           {/* author row */}
           <div className="mt-4 flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-[#e9e9e9] animate-pulse" />
+            <div className="h-12 w-12 rounded-full bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
             <div className="flex flex-col gap-1.5">
-              <div className="h-3.5 w-28 rounded bg-[#e9e9e9] animate-pulse" />
-              <div className="h-3 w-40 rounded bg-[#e9e9e9] animate-pulse" />
+              <div className="h-3.5 w-28 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+              <div className="h-3 w-40 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
             </div>
           </div>
 
@@ -103,26 +103,26 @@ function SingleNewsSkeleton() {
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className={`h-3.5 rounded bg-[#e9e9e9] animate-pulse ${i === 5 ? 'w-2/3' : 'w-full'}`}
+                className={`h-3.5 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse ${i === 5 ? 'w-2/3' : 'w-full'}`}
               />
             ))}
           </div>
 
           {/* related articles */}
           <div className="mt-12">
-            <div className="h-6 w-44 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="h-6 w-44 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
             <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
               {Array.from({ length: 2 }).map((_, i) => (
                 <div key={i} className="flex flex-col gap-2">
-                  <div className="h-48 w-full rounded-2xl bg-[#e9e9e9] animate-pulse" />
-                  <div className="h-5 w-20 rounded-full bg-[#e9e9e9] animate-pulse" />
-                  <div className="h-5 w-4/5 rounded bg-[#e9e9e9] animate-pulse" />
-                  <div className="h-3.5 w-full rounded bg-[#e9e9e9] animate-pulse" />
+                  <div className="h-48 w-full rounded-2xl bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+                  <div className="h-5 w-20 rounded-full bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+                  <div className="h-5 w-4/5 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+                  <div className="h-3.5 w-full rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
                   <div className="flex items-center gap-2 pt-1">
-                    <div className="h-9 w-9 rounded-full bg-[#e9e9e9] animate-pulse" />
+                    <div className="h-9 w-9 rounded-full bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
                     <div className="flex flex-col gap-1.5">
-                      <div className="h-3 w-20 rounded bg-[#e9e9e9] animate-pulse" />
-                      <div className="h-3 w-28 rounded bg-[#e9e9e9] animate-pulse" />
+                      <div className="h-3 w-20 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+                      <div className="h-3 w-28 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
                     </div>
                   </div>
                 </div>
@@ -133,10 +133,10 @@ function SingleNewsSkeleton() {
 
         <aside className="w-full lg:w-3/12 lg:sticky lg:top-6 lg:self-start">
           <div className="mt-8">
-            <div className="h-5 w-32 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="h-5 w-32 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
             <div className="mt-3 flex flex-wrap gap-2">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-6 w-24 rounded-full bg-[#e9e9e9] animate-pulse" />
+                <div key={i} className="h-6 w-24 rounded-full bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
               ))}
             </div>
           </div>
@@ -156,20 +156,20 @@ const SingleNews = () => {
   } = useGetNewsArticles();
 
   if (isLoading) return <SingleNewsSkeleton />;
-  if (isError) return <p  className="min-h-screen text center">Something went wrong loading this article.</p>;
+  if (isError) return <p className="min-h-screen bg-white dark:bg-black text-[#1A1A1A] dark:text-white text-center p-6">Something went wrong loading this article.</p>;
 
   const article = (articles ?? []).find(
     (a) => a.id === articleId && a.published,
   );
 
-  if (!article) return <p>Article not found.</p>;
+  if (!article) return <p className="min-h-screen bg-white dark:bg-black text-[#1A1A1A] dark:text-white p-6">Article not found.</p>;
 
   const relatedArticles = (articles ?? [])
     .filter((a) => a.published && a.id !== article.id)
     .slice(0, 2);
 
   return (
-    <PageWrapper className="p-[20px]">
+    <PageWrapper className="p-[20px] bg-white dark:bg-black transition-colors duration-300">
       <Seo title={article.headline} description={article.excerpt ?? 'Full article — UdeSport News & Transfers.'} />
       <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className="w-full lg:w-8/12">
@@ -179,7 +179,7 @@ const SingleNews = () => {
             className="h-64 w-full rounded-2xl object-cover md:h-80 lg:h-96"
           />
 
-          <h1 className="mt-6 text-2xl font-bold text-[#1A1A1A] md:text-3xl lg:text-3xl">
+          <h1 className="mt-6 text-2xl font-bold text-[#1A1A1A] dark:text-white md:text-3xl lg:text-3xl">
             {article.headline}
           </h1>
 
@@ -191,10 +191,10 @@ const SingleNews = () => {
                 className="h-12 w-12 rounded-full"
               />
               <div className="flex flex-col text-sm leading-tight">
-                <span className="font-medium text-[#1A1A1A]">
+                <span className="font-medium text-[#1A1A1A] dark:text-white">
                   {article.author}
                 </span>
-                <time dateTime={article.createdAt} className="text-[#959595]">
+                <time dateTime={article.createdAt} className="text-[#959595] dark:text-gray-500">
                   {formatDate(article.createdAt)} •{" "}
                   {calculateReadTime(article.body)} min read
                 </time>
@@ -229,13 +229,13 @@ const SingleNews = () => {
           </div>
 
           <div
-            className="prose prose-neutral mt-8 max-w-none text-[#464646]"
+            className="prose prose-neutral dark:prose-invert mt-8 max-w-none text-[#464646] dark:text-gray-300"
             dangerouslySetInnerHTML={{ __html: article.body }}
           />
 
           {relatedArticles.length > 0 && (
             <div className="mt-12">
-              <h2 className="text-xl font-bold text-[#1A1A1A]">
+              <h2 className="text-xl font-bold text-[#1A1A1A] dark:text-white">
                 You Might also like
               </h2>
               <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -251,7 +251,7 @@ const SingleNews = () => {
           {/* <QuickUpdates /> */}
 
           <div className="mt-8">
-            <h2 className="font-bold text-[#1A1A1A]">Recommended Topic</h2>
+            <h2 className="font-bold text-[#1A1A1A] dark:text-white">Recommended Topic</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {RECOMMENDED_TOPICS.map((topic) => (
                 <span
@@ -270,5 +270,6 @@ const SingleNews = () => {
 };
 
 export default SingleNews;
+
 
 

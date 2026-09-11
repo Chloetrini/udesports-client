@@ -88,12 +88,12 @@ export default function News() {
   return (
     <div className="p-6 overflow-x-hidden">
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
         <div>
           <p className="text-sm font-medium text-green-500">
             Content Management
           </p>
-          <h1 className="text-2xl font-bold text-gray-900">NEWS UPDATE</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">NEWS UPDATE</h1>
           <p className="text-xs text-gray-400 mt-0.5">
             Publish and manage transfer updates, academy news, and announcements
           </p>
@@ -101,7 +101,7 @@ export default function News() {
 
         <button
           onClick={() => navigate("/admin/news/article")}
-          className="flex items-center bg-green-500 hover:bg-green-600 text-black hover:text-white text-[15px] font-[13px] px-5 py-2 rounded-lg transition-colors"
+          className="flex items-center justify-center bg-green-500 hover:bg-green-600 text-black hover:text-white text-[15px] font-[13px] px-5 py-2 rounded-lg transition-colors shrink-0"
         >
           <Plus size={10} />
           New Article
@@ -114,7 +114,7 @@ export default function News() {
           {articles.map((article, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden shrink-0 w-72"
+              className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm overflow-hidden shrink-0 w-72"
             >
               <div className="relative">
                 <img
@@ -127,7 +127,7 @@ export default function News() {
                     setDeleteArticle(article)
                     // navigate("/admin/news")
                   }}
-                  className="absolute top-2 right-2 border border-red-400  hover:bg-red-600 text-red-500 hover:text-white bg-white p-1.5 rounded-lg transition-colors"
+                  className="absolute top-2 right-2 border border-red-400  hover:bg-red-600 text-red-500 hover:text-white bg-white dark:bg-white/10 p-1.5 rounded-lg transition-colors"
                 >
                   <Trash2 size={14} />
                 </button>
@@ -148,7 +148,7 @@ export default function News() {
                 >
                   {article.category}
                 </span>
-                <h3 className="text-sm font-semibold text-gray-900 mt-2 mb-1">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mt-2 mb-1">
                   {article.headline}
                 </h3>
                 <p className="text-[10px] text-gray-400 mb-3">
@@ -164,7 +164,7 @@ export default function News() {
                       className="w-7 h-7 rounded-full object-cover"
                     />
                     <div>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                         {article.author}
                       </p>
                       <p className="text-xs text-gray-400">
@@ -177,13 +177,13 @@ export default function News() {
                   <div className="flex items-center gap-3">
                     <div className="text-center">
                       <p className="text-xs text-gray-400">Views</p>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                         {article.views}
                       </p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs text-gray-400">Shares</p>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                         {article.shares}
                       </p>
                     </div>
@@ -196,16 +196,16 @@ export default function News() {
       </div>
 
       {/* Articles History */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
-        <div className="flex items-center justify-between p-5">
-          <h2 className="text-sm font-semibold text-gray-900">
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm overflow-x-auto">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-5">
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
             Article History
           </h2>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none"
+              className="text-xs border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 rounded-lg px-3 py-1.5 text-gray-600 dark:text-gray-300 focus:outline-none"
             >
               <option>All Categories</option>
               <option>Transfer</option>
@@ -216,7 +216,7 @@ export default function News() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none focus:border-green-400"
+              className="text-xs border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 rounded-lg px-3 py-1.5 text-gray-600 dark:text-gray-300 focus:outline-none focus:border-green-400"
             >
               <option>All Statuses</option>
               <option>Published</option>
@@ -239,20 +239,20 @@ export default function News() {
 
           <tbody>
             {filteredArticles.map((article, i) => (
-              <tr key={i} className="hover:bg-gray-50 transition-colors">
+              <tr key={i} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-2">
-                    <ArrowLeftRight size={14} className="shrink-0 text-black" />
+                    <ArrowLeftRight size={14} className="shrink-0 text-black dark:text-white" />
                     <div>
-                      <p className="text-gray-900 font-medium">
+                      <p className="text-gray-900 dark:text-white font-medium">
                         {article.headline}
                       </p>
                       <p className="text-xs text-gray-400">{article.meta}</p>
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4 text-gray-500">{article.views}</td>
-                <td className="px-5 py-4 text-gray-500">{article.shares}</td>
+                <td className="px-5 py-4 text-gray-500 dark:text-gray-400">{article.views}</td>
+                <td className="px-5 py-4 text-gray-500 dark:text-gray-400">{article.shares}</td>
                 <td className="px-5 py-4">
                   <span
                     className={`text-xs font-medium px-2.5 py-1 rounded-full ${
@@ -283,7 +283,7 @@ export default function News() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => navigate(`/admin/news/article/${i}`)}
-                      className="text-xs text-gray-600 border border-gray-200 px-3 py-1 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-3 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors"
                     >
                       Edit
                     </button>
@@ -301,7 +301,7 @@ export default function News() {
       {/* Delete confirmation modal */}
       {deleteArticle && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden border-2 border-red-600">
+          <div className="bg-white dark:bg-[#0d1117] rounded-xl shadow-xl w-full max-w-lg overflow-hidden border-2 border-red-600">
             <div className="p-8 pt-0">
               <img
                 src={deleteArticle.image}
@@ -309,7 +309,7 @@ export default function News() {
                 className="w-full h-48 object-cover"
               />
               <div className="pt-3">
-                <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">
                   {deleteArticle.headline}
                 </h3>
                 <p className="text-xs text-gray-400 mb-3">
@@ -325,7 +325,7 @@ export default function News() {
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <div>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                         {deleteArticle.author}
                       </p>
                       <p className="text-xs text-gray-400">
@@ -339,7 +339,7 @@ export default function News() {
                       <p className="text-xs text-gray-400 flex items-center gap-1">
                         <Eye size={11} /> Views
                       </p>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                         {deleteArticle.views}
                       </p>
                     </div>
@@ -347,7 +347,7 @@ export default function News() {
                       <p className="text-xs text-gray-400 flex items-center gap-1">
                         <Share2 size={11} /> Shares
                       </p>
-                      <p className="text-xs font-medium text-gray-700">
+                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
                         {deleteArticle.shares}
                       </p>
                     </div>
@@ -355,9 +355,9 @@ export default function News() {
                 </div>
               </div>
 
-              <p className="text-sm text-gray-600 mb-5">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">
                 Are you sure you want to{" "}
-                <span className="font-semibold text-gray-900">delete</span> this
+                <span className="font-semibold text-gray-900 dark:text-white">delete</span> this
                 Article?
               </p>
               <div className="flex items-center gap-3">
@@ -369,7 +369,7 @@ export default function News() {
                     setDeleteArticle(null);
                     navigate("/admin/news")
                   }}
-                  className="bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 text-sm font-medium px-10 py-1.5 rounded-lg transition-colors"
+                  className="bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 text-sm font-medium px-10 py-1.5 rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -381,3 +381,4 @@ export default function News() {
     </div>
   );
 }
+
