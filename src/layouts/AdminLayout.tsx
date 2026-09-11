@@ -221,7 +221,7 @@ export default function AdminLayout() {
       )}
 
       <div
-        className={`flex-1 ${!isAuthPage ? "lg:ml-56" : ""}`}
+        className={`flex-1 min-w-0 ${!isAuthPage ? "lg:ml-56" : ""}`}
       >
         {!isAuthPage && <Topbar onMenuClick={() => setSidebarOpen(true)} />}
         <div className="overflow-x-hidden">
@@ -231,5 +231,6 @@ export default function AdminLayout() {
     </div>
   );
 }
+
 
 

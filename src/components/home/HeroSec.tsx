@@ -27,7 +27,7 @@ const HeroSec: React.FC = () => {
             </h1>
 
             <p className="font-manrope font-medium text-[#8E8E8E] text-[clamp(14px,2.5vw,18px)] leading-relaxed max-w-150 mt-6">
-              From Nigeria to the world's biggest stadiums. UdeSport has placed 38+ players at elite clubs across Europe, Asia, and Africa.
+              From Nigeria to the world's biggest stadiums. UdeSport has placed 100+ players at elite clubs across Europe, Asia, and Africa.
             </p>
 
             {/* Buttons */}

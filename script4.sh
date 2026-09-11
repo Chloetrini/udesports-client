@@ -1,3 +1,8 @@
+bash << 'OUTER_EOF'
+set -e
+echo "Applying UDESPORT dark-mode fix round 4 (admin New Article / Edit Article form)..."
+mkdir -p "$(dirname "src/routes/admin/news-article/index.tsx")"
+cat > src/routes/admin/news-article/index.tsx << 'EOF_UDE4_5e7394b1'
 // import React from 'react'
 import { useNavigate } from "react-router";
 import { ArrowLeft, List, ListOrdered, Quote, Eye, Share2, ImagePlus, CircleUserRound } from "lucide-react";
@@ -190,7 +195,7 @@ export default function NewsArticle() {
           </label>
 
           {/* Toolbar */}
-          <div className="border border-gray-200 dark:border-white/15 rounded-t-lg px-3 py-2 flex items-center gap-2 flex-wrap bg-gray-50 dark:bg-white/5">
+          <div className="border border-gray-200 dark:border-white/15 rounded-t-lg px-3 py-2 flex items-center gap-2 bg-gray-50 dark:bg-white/5">
             {/*Heading 1 */}
             <button
               type="button"
@@ -310,7 +315,7 @@ export default function NewsArticle() {
         </div>
 
         {/* buttons */}
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-3">
           <button
             onClick={handlePublish}
             className="bg-white dark:bg-white/5 hover:bg-green-500 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-black text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 dark:border-white/15 transition-colors"
@@ -426,3 +431,7 @@ export default function NewsArticle() {
   );
 }
 
+EOF_UDE4_5e7394b1
+echo "  wrote src/routes/admin/news-article/index.tsx"
+echo "Done. Now run: npx tsc --noEmit -p tsconfig.app.json && npx eslint . && npm run build"
+OUTER_EOF
