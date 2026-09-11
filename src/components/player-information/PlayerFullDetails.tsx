@@ -34,7 +34,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="w-screen h-screen md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white rounded-2xl flex flex-col gap-5 overflow-y-auto relative"
+          className="w-screen h-screen md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white dark:bg-[#0d1117] rounded-2xl flex flex-col gap-5 overflow-y-auto relative"
         >
           {/* close icon stays real so the user can bail out mid-load */}
           <img
@@ -106,7 +106,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
       >
         <div
           onClick={(e) => e.stopPropagation()}
-          className="w-screen h-screen md:h-fit md:w-fit md:min-w-[320px] md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-10 bg-white rounded-2xl flex flex-col items-center justify-center text-center gap-4 relative px-6"
+          className="w-screen h-screen md:h-fit md:w-fit md:min-w-[320px] md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-10 bg-white dark:bg-[#0d1117] rounded-2xl flex flex-col items-center justify-center text-center gap-4 relative px-6"
         >
           {/* close icon so the user can dismiss the failed modal */}
           <img
@@ -133,10 +133,10 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
           <div>
-            <p className="font-manrope font-bold text-[#060A0F] text-lg mb-1">
+            <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-lg mb-1">
               We couldn't load this player
             </p>
-            <p className="font-manrope font-normal text-[#68717D] text-sm max-w-xs">
+            <p className="font-manrope font-normal text-[#68717D] dark:text-gray-400 text-sm max-w-xs">
               Something went wrong fetching this player's details. Please try again.
             </p>
           </div>
@@ -159,7 +159,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-screen h-screen pt-10 py-5 md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white md:rounded-2xl flex flex-col gap-10 md:gap-5 overflow-y-auto relative"
+        className="w-screen h-screen pt-10 py-5 md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white dark:bg-[#0d1117] text-[#060A0F] dark:text-white md:rounded-2xl flex flex-col gap-10 md:gap-5 overflow-y-auto relative"
       >
         {/* close icon - sits in the top-right corner, above the name; calls onClose */}
         <img
@@ -174,7 +174,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             <span className='w-[8px] h-[8px] bg-[#00D46A] rounded-lg'></span>
             Roster
           </div>
-          <p className='font-normal text-[64px] leading-[69px] font-bebas'>
+          <p className='font-normal text-[64px] leading-[69px] font-bebas text-[#060A0F] dark:text-white'>
             <span className='block'>PLAYER</span>
             INFORMATION
           </p>
@@ -246,8 +246,8 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
                 <img src={player?.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="w-[50px]" />
               </div>
               <div>
-                <p className="font-manrope font-medium text-lg">Club Name</p>
-                <p className="font-manrope text-[16px]">{player?.currentClubName ? player?.currentClubName : "Unknown"}</p>
+                <p className="font-manrope font-medium text-lg text-[#060A0F] dark:text-white">Club Name</p>
+                <p className="font-manrope text-[16px] text-[#060A0F] dark:text-white">{player?.currentClubName ? player?.currentClubName : "Unknown"}</p>
               </div>
             </div>
           </div>
@@ -258,29 +258,29 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
           <div className="w-full md:w-[320px]">
             <p className="pb-2 font-bebas text-[26px] text-[#00D46A]">BIO DATA</p>
             <div>
-              <div className="flex justify-between pb-2 border-b border-b-[#CACACA] font-manrope">
-                <p className="text-[18px] text-[#8E8E8E]">Full Name:</p>
-                <p className="text-end text-[20px]">{player?.playerFullName ? player?.playerFullName : "Unknown"}</p>
+              <div className="flex justify-between pb-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
+                <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Full Name:</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.playerFullName ? player?.playerFullName : "Unknown"}</p>
               </div>
-              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] font-manrope">
-                <p className="text-[18px] text-[#8E8E8E]">Date of Birth:</p>
-                <p className="text-end text-[20px]">{player?.DOB ? player?.DOB : "Unknown"}</p>
+              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
+                <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Date of Birth:</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.DOB ? player?.DOB : "Unknown"}</p>
               </div>
-              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] font-manrope">
-                <p className="text-[18px] text-[#8E8E8E]">Nationality:</p>
-                <p className="text-end text-[20px]">{player?.nationality ? player?.nationality : "Unknown"}</p>
+              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
+                <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Nationality:</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.nationality ? player?.nationality : "Unknown"}</p>
               </div>
-              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] font-manrope">
-                <p className="text-[18px] text-[#8E8E8E]">Height:</p>
-                <p className="text-end text-[20px]">{player?.height ? player?.height : "Unknown"}cm</p>
+              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
+                <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Height:</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.height ? player?.height : "Unknown"}cm</p>
               </div>
-              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] font-manrope">
-                <p className="text-[18px] text-[#8E8E8E]">Preferred foot:</p>
-                <p className="text-end text-[20px]">{player?.preferredFoot ? player?.preferredFoot : "Unknown"}</p>
+              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
+                <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Preferred foot:</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.preferredFoot ? player?.preferredFoot : "Unknown"}</p>
               </div>
-              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] font-manrope">
-                <p className="text-[18px] text-[#8E8E8E]">Age Group:</p>
-                <p className="text-end text-[20px]">{player?.ageGroup ? player?.ageGroup : "Unknown"}</p>
+              <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
+                <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Age Group:</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.ageGroup ? player?.ageGroup : "Unknown"}</p>
               </div>
             </div>
           </div>
@@ -288,7 +288,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 
           <div className=" md:w-[300px] lg:w-[400px]">
             <p className="font-bebas text-[#00D46A] text-[26px]">BRIEF HISTORY</p>
-            <div className="font-manrope font-medium text-[#8E8E8E] leading-[24px] lg:text-[16px] w-[90%]">
+            <div className="font-manrope font-medium text-[#8E8E8E] dark:text-gray-400 leading-[24px] lg:text-[16px] w-[90%]">
               <p>
                 {player?.playerHistory ? player.playerHistory : "No Player History"}
               </p>

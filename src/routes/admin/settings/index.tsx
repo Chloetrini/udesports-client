@@ -66,37 +66,37 @@ export default function Settings() {
     <div className="p-6">
       {/* header */}
       <p className="text-sm font-medium text-green-500 mb-1">Communication</p>
-      <h1 className="text-2xl font-bold text-gray-900">SETTINGS</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">SETTINGS</h1>
       <p className="text-sm text-gray-400 mt-0.5 mb-6">Manage site configuration, admin accounts, and display preferences</p>
 
       {/* Site Information */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-5">
-        <h2 className="text-sm font-semibold text-gray-900 mb-4">Site Information</h2>
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6 mb-5">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Site Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
           <div className="flex flex-col gap-1.5">
-             <label className="text-xs font-medium text-gray-600">
+             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Site Title
           </label>
-          <input type="text" value={siteTitle} onChange={(e) => setSiteTitle(e.target.value)} className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-500"/>
+          <input type="text" value={siteTitle} onChange={(e) => setSiteTitle(e.target.value)} className="border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:border-green-500"/>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Contact Info</label>
-            <input type="text" value={contactInfo} onChange={(e) => setContactInfo(e.target.value)} className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400"  />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Contact Info</label>
+            <input type="text" value={contactInfo} onChange={(e) => setContactInfo(e.target.value)} className="border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:border-green-400"  />
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Mail</label>
-            <input type="email" value={mail} onChange={(e) => setMail(e.target.value)} className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Mail</label>
+            <input type="email" value={mail} onChange={(e) => setMail(e.target.value)} className="border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:border-green-400" />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Instagram</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Instagram</label>
               <input type="text" placeholder="Instagram Handle" value={instagram} onChange={(e) => setInstagram(e.target.value)}
-                className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400" />
+                className="border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2 text-sm focus:outline-none focus:border-green-400" />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">X (Twitter)</label>
-            <input type="text" placeholder="x.com/" value={twitter} onChange={(e) => setTwitter(e.target.value)} className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400" />
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">X (Twitter)</label>
+            <input type="text" placeholder="x.com/" value={twitter} onChange={(e) => setTwitter(e.target.value)} className="border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2 text-sm focus:outline-none focus:border-green-400" />
           </div>
         </div>
         <button onClick={showToast} className="bg-green-500 hover:bg-green-600 rounded-lg hover:text-white text-gray-900 text-sm font-medium px-5 py-2 transition-colors">
@@ -105,34 +105,34 @@ export default function Settings() {
       </div>
 
       {/* Admin Account */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-5">
-        <h2 className="text-sm font-semibold text-gray-900 mb-4">Admin Account</h2>
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6 mb-5">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Admin Account</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
           <div className="flex flex-col gap-1.5">
-           <label className="text-xs font-medium text-gray-600">Admin Name</label>
-           <input type="text" value={adminName} onChange={(e) => {setAdminName(e.target.value); setAdminErrors({...adminErrors, adminName: ""}) }} 
-           className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-500 ${adminErrors.adminName ? 'border-red-400' : 'border-gray-200'}`} />
+           <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Admin Name</label>
+           <input type="text" value={adminName} onChange={(e) => {setAdminName(e.target.value); setAdminErrors({...adminErrors, adminName: ""}) }}
+           className={`border px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-500 ${adminErrors.adminName ? 'border-red-400' : 'border-gray-200 dark:border-white/15'}`} />
            {adminErrors.adminName && <p className="text-xs text-red-500">{adminErrors.adminName}</p>}
           </div>
           <div className="flex flex-col gap-1.5">
-           <label className="text-xs font-medium text-gray-600">Admin Email</label>
+           <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Admin Email</label>
            <input type="email" placeholder="email address" value={adminEmail} onChange={(e)=> {setAdminEmail(e.target.value); setAdminErrors({...adminErrors, adminEmail: ""})}}
-           className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 ${adminErrors.adminEmail ? 'border-red-400' : 'border-gray-200'}`} />
+           className={`border px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-green-400 ${adminErrors.adminEmail ? 'border-red-400' : 'border-gray-200 dark:border-white/15'}`} />
            {adminErrors.adminEmail && <p className="text-xs text-red-500">{adminErrors.adminEmail}</p>}
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Role</label>
-            <select disabled className="border border-gray-200 px-3 py-2 text-sm text-gray-400 bg-gray-50 cursor-not-allowed focus:outline-none">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Role</label>
+            <select disabled className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-white/5 cursor-not-allowed focus:outline-none">
               <option>Super Admin</option>
             </select>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Password</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Password</label>
            <div className="relative">
              <input type={showPassword ? "text" : "password"} placeholder="........" value={password} onChange={(e)=>  {setPassword(e.target.value); setAdminErrors({...adminErrors, password: ""}) }}
-                className="w-full border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400 pr-10" />
+                className="w-full border border-gray-200 dark:border-white/15 bg-white dark:bg-white/5 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:border-green-400 pr-10" />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
                 {showPassword? <Eye size={15}/> : <EyeOff size={15}/>}
               </button>
              {adminErrors.password && <p className="text-xs text-red-500">{adminErrors.password}</p>}
@@ -140,12 +140,12 @@ export default function Settings() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Confirm Password</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Confirm Password</label>
            <div className="relative">
-             <input type={showConfirmPassword ? "text" : "password"} placeholder=".........." value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); setAdminErrors({...adminErrors, confirmPassword: ""})}} 
-           className={`w-full border px-3 py-2 text-sm focus:outline-none focus:border-green-400 pr-10 ${ adminErrors.confirmPassword ? 'border-red-400' : 'border-gray-200'}`} />
+             <input type={showConfirmPassword ? "text" : "password"} placeholder=".........." value={confirmPassword} onChange={(e) => {setConfirmPassword(e.target.value); setAdminErrors({...adminErrors, confirmPassword: ""})}}
+           className={`w-full border px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-400 pr-10 ${ adminErrors.confirmPassword ? 'border-red-400' : 'border-gray-200 dark:border-white/15'}`} />
            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
               {showConfirmPassword ? <Eye size={15} /> : <EyeOff size={15} />}
             </button>
            </div>
@@ -158,27 +158,27 @@ export default function Settings() {
       </div>
 
       {/* Invite Admin Account */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-sm font-semibold text-gray-900 mb-4">Invite Admin Account</h2>
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Invite Admin Account</h2>
         <div className="space-y-4">
           {
             inviteAdmins.map((admin, i) => (
               <div key={i} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-gray-600">Admin Name</label>
+                  <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Admin Name</label>
                   <input type="text" value={admin.name} disabled={editingIndex !== i} onChange={(e) => {const updated = [...inviteAdmins]; updated[i].name = e.target.value; setInviteAdmins(updated)}}
-                   className={`border px-3 py-2 text-sm focus:outline-none ${editingIndex === i ? 'border-green-400' : 'border-gray-200 bg-gray-50'}`} />
+                   className={`border px-3 py-2 text-sm focus:outline-none ${editingIndex === i ? 'border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white' : 'border-gray-200 dark:border-white/15 bg-gray-50 dark:bg-white/5 text-gray-400 dark:text-gray-500'}`} />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-gray-600">Admin Email</label>
-                  <input type="email" value={admin.email} disabled={editingIndex !== i} onChange={(e) => {const updated = [...inviteAdmins]; updated[i].email = e.target.value; setInviteAdmins(updated)}} placeholder="email address" 
-                  className={`border px-3 py-2 text-sm focus:outline-none ${editingIndex === i ? 'border-green-400' : 'border-gray-200 bg-gray-50'}`}/>
+                  <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Admin Email</label>
+                  <input type="email" value={admin.email} disabled={editingIndex !== i} onChange={(e) => {const updated = [...inviteAdmins]; updated[i].email = e.target.value; setInviteAdmins(updated)}} placeholder="email address"
+                  className={`border px-3 py-2 text-sm focus:outline-none ${editingIndex === i ? 'border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white' : 'border-gray-200 dark:border-white/15 bg-gray-50 dark:bg-white/5 text-gray-400 dark:text-gray-500'}`}/>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                 <label className="text-xs font-medium text-gray-600">Role</label>
+                 <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Role</label>
                  <select value={admin.role} disabled={editingIndex !== i} onChange={(e) => {
-                 const updated = [...inviteAdmins]; updated[i].role = e.target.value; setInviteAdmins(updated)}} 
-                 className={`border px-3 py-2 text-sm focus:outline-none ${editingIndex === i ? 'border-green-400 text-gray-600' : 'border-gray-200 bg-gray-50 text-gray-400'}`}>
+                 const updated = [...inviteAdmins]; updated[i].role = e.target.value; setInviteAdmins(updated)}}
+                 className={`border px-3 py-2 text-sm focus:outline-none ${editingIndex === i ? 'border-green-400 text-gray-600 dark:text-gray-300 bg-white dark:bg-white/5' : 'border-gray-200 dark:border-white/15 bg-gray-50 dark:bg-white/5 text-gray-400 dark:text-gray-500'}`}>
                     <option>Sub Admin</option>
                     <option>Super Admin</option>
                  </select>
@@ -193,7 +193,7 @@ export default function Settings() {
                   ) : (
                     <button
                       onClick={() => setEditingIndex(i)}
-                      className="text-xs text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                      className="text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-4 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
                       Edit
                     </button>
                   )}

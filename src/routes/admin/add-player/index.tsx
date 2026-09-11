@@ -5,6 +5,48 @@ import { useState } from "react";
 import { useGetPlayers } from "@/hooks/useApi";
 import countries from "world-countries";
 
+function FieldSkeleton() {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <div className="h-3 w-20 rounded bg-gray-200 dark:bg-white/10 animate-pulse" />
+      <div className="h-9 w-full rounded bg-gray-100 dark:bg-white/5 animate-pulse" />
+    </div>
+  );
+}
+
+function AddPlayerSkeleton() {
+  return (
+    <div className="p-6">
+      <div className="mb-6 space-y-2">
+        <div className="h-3 w-16 rounded bg-gray-200 dark:bg-white/10 animate-pulse" />
+        <div className="h-7 w-40 rounded bg-gray-200 dark:bg-white/10 animate-pulse" />
+        <div className="h-3 w-64 rounded bg-gray-200 dark:bg-white/10 animate-pulse" />
+      </div>
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <FieldSkeleton key={i} />
+          ))}
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-5 mt-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <FieldSkeleton key={i} />
+          ))}
+        </div>
+        <div className="mt-5">
+          <div className="h-3 w-32 rounded bg-gray-200 dark:bg-white/10 animate-pulse mb-1.5" />
+          <div className="h-24 w-full rounded-lg bg-gray-100 dark:bg-white/5 animate-pulse" />
+        </div>
+        <div className="flex items-center gap-3 mt-6">
+          <div className="h-9 w-32 rounded-lg bg-gray-200 dark:bg-white/10 animate-pulse" />
+          <div className="h-9 w-32 rounded-lg bg-gray-200 dark:bg-white/10 animate-pulse" />
+          <div className="h-9 w-24 rounded-lg bg-gray-200 dark:bg-white/10 animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const AddPlayer = () => {
   const { data: players, isLoading, isError } = useGetPlayers();
   const navigate = useNavigate();
@@ -26,10 +68,10 @@ const AddPlayer = () => {
   const [error, setError] = useState<Record<string, string>>({});
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <AddPlayerSkeleton />
   }
   if (isError) {
-    return <div>Something went wrong</div>
+    return <div className="p-6 text-gray-900 dark:text-white">Something went wrong</div>
   }
 
   function validate() {
@@ -72,7 +114,7 @@ const AddPlayer = () => {
       <div className="flex items-start justify-between mb-6">
         <div>
           <p className="text-sm font-medium text-green-500 mb-1">Overview</p>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             {player ? "EDIT PLAYER" : "ADD PLAYER"}
           </h1>
           <p className="text-xs text-gray-400 mt-0.5">
@@ -82,11 +124,11 @@ const AddPlayer = () => {
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* Player's name */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Player Name
             </label>
             <input
@@ -97,7 +139,7 @@ const AddPlayer = () => {
                 setName(e.target.value);
                 setError({ ...error, name: "" });
               }}
-              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 ${error.name ? "border-red-400" : "border-gray-200"
+              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.name ? "border-red-400" : "border-gray-200 dark:border-white/15"
                 }`}
             />
             {error.name && <p className="text-xs text-red-500">{error.name}</p>}
@@ -105,13 +147,13 @@ const AddPlayer = () => {
 
           {/* Position */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Position
             </label>
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value)}
-              className="border border-gray-200 px-3 py-2 text-sm text-gray-400 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>LW</option>
               <option>RW</option>
@@ -125,13 +167,13 @@ const AddPlayer = () => {
 
           {/* Age Group */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Age Group
             </label>
             <select
               value={group}
               onChange={(e) => setGroup(e.target.value as "U-17" | "U-21" | "U-23")}
-              className="border border-gray-200 px-3 py-2 text-sm text-gray-400 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>U-17</option>
               <option>U-21</option>
@@ -141,7 +183,7 @@ const AddPlayer = () => {
 
           {/* Date of birth */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Date of Birth
             </label>
             <input
@@ -152,7 +194,7 @@ const AddPlayer = () => {
                 setDob(e.target.value);
                 setError({ ...error, dob: "" });
               }}
-              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 ${error.dob ? "border-red-400" : "border-gray-200"
+              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.dob ? "border-red-400" : "border-gray-200 dark:border-white/15"
                 }`}
             />
             {error.dob && <p className="text-xs text-red-500">{error.dob}</p>}
@@ -160,14 +202,14 @@ const AddPlayer = () => {
 
           {/* Nationality */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Nationality
             </label>
 
             <select
               value={nationality}
               onChange={(e) => setNationality(e.target.value)}
-              className="border border-gray-200 px-3 py-2 text-sm text-gray-400 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option value="">Select nationality</option>
 
@@ -181,13 +223,13 @@ const AddPlayer = () => {
 
           {/* Preferred foot */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Preferred Foot
             </label>
             <select
               value={foot}
               onChange={(e) => setFoot(e.target.value)}
-              className="border border-gray-200 px-3 py-2 text-sm text-gray-400 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>Both</option>
               <option>Left</option>
@@ -199,7 +241,7 @@ const AddPlayer = () => {
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-5 mt-5 ">
           {/* Height */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Height (CM)</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Height (CM)</label>
             <input
               value={height}
               onChange={(e) => {
@@ -208,7 +250,7 @@ const AddPlayer = () => {
               }}
               type="number"
               placeholder="e.g. 187 cm"
-              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 ${error.height ? "border-red-400" : "border-gray-200"
+              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.height ? "border-red-400" : "border-gray-200 dark:border-white/15"
                 }`}
             />
             {error.height && (
@@ -218,13 +260,13 @@ const AddPlayer = () => {
 
           {/* Current status */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
               Current Status
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as "Free" | "Transferred" | "Negotiation")}
-              className="border border-gray-200 px-3 py-2 text-sm text-gray-400 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>Free</option>
               <option>Transferred</option>
@@ -234,48 +276,48 @@ const AddPlayer = () => {
 
           {/* Goals */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Goals</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Goals</label>
             <input
               value={goals}
               onChange={(e) => setGoals(Number(e.target.value))}
               type="number"
               placeholder="0"
               min={0}
-              className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           {/* Assists */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Assists</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Assists</label>
             <input
               value={assists}
               onChange={(e) => setAssists(Number(e.target.value))}
               type="number"
               placeholder="0"
               min={0}
-              className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           {/* Ratings */}
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600">Ratings</label>
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Ratings</label>
             <input
               value={ratings}
               onChange={(e) => setRatings(e.target.value)}
               type="number"
               placeholder="0"
               min={0}
-              className="border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
         </div>
 
         {/* Player background */}
         <div className="flex flex-col gap-1.5 mt-5">
-          <label className="text-xs font-medium text-gray-600">
+          <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
             Player Background
           </label>
           <textarea
@@ -286,7 +328,7 @@ const AddPlayer = () => {
             }}
             placeholder="Input Player history"
             rows={10}
-            className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 rounded-lg ${error.background ? "border-red-400" : "border-gray-200"
+            className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.background ? "border-red-400" : "border-gray-200 dark:border-white/15"
               }`}
           />
           {error.background && (
@@ -304,13 +346,13 @@ const AddPlayer = () => {
           </button>
           <button
             onClick={() => navigate("/admin/player-overview")}
-            className="text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 border border-gray-200 px-6 py-2 rounded-lg transition-colors"
+            className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/15 px-6 py-2 rounded-lg transition-colors"
           >
             Save as Draft
           </button>
           <button
             onClick={() => navigate("/admin/player-overview")}
-            className="text-sm text-gray-600 border border-gray-200 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+            className="text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-6 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors"
           >
             Cancel
           </button>
@@ -321,3 +363,5 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+
+

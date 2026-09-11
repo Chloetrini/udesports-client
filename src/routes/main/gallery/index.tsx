@@ -21,7 +21,7 @@ function GallerySkeleton() {
         {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
           <div
             key={index}
-            className={`rounded-xl bg-gray-800 ${SPAN_PATTERNS[index % SPAN_PATTERNS.length]}`}
+            className={`rounded-xl bg-gray-200 dark:bg-gray-800 ${SPAN_PATTERNS[index % SPAN_PATTERNS.length]}`}
           />
         ))}
       </div>
@@ -32,14 +32,14 @@ function GallerySkeleton() {
 function GalleryHeader() {
   return (
     <div className="mb-8 md:mb-10 relative z-20">
-      <span className="inline-flex items-center gap-1.5 border bg-[#00A553] border-green-500 text-green-300 text-xs px-3 py-1 rounded-full mb-4">
+      <span className="inline-flex items-center gap-1.5 border bg-[#00A553] border-green-500 text-green-100 dark:text-green-300 text-xs px-3 py-1 rounded-full mb-4">
         <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
         Visual Archive
       </span>
-      <h1 className="text-3xl md:text-5xl font-black text-white uppercase mb-2">
+      <h1 className="text-3xl md:text-5xl font-black text-[#060A0F] dark:text-white uppercase mb-2">
         Gallery
       </h1>
-      <p className="text-gray-400 text-sm max-w-sm">
+      <p className="text-gray-500 dark:text-gray-400 text-sm max-w-sm">
         Moments from training, transfers, and tournaments.
         <br />
         Capturing the journey from Lagos to the world.
@@ -57,7 +57,7 @@ export default function Gallery() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-black text-white overflow-x-hidden flex justify-center">
+      <main className="min-h-screen bg-white dark:bg-black transition-colors duration-300 overflow-x-hidden flex justify-center">
         <PageWrapper className=" p-[20px]">
           <GalleryHeader />
           <GallerySkeleton />
@@ -67,11 +67,11 @@ export default function Gallery() {
   }
 
   if (isError) {
-    return <div>Failed to load gallery.</div>;
+    return <div className="min-h-screen bg-white dark:bg-black text-[#060A0F] dark:text-white p-6">Failed to load gallery.</div>;
   }
 
   if (galleryImages.length === 0) {
-    return <div>No gallery images available.</div>;
+    return <div className="min-h-screen bg-white dark:bg-black text-[#060A0F] dark:text-white p-6">No gallery images available.</div>;
   }
 
   const mediaItems = galleryImages.map((photo, index) => ({
@@ -84,7 +84,7 @@ export default function Gallery() {
   }));
 
   return (
-    <main className="min-h-screen bg-black text-white overflow-x-hidden flex justify-center">
+    <main className="min-h-screen bg-white dark:bg-black transition-colors duration-300 overflow-x-hidden flex justify-center">
       <PageWrapper className=" p-[20px]">
         <GalleryHeader />
 

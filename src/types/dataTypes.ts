@@ -105,3 +105,5 @@ export interface QuickUpdate {
     avatarUrl: string;
   };
 }
+
+

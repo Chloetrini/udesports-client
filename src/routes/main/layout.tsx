@@ -5,7 +5,7 @@ import UpdateBar from '@/components/universal/UpdateBar'
 
 export default function MainLayout() {
   return (
-    <div>
+    <div className="bg-white dark:bg-black transition-colors duration-300">
       <NavBar />
       <UpdateBar/>
       <Outlet />
@@ -13,3 +13,5 @@ export default function MainLayout() {
     </div>
   )
 }
+
+

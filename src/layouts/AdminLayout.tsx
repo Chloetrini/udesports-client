@@ -10,11 +10,14 @@ import {
   ArrowUpRight,
   Menu,
   X,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import udeLogo from "../assets/udeLogo.png";
 import { adminUser } from "@/lib/adminUser";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const navItems = [
   {
@@ -46,33 +49,43 @@ function getInitials(name: string) {
 
 function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   return (
-    <div className="h-20 bg-white flex items-center justify-between gap-4 px-6 sticky top-0 z-10 border-b border-gray-100">
+    <div className="h-20 bg-white dark:bg-black flex items-center justify-between gap-4 px-6 sticky top-0 z-10 border-b border-gray-100 dark:border-white/10 transition-colors duration-300">
       {/* Hamburger — mobile only */}
       <button
         onClick={onMenuClick}
 
-        className="lg:hidden text-gray-600 hover:text-gray-900 transition-colors"
+        className="lg:hidden text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
       >
         <Menu size={24} />
       </button>
 
       {/* Right side */}
-      <div className="flex items-center gap-3 ml-auto">
-        <button className="flex items-center gap-1.5 text-xs lg:text-sm text-gray-600 border border-gray-200 px-2 lg:px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap"
+      <div className="flex items-center gap-2 lg:gap-3 ml-auto">
+        {/* Theme Toggle — compact icon button, fits without crowding the topbar on small screens */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          className="flex-shrink-0 w-8 h-8 lg:w-9 lg:h-9 rounded-lg border border-gray-200 dark:border-white/15 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
+        >
+          {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+        </button>
+        <button className="flex items-center gap-1.5 text-xs lg:text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-2 lg:px-3 py-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
           onClick={() => navigate("/")}>
           Visit Sites
           <ArrowUpRight size={15} />
         </button>
-        <div className="flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-black text-[14px] font-medium">
             {getInitials(adminUser.name)}
           </div>
           <div className="leading-tight">
-            <p className="text-xs lg:text-sm font-semibold text-gray-900">
+            <p className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white">
               {adminUser.name}
             </p>
-            <p className="text-[10px] text-gray-600 font-semibold">
+            <p className="text-[10px] text-gray-600 dark:text-gray-400 font-semibold">
               {adminUser.role}
             </p>
           </div>
@@ -105,8 +118,8 @@ function Sidebar({
       {/* Sidebar */}
       <div
         className={`
-        fixed top-0 left-0 h-full w-56 bg-white border-r border-gray-100 flex flex-col z-40
-        transition-transform duration-300
+        fixed top-0 left-0 h-full w-56 bg-white dark:bg-black border-r border-gray-100 dark:border-white/10 flex flex-col z-40
+        transition-colors transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         lg:translate-x-0
       `}
@@ -114,7 +127,7 @@ function Sidebar({
         {/* Close button — mobile only */}
         <button
           onClick={onClose}
-          className="lg:hidden absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="lg:hidden absolute top-4 right-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
         >
           <X size={20} />
         </button>
@@ -128,8 +141,8 @@ function Sidebar({
             className="w-8 h-8 object-contain"
           />
           <div className="leading-tight">
-            <p className="text-l font-semibold text-gray-600">UDESport</p>
-            <p className="text-sm text-gray-600">Management Ltd</p>
+            <p className="text-l font-semibold text-gray-600 dark:text-gray-300">UDESport</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Management Ltd</p>
           </div>
         </div>
         {/* Navigation */}
@@ -137,7 +150,7 @@ function Sidebar({
           {navItems.map((group, index) => (
             <div key={index}>
               {group.section && (
-                <p className="text-sm font-medium text-gray-400 px-2 mb-1">
+                <p className="text-sm font-medium text-gray-400 dark:text-gray-500 px-2 mb-1">
                   {group.section}
                 </p>
               )}
@@ -151,7 +164,7 @@ function Sidebar({
                       `flex items-center gap-2.5 px-3 py-2 rounded-lg text-m font-medium transition-colors ${
                         isActive
                           ? "bg-green-400 text-black"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                       }`
                     }
                   >
@@ -165,10 +178,10 @@ function Sidebar({
         </nav>
 
         {/* Logout */}
-        <div className="px-3 py-4 border-t border-gray-100">
+        <div className="px-3 py-4 border-t border-gray-100 dark:border-white/10">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 w-full transition-colors"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white w-full transition-colors"
           >
             <LogOut size={20} />
             LogOut
@@ -198,7 +211,7 @@ export default function AdminLayout() {
   const isAuthPage = authPages.includes(location.pathname);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 max-w-screen-2xl mx-auto w-full">
+    <div className="flex min-h-screen bg-white dark:bg-black transition-colors duration-300 max-w-screen-2xl mx-auto w-full">
       {!isAuthPage && (
         <Sidebar
           handleLogout={handleLogout}
@@ -218,3 +231,5 @@ export default function AdminLayout() {
     </div>
   );
 }
+
+

@@ -17,31 +17,31 @@ const CATEGORY_LABEL: Record<NewsCategory, string> = {
 };
 
 const CATEGORY_STYLE: Record<NewsCategory, string> = {
-  TRANSFER: 'bg-amber-100 text-amber-700 rounded-full',
-  ACADEMY: 'bg-blue-100 text-blue-700 rounded-full',
-  ANNOUNCEMENT: 'bg-emerald-100 text-emerald-700 rounded-full',
+  TRANSFER: 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded-full',
+  ACADEMY: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full',
+  ANNOUNCEMENT: 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full',
 };
 
 // Add near ArticleCard, in the same file
 function ArticleCardSkeleton({ variant }: { variant: 'featured' | 'grid' }) {
   return (
     <div className={`${variant === 'featured' ? 'article-card--featured' : 'article-card--grid'} font-manrope py-6 md:py-8 lg:py-10 flex flex-col gap-2`}>
-      <div className={`w-full ${variant === 'featured' ? 'aspect-[16/7]' : 'aspect-[16/9]'} rounded-md bg-[#e9e9e9] animate-pulse`} />
-      <div className="h-6 w-36 rounded-full bg-[#e9e9e9] animate-pulse" />
-      <div className="h-5 w-4/5 rounded bg-[#e9e9e9] animate-pulse" />
+      <div className={`w-full ${variant === 'featured' ? 'aspect-[16/7]' : 'aspect-[16/9]'} rounded-md bg-[#e9e9e9] dark:bg-white/10 animate-pulse`} />
+      <div className="h-6 w-36 rounded-full bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+      <div className="h-5 w-4/5 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
       <div className="flex flex-col gap-1.5">
-        <div className="h-3.5 w-full rounded bg-[#e9e9e9] animate-pulse" />
-        <div className="h-3.5 w-3/4 rounded bg-[#e9e9e9] animate-pulse" />
+        <div className="h-3.5 w-full rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+        <div className="h-3.5 w-3/4 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
       </div>
       <div className="flex items-center justify-between pt-1">
         <div className="flex items-center gap-2">
-          <div className="h-12 w-12 md:h-14 md:w-14 lg:h-15 lg:w-15 rounded-full bg-[#e9e9e9] animate-pulse" />
+          <div className="h-12 w-12 md:h-14 md:w-14 lg:h-15 lg:w-15 rounded-full bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
           <div className="flex flex-col gap-1.5">
-            <div className="h-3.5 w-24 rounded bg-[#e9e9e9] animate-pulse" />
-            <div className="h-3 w-32 rounded bg-[#e9e9e9] animate-pulse" />
+            <div className="h-3.5 w-24 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
+            <div className="h-3 w-32 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
           </div>
         </div>
-        <div className="h-3.5 w-20 rounded bg-[#e9e9e9] animate-pulse" />
+        <div className="h-3.5 w-20 rounded bg-[#e9e9e9] dark:bg-white/10 animate-pulse" />
       </div>
     </div>
   );
@@ -56,21 +56,21 @@ export function ArticleCard({ article, variant }: { article: NewsArticle; varian
       <span className={`pill ${CATEGORY_STYLE[article.category]} w-36 text-center font-bold py-1`}>
         • {CATEGORY_LABEL[article.category]}
       </span>
-      <h3 className='font-bold text-[17px] md:text-[18px] lg:text-[20px] text-[#1A1A1A]'>{article.headline}</h3>
-      <p className='text-[14px] md:text-[15px] lg:text-[15px] text-[#464646]'>{article.excerpt}</p>
+      <h3 className='font-bold text-[17px] md:text-[18px] lg:text-[20px] text-[#1A1A1A] dark:text-white'>{article.headline}</h3>
+      <p className='text-[14px] md:text-[15px] lg:text-[15px] text-[#464646] dark:text-gray-400'>{article.excerpt}</p>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
           <img src={article.authorPhoto ? article.authorPhoto : noAuthorPhoto} alt={article.author} className="h-12 w-12 md:h-14 md:w-14 lg:h-15 lg:w-15 rounded-full" />
           <div className='flex flex-col'>
-            <span className='text-[14px] md:text-[15px] lg:text-[15px] text-[#1A1A1A] font-medium'>{article.author}</span>
-            <time className='text-[13px] md:text-[14px] lg:text-[14px] text-[#959595]' dateTime={article.createdAt}>
+            <span className='text-[14px] md:text-[15px] lg:text-[15px] text-[#1A1A1A] dark:text-white font-medium'>{article.author}</span>
+            <time className='text-[13px] md:text-[14px] lg:text-[14px] text-[#959595] dark:text-gray-500' dateTime={article.createdAt}>
               {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(
                 new Date(article.createdAt)
               )} • {estimateReadTime(article.body)} read
             </time>
           </div>
         </div>
-        <Link className='text-[#382E53] hover:text-[#00A553] hover:underline transition-all' to={`/news/${article.id}`}>Read more »</Link>
+        <Link className='text-[#382E53] dark:text-gray-300 hover:text-[#00A553] dark:hover:text-[#00A553] hover:underline transition-all' to={`/news/${article.id}`}>Read more »</Link>
       </div>
     </article>
   );
@@ -84,11 +84,11 @@ const News = () => {
     isError,
   } = useGetNewsArticles();
 
-  if (isError) return <p>Something went wrong loading news.</p>;
+  if (isError) return <p className="dark:text-white">Something went wrong loading news.</p>;
 
   const publishedArticles = (articles ?? []).filter((article) => article.published);
 
-  if (!isLoading && publishedArticles.length === 0) return <p>No news yet.</p>;
+  if (!isLoading && publishedArticles.length === 0) return <p className="dark:text-white">No news yet.</p>;
 
   const sortedArticles = [...publishedArticles].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -97,15 +97,15 @@ const News = () => {
   const [featured, ...rest] = sortedArticles;
 
   return (
-    <PageWrapper className="p-[20px]">
+    <PageWrapper className="p-[20px] bg-white dark:bg-black transition-colors duration-300">
       <section className=" flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className='w-full lg:w-8/12'>
           <div className='bg-[#00D46A4D] w-34 rounded-full flex justify-center items-center gap-2'>
             <img src={Ellipse} alt="Ellipse" />
-            <p className='text-md'>Latest Updates</p>
+            <p className='text-md text-[#00A553]'>Latest Updates</p>
           </div>
-          <h1 className='font-bebas font-semibold leading-none text-[#060A0F] pt-2 text-[40px] md:text-[52px] lg:text-[64px]'>NEWS & TRANSFERS</h1>
-          <p className='w-full lg:w-100 text-[#8E8E8E] font-medium'>Transfers. Trials. Academy updates. Everything moves fast, we keep you informed.</p>
+          <h1 className='font-bebas font-semibold leading-none text-[#060A0F] dark:text-white pt-2 text-[40px] md:text-[52px] lg:text-[64px]'>NEWS & TRANSFERS</h1>
+          <p className='w-full lg:w-100 text-[#8E8E8E] dark:text-gray-400 font-medium'>Transfers. Trials. Academy updates. Everything moves fast, we keep you informed.</p>
 
           {isLoading ? (
             <>
@@ -137,3 +137,4 @@ const News = () => {
 }
 
 export default News
+

@@ -42,14 +42,14 @@ const PlayerInformation = () => {
           Roster
         </div>
 
-        <p className='font-normal text-[64px] leading-[69px] font-bebas'>
+        <p className='font-normal text-[64px] leading-[69px] font-bebas text-[#060A0F] dark:text-white'>
           <span className='block'>PLAYER</span>
           INFORMATION
         </p>
       </div>
 
       {!selectedPlayerId && (
-        <section className='md:sticky top-0 z-9999 bg-white mx-[-20px] lg:mx-[-40px]'>
+        <section className='md:sticky top-0 z-9999 bg-white dark:bg-black mx-[-20px] lg:mx-[-40px]'>
           <FilterPlayers
             ageFilter={ageFilter}
             setAgeFilter={setAgeFilter}
@@ -84,3 +84,5 @@ const PlayerInformation = () => {
 }
 
 export default PlayerInformation
+
+

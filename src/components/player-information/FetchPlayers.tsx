@@ -74,7 +74,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
           <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
         <div>
-          <p className='font-manrope font-bold text-[#060A0F] text-lg mb-1'>
+          <p className='font-manrope font-bold text-[#060A0F] dark:text-white text-lg mb-1'>
             We couldn't load the players
           </p>
           <p className='font-manrope font-normal text-[#68717D] text-sm max-w-sm'>
@@ -96,7 +96,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
     return (
       <div className='flex flex-col items-center justify-center text-center gap-4 w-full h-90 px-6'>
         <img src={noPlayers} alt="" className='w-20 h-20 opacity-80' />
-        <p className='font-manrope font-bold text-[#060A0F] text-lg'>No players yet</p>
+        <p className='font-manrope font-bold text-[#060A0F] dark:text-white text-lg'>No players yet</p>
         <p className='font-manrope font-normal text-[#68717D] text-sm max-w-sm'>
           There are no players on the roster at the moment. Check back soon.
         </p>
@@ -131,7 +131,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
       <div className='flex flex-col items-center justify-center text-center gap-4 w-full h-90 px-6'>
         <img src={noPlayers} alt="" className='w-20 h-20 opacity-80' />
         <div>
-          <p className='font-manrope font-bold text-[#060A0F] text-lg mb-1'>
+          <p className='font-manrope font-bold text-[#060A0F] dark:text-white text-lg mb-1'>
             No players match your filters
           </p>
           <p className='font-manrope font-normal text-[#68717D] text-sm max-w-sm'>
@@ -236,3 +236,4 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
+

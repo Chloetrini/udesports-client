@@ -48,14 +48,14 @@ const NavBar: React.FC = () => {
                         <NavLink to="/news" className={LinkClass}>News</NavLink>
                     </div>
 
-                    {/* Right side: theme toggle + Contact + hamburger */}
+                    {/* Right side: theme toggle + Contact (desktop) + hamburger (mobile), grouped so they sit together on small screens */}
                     <div className="flex items-center gap-3">
                         {/* Theme Toggle */}
                         <button
                             type="button"
                             onClick={toggleTheme}
                             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                            className="w-9 h-9 rounded-md border border-white/15 flex items-center justify-center text-[#D2D2D2] hover:text-[#00D46A] hover:border-[#00D46A] transition-colors cursor-pointer"
+                            className="flex-shrink-0 w-9 h-9 rounded-md border border-white/15 flex items-center justify-center text-[#D2D2D2] hover:text-[#00D46A] hover:border-[#00D46A] transition-colors cursor-pointer"
                         >
                             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
                         </button>
@@ -78,19 +78,19 @@ const NavBar: React.FC = () => {
                         >
                             Contact Us
                         </button>
-                    </div>
 
-                    {/* Hamburger */}
-                    <div className='block md:hidden'>
-                        <div
-                            className="bg-[#00D46A] rounded-md w-9 h-9 flex items-center justify-center cursor-pointer"
-                            onClick={toggleMenu}
-                        >
-                            <img
-                                className="w-3.75 h-2.5"
-                                src={hamburgerLogo}
-                                alt="hamburgerLogo"
-                            />
+                        {/* Hamburger — mobile only, grouped with the toggle so they sit side by side on small screens */}
+                        <div className='block md:hidden flex-shrink-0'>
+                            <div
+                                className="bg-[#00D46A] rounded-md w-9 h-9 flex items-center justify-center cursor-pointer"
+                                onClick={toggleMenu}
+                            >
+                                <img
+                                    className="w-3.75 h-2.5"
+                                    src={hamburgerLogo}
+                                    alt="hamburgerLogo"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -197,3 +197,4 @@ const NavBar: React.FC = () => {
 };
 
 export default NavBar;
+

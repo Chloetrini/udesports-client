@@ -1,7 +1,8 @@
 import type { NewsArticle, NewsCategory } from "@/types/dataTypes";
 // import QuickUpdates from "@/components/QuickUpdates";
-// PLACEHOLDER assets (views/shares/pinterest/facebook) — only used by the commented-out
-// engagementStats block below. Re-add these imports if that section comes back.
+// PLACEHOLDER — engagementStats is not a real schema field yet, see the
+// commented-out block below. Re-add these imports (views/shares/pinterest/
+// facebook icons + formatCount) if that block is restored.
 import { useParams } from "react-router";
 import { calculateReadTime, estimateReadTime, formatDate } from "@/lib/utils";
 import { Seo } from "@/components/seo";
@@ -269,3 +270,5 @@ const SingleNews = () => {
 };
 
 export default SingleNews;
+
+

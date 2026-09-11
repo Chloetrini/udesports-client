@@ -58,7 +58,7 @@ const Contact = () => {
   }
 
   return (
-    <div className="w-full px-5 lg:px-16 py-14 container mx-auto">
+    <div className="w-full px-5 lg:px-16 py-14 container mx-auto bg-white dark:bg-black transition-colors duration-300">
       <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-5">
         {/* Left — Let's Talk */}
         <div className="flex flex-col gap-5 w-full lg:max-w-[662px]">
@@ -70,12 +70,12 @@ const Contact = () => {
               </p>
             </div>
 
-            <h1 className="font-bebas text-[clamp(44px,6vw,64px)] leading-[1.08] text-[#060A0F]">
+            <h1 className="font-bebas text-[clamp(44px,6vw,64px)] leading-[1.08] text-[#060A0F] dark:text-white">
               let&rsquo;s talk
             </h1>
           </div>
 
-          <p className="font-manrope font-medium text-[18px] leading-[27px] text-[#8E8E8E]">
+          <p className="font-manrope font-medium text-[18px] leading-[27px] text-[#8E8E8E] dark:text-gray-400">
             Whether you're a scout, a parent, a player, or a club
             representative — we'd love to hear from you.
           </p>
@@ -92,7 +92,7 @@ const Contact = () => {
                 </div>
                 <div>
                   {lines.map((line, j) => (
-                    <p key={j} className="font-manrope font-medium text-[18px] leading-[27px] text-[#8E8E8E]">
+                    <p key={j} className="font-manrope font-medium text-[18px] leading-[27px] text-[#8E8E8E] dark:text-gray-400">
                       {line}
                     </p>
                   ))}
@@ -104,16 +104,16 @@ const Contact = () => {
 
         {/* Right — Send a Message */}
         <div className="flex flex-col gap-6 w-full lg:max-w-[623px]">
-          <h2 className="font-bebas text-[clamp(44px,6vw,64px)] leading-[1.08] text-[#060A0F]">
+          <h2 className="font-bebas text-[clamp(44px,6vw,64px)] leading-[1.08] text-[#060A0F] dark:text-white">
             Send a message
           </h2>
 
           {submitted ? (
             <div className="border border-[#00D46A] bg-[#00D46A1A] p-6">
-              <p className="font-manrope font-bold text-[#060A0F] mb-1">
+              <p className="font-manrope font-bold text-[#060A0F] dark:text-white mb-1">
                 Message sent
               </p>
-              <p className="font-manrope text-[14px] leading-[21px] text-[#68717D]">
+              <p className="font-manrope text-[14px] leading-[21px] text-[#68717D] dark:text-gray-400">
                 Thanks for reaching out — we'll get back to you shortly.
               </p>
             </div>
@@ -121,7 +121,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col gap-2 flex-1">
-                  <label htmlFor="fullName" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A]">
+                  <label htmlFor="fullName" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A] dark:text-gray-300">
                     Full Name
                   </label>
                   <input
@@ -131,12 +131,12 @@ const Contact = () => {
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Input Full Name"
-                    className="w-full border border-[rgba(0,0,0,0.29)] px-4 py-2.5 font-manrope text-[13px] leading-[18px] placeholder:text-[rgba(0,0,0,0.32)] focus:outline-none focus:border-[#00D46A] transition-colors"
+                    className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-2.5 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2 flex-1">
-                  <label htmlFor="email" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A]">
+                  <label htmlFor="email" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A] dark:text-gray-300">
                     Email Address
                   </label>
                   <input
@@ -146,13 +146,13 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="emailaddress@gmail.com"
-                    className="w-full border border-[rgba(0,0,0,0.29)] px-4 py-2.5 font-manrope text-[13px] leading-[18px] placeholder:text-[rgba(0,0,0,0.32)] focus:outline-none focus:border-[#00D46A] transition-colors"
+                    className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-2.5 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="subject" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A]">
+                <label htmlFor="subject" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A] dark:text-gray-300">
                   Subject
                 </label>
                 <input
@@ -162,12 +162,12 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder="Transfer enquiry / Academy / General"
-                  className="w-full border border-[rgba(0,0,0,0.29)] px-4 py-3 font-manrope text-[13px] leading-[18px] placeholder:text-[rgba(0,0,0,0.32)] focus:outline-none focus:border-[#00D46A] transition-colors"
+                  className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-3 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
                 />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="message" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A]">
+                <label htmlFor="message" className="font-manrope text-[12px] leading-[1.4] text-[#1A1A1A] dark:text-gray-300">
                   Message
                 </label>
                 <textarea
@@ -177,7 +177,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us more about your enquiry..."
-                  className="w-full border border-[rgba(0,0,0,0.29)] px-4 py-3 font-manrope text-[13px] leading-[18px] placeholder:text-[rgba(0,0,0,0.32)] focus:outline-none focus:border-[#00D46A] transition-colors resize-none"
+                  className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-3 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors resize-none"
                 />
               </div>
 
@@ -200,3 +200,4 @@ const Contact = () => {
 }
 
 export default Contact
+

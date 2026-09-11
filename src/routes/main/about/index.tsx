@@ -8,7 +8,7 @@ const About = () => {
   const { data: awards, isLoading: awardsLoading } = useGetAwards()
 
   return (
-    <PageWrapper className="w-full px-5 lg:px-10 py-14">
+    <PageWrapper className="w-full px-5 lg:px-10 py-14 bg-white dark:bg-black transition-colors duration-300">
       {/* Hero */}
       <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 mb-20">
         <div className="flex-1 flex flex-col gap-6">
@@ -19,11 +19,11 @@ const About = () => {
             </p>
           </div>
 
-          <h1 className="font-bebas text-[#060A0F] text-[clamp(44px,6vw,64px)] leading-[1.08]">
+          <h1 className="font-bebas text-[#060A0F] dark:text-white text-[clamp(44px,6vw,64px)] leading-[1.08]">
             ABOUT UDESPORT
           </h1>
 
-          <p className="font-manrope font-medium text-[#8E8E8E] text-[18px] leading-[27px] max-w-lg">
+          <p className="font-manrope font-medium text-[#8E8E8E] dark:text-gray-400 text-[18px] leading-[27px] max-w-lg">
             Nigeria's most prolific football management and development academy.
             From grassroots to global stages. Uche Dominic Egbukwu Soccer Sports
             Management Ltd is registered with the Corporate Affairs Commission,
@@ -41,24 +41,24 @@ const About = () => {
       {/* Who are we / What we do */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-20">
         <div className="flex flex-col gap-4">
-          <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none">
+          <h2 className="font-bebas text-[#060A0F] dark:text-white text-[32px] leading-none">
             WHO ARE WE?
           </h2>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             UdeSport Management Limited is a licensed football scouting and player
             placement organisation founded by Dominic Egbukwu. Headquartered in
             Nigeria, we have operated for over 25 years identifying, assessing, and
             placing West African talent at professional clubs across Europe, Asia,
             and Africa.
           </p>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             Our scouting methodology is built on systematic player evaluation —
             technical ability, physical profile, positional intelligence, mental
             resilience, and long-term development potential. Every player in our
             database has been assessed against professional standards before any
             club recommendation is made.
           </p>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             Our placement record speaks directly to the quality of our scouting
             process. 38+ verified placements at the highest levels of the game,
             including Vincent Enyeama, Kelechi Iheanacho, Victor Osimhen, Ogenyi
@@ -69,25 +69,25 @@ const About = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none">
+          <h2 className="font-bebas text-[#060A0F] dark:text-white text-[32px] leading-none">
             WHAT WE DO
           </h2>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             UdeSport operates across three scouting divisions: Talent
             Identification (ages 15–23), Player Assessment and Recommendation,
             and International Club Placement.
           </p>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             Our scouting coverage spans three active centres — Lagos, Abuja, and
             Port Harcourt — running structured observation programmes across the
             U-17, U-20, and U-23 age categories.
           </p>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             Each player in our system carries an individual scouting profile,
             updated on a rolling basis to reflect current form, physical
             development, and positional progress.
           </p>
-          <p className="font-manrope text-[#68717D] text-[16px] leading-[24px]">
+          <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px]">
             We maintain established working relationships with club scouts,
             technical directors, and recruitment departments across the Premier
             League, La Liga, Serie A, Bundesliga, Ligue 1, and leagues across Asia
@@ -107,10 +107,10 @@ const About = () => {
           </p>
         </div>
 
-        <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none mb-3">
+        <h2 className="font-bebas text-[#060A0F] dark:text-white text-[32px] leading-none mb-3">
           OUR STAFF
         </h2>
-        <p className="font-manrope text-[#68717D] text-[16px] leading-[24px] max-w-xl mb-8">
+        <p className="font-manrope text-[#68717D] dark:text-gray-400 text-[16px] leading-[24px] max-w-xl mb-8">
           25 years of combined expertise in player development, contract
           negotiation, and international placement. This is the team that makes
           it happen.
@@ -119,7 +119,7 @@ const About = () => {
         {staffLoading ? (
           <div className="flex gap-4 overflow-x-auto pb-2">
             {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-[220px] h-[130px] rounded-xl bg-gray-100 animate-pulse flex-shrink-0" />
+              <div key={i} className="w-[220px] h-[130px] rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse flex-shrink-0" />
             ))}
           </div>
         ) : (
@@ -133,14 +133,14 @@ const About = () => {
                   <CircleUserRound className="w-8 h-8 text-[#00D46A]" />
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <p className="font-manrope font-bold text-[#060A0F] text-[14px] leading-[21px]">
+                  <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-[14px] leading-[21px]">
                     {member.name}
                   </p>
                   {member.verified && (
                     <BadgeCheck className="w-4 h-4 text-[#00A553] flex-shrink-0" />
                   )}
                 </div>
-                <p className="font-manrope text-[#8E8E8E] text-[12px] leading-[1.3]">{member.role}</p>
+                <p className="font-manrope text-[#8E8E8E] dark:text-gray-400 text-[12px] leading-[1.3]">{member.role}</p>
               </div>
             ))}
           </div>
@@ -156,14 +156,14 @@ const About = () => {
           </p>
         </div>
 
-        <h2 className="font-bebas text-[#060A0F] text-[32px] leading-none mb-8">
+        <h2 className="font-bebas text-[#060A0F] dark:text-white text-[32px] leading-none mb-8">
           AWARD &amp; CERTIFICATION
         </h2>
 
         {awardsLoading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="h-[140px] rounded-xl bg-gray-100 animate-pulse" />
+              <div key={i} className="h-[140px] rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
             ))}
           </div>
         ) : (
@@ -190,3 +190,4 @@ const About = () => {
 }
 
 export default About
+

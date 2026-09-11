@@ -24,7 +24,7 @@ const QuickUpdates = () => {
   if (isLoading) {
     return (
       <section className="pt-12 font-manrope">
-        <h2 className="font-bold text-[20px] text-[#292929]">Quick Updates</h2>
+        <h2 className="font-bold text-[20px] text-[#292929] dark:text-white">Quick Updates</h2>
         <div className="flex flex-col gap-5 mt-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="flex flex-col gap-3">
@@ -49,7 +49,7 @@ const QuickUpdates = () => {
 
   return (
     <section className="pt-12 font-manrope">
-      <h2 className="font-bold text-[20px] text-[#292929]">Quick Updates</h2>
+      <h2 className="font-bold text-[20px] text-[#292929] dark:text-white">Quick Updates</h2>
 
       <div className="flex flex-col gap-5 mt-4">
         {updates.map((update) => (
@@ -60,11 +60,11 @@ const QuickUpdates = () => {
                 alt={update.author.name}
                 className="h-6 w-6 rounded-full object-cover"
               />
-              <span className="text-[14px] text-[#292929] font-light">{update.author.name}</span>
+              <span className="text-[14px] text-[#292929] dark:text-white font-light">{update.author.name}</span>
             </div>
 
             <div className="flex flex-col">
-              <p className="text-[14px] text-[#191919] font-medium">{update.headline}</p>
+              <p className="text-[14px] text-[#191919] dark:text-white font-medium">{update.headline}</p>
               <div className="flex items-center gap-2 text-[12px] text-gray-400 mt-1">
                 <time className="text-[#959595]" dateTime={update.createdAt}>
                   {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(
@@ -82,7 +82,7 @@ const QuickUpdates = () => {
       </div>
 
       <div className="mt-8">
-        <h3 className="font-bold text-[16px] text-[#292929] mb-3">Recommended Topic</h3>
+        <h3 className="font-bold text-[16px] text-[#292929] dark:text-white mb-3">Recommended Topic</h3>
         <div className="flex flex-wrap gap-2">
           {recommendedTopics.map((category) => (
             <span
@@ -99,3 +99,5 @@ const QuickUpdates = () => {
 };
 
 export default QuickUpdates;
+
+
