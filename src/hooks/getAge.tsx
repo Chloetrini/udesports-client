@@ -1,9 +1,13 @@
 
+// The backend sends DOB as an ISO 8601 date string (Prisma DateTime,
+// e.g. "2004-01-27T00:00:00.000Z" — JS Date parses this natively via
+// new Date(dob). This used to assume a "DD/MM/YYYY" slash format instead,
+// which never matched what the API actually sends and always produced NaN.
 export function getAge(dob: string) {
-  const [day, month, year] = dob.split('/').map(Number);
-  const birthDate = new Date(year, month - 1, day);
-  const today = new Date();
+  const birthDate = new Date(dob);
+  if (isNaN(birthDate.getTime())) return NaN;
 
+  const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
 
   if (
@@ -17,4 +21,4 @@ export function getAge(dob: string) {
   return age;
 }
 
-// console.log(getAge("27/01/2004")); // 22 as of 27 June 2026
+// console.log(getAge("2004-01-27T00:00:00.000Z")); // 22 as of 27 June 2026
