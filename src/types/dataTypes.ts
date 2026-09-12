@@ -23,6 +23,8 @@ export type Player = {
   rating: number | null,
   currentClubName: string | null,
   currentClubLogo: string | null,
+  newClubName: string | null,
+  newClubLogo: string | null,
   playerHistory: string | null,
   playerAppearance: number
   isFeatured:boolean
@@ -112,6 +114,4 @@ export interface QuickUpdate {
     avatarUrl: string;
   };
 }
-
-
 

@@ -220,11 +220,13 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                   <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.playerAppearance ? result.playerAppearance : "?"}</span>
                 </div>
 
-                {/* current club */}
-                <div
-                  className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] rounded-br-2xl flex justify-center items-end pb-3'>
-                  <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className={result.currentClubLogo === "" ? 'w-[30px] h-[41px]' : 'w-[30px] h-[30px]'} />
-                </div>
+                {/* current club — optional field, only shown once an admin actually sets it */}
+                {result.currentClubName && (
+                  <div
+                    className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] rounded-br-2xl flex justify-center items-end pb-3'>
+                    <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className='w-[30px] h-[30px]' />
+                  </div>
+                )}
 
               </div>
 
@@ -237,5 +239,6 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
+
 
 

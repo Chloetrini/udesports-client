@@ -84,6 +84,12 @@ const AddPlayer = () => {
   const [assists, setAssists] = useState(0);
   const [ratings, setRatings] = useState("");
   const [background, setBackground] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string>("");
+  const [currentClubName, setCurrentClubName] = useState("");
+  const [currentClubLogo, setCurrentClubLogo] = useState("");
+  const [newClubName, setNewClubName] = useState("");
+  const [newClubLogo, setNewClubLogo] = useState("");
 
   const [error, setError] = useState<Record<string, string>>({});
 
@@ -103,7 +109,38 @@ const AddPlayer = () => {
     setAssists(player.assists);
     setRatings(player.rating?.toString() || "");
     setBackground(player.playerHistory || "");
+    setPhotoPreview(player.playerPhoto || "");
+    setCurrentClubName(player.currentClubName || "");
+    setCurrentClubLogo(player.currentClubLogo || "");
+    setNewClubName(player.newClubName || "");
+    setNewClubLogo(player.newClubLogo || "");
   }, [player]);
+
+  // Local preview for a newly-picked file — revoked on change/unmount so we
+  // don't leak object URLs as the admin swaps photos before saving.
+  useEffect(() => {
+    if (!photo) return;
+    const url = URL.createObjectURL(photo);
+    setPhotoPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [photo]);
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError((prev) => ({ ...prev, photo: "Please choose an image file" }));
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError((prev) => ({ ...prev, photo: "Image must be smaller than 10MB" }));
+      return;
+    }
+
+    setError((prev) => ({ ...prev, photo: "" }));
+    setPhoto(file);
+  }
 
   if (isEditMode && isLoading) {
     return <AddPlayerSkeleton />
@@ -145,7 +182,7 @@ const AddPlayer = () => {
       return;
     }
 
-    const payload = {
+    const payload: Record<string, unknown> = {
       playerName: name,
       playerFullName: name,
       DOB: inputDateToIso(dob),
@@ -159,7 +196,19 @@ const AddPlayer = () => {
       assists,
       rating: ratings ? Number(ratings) : undefined,
       playerHistory: background,
+      currentClubName: currentClubName.trim() || undefined,
+      currentClubLogo: currentClubLogo.trim() || undefined,
+      newClubName: newClubName.trim() || undefined,
+      newClubLogo: newClubLogo.trim() || undefined,
     };
+
+    // Only include a photo when a new one was picked — omitting it on edit
+    // keeps the existing photo (the backend preserves it unless a file is
+    // actually sent), and including it only when present is what tells
+    // toRequestBody() in Players.ts to send this as multipart FormData.
+    if (photo) {
+      payload.playerPhoto = photo;
+    }
 
     try {
       if (isEditMode && id) {
@@ -194,6 +243,29 @@ const AddPlayer = () => {
 
       {/* Form */}
       <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6">
+        {/* Player photo */}
+        <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-white/10">
+          <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/15 flex items-center justify-center flex-shrink-0">
+            {photoPreview ? (
+              <img src={photoPreview} alt="Player" className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-xs text-gray-400">No photo</span>
+            )}
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+              Player Photo
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              className="text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-green-500 file:text-gray-900 hover:file:bg-green-600 cursor-pointer"
+            />
+            {error.photo && <p className="text-xs text-red-500">{error.photo}</p>}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {/* Player's name */}
           <div className="flex flex-col gap-1.5">
@@ -208,7 +280,7 @@ const AddPlayer = () => {
                 setName(e.target.value);
                 setError({ ...error, name: "" });
               }}
-              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.name ? "border-red-400" : "border-gray-200 dark:border-white/15"
+              className={`border px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.name ? "border-red-400" : "border-gray-200 dark:border-white/15"
                 }`}
             />
             {error.name && <p className="text-xs text-red-500">{error.name}</p>}
@@ -222,7 +294,7 @@ const AddPlayer = () => {
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value)}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>LW</option>
               <option>RW</option>
@@ -242,7 +314,7 @@ const AddPlayer = () => {
             <select
               value={group}
               onChange={(e) => setGroup(e.target.value as "U-17" | "U-21" | "U-23")}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>U-17</option>
               <option>U-21</option>
@@ -263,7 +335,7 @@ const AddPlayer = () => {
                 setDob(e.target.value);
                 setError({ ...error, dob: "" });
               }}
-              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.dob ? "border-red-400" : "border-gray-200 dark:border-white/15"
+              className={`border px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.dob ? "border-red-400" : "border-gray-200 dark:border-white/15"
                 }`}
             />
             {error.dob && <p className="text-xs text-red-500">{error.dob}</p>}
@@ -278,7 +350,7 @@ const AddPlayer = () => {
             <select
               value={nationality}
               onChange={(e) => setNationality(e.target.value)}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option value="">Select nationality</option>
 
@@ -298,7 +370,7 @@ const AddPlayer = () => {
             <select
               value={foot}
               onChange={(e) => setFoot(e.target.value)}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>Both</option>
               <option>Left</option>
@@ -319,7 +391,7 @@ const AddPlayer = () => {
               }}
               type="number"
               placeholder="e.g. 187 cm"
-              className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.height ? "border-red-400" : "border-gray-200 dark:border-white/15"
+              className={`border px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.height ? "border-red-400" : "border-gray-200 dark:border-white/15"
                 }`}
             />
             {error.height && (
@@ -335,7 +407,7 @@ const AddPlayer = () => {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as PlayerStatus)}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               {STATUS_OPTIONS.map((s) => (
                 <option key={s} value={s}>{STATUS_LABEL[s]}</option>
@@ -352,7 +424,7 @@ const AddPlayer = () => {
               type="number"
               placeholder="0"
               min={0}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
@@ -365,7 +437,7 @@ const AddPlayer = () => {
               type="number"
               placeholder="0"
               min={0}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
@@ -379,7 +451,62 @@ const AddPlayer = () => {
               type="number"
               placeholder="0"
               min={0}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
+        </div>
+
+        {/* Club information — shown on the public player cards/detail page */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+              Current Club Name
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Enyimba FC"
+              value={currentClubName}
+              onChange={(e) => setCurrentClubName(e.target.value)}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+              Current Club Logo (Image URL)
+            </label>
+            <input
+              type="text"
+              placeholder="https://..."
+              value={currentClubLogo}
+              onChange={(e) => setCurrentClubLogo(e.target.value)}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+              New Club Name
+            </label>
+            <input
+              type="text"
+              placeholder="If recently transferred"
+              value={newClubName}
+              onChange={(e) => setNewClubName(e.target.value)}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
+              New Club Logo (Image URL)
+            </label>
+            <input
+              type="text"
+              placeholder="https://..."
+              value={newClubLogo}
+              onChange={(e) => setNewClubLogo(e.target.value)}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
         </div>
@@ -397,7 +524,7 @@ const AddPlayer = () => {
             }}
             placeholder="Input Player history"
             rows={10}
-            className={`border px-3 py-2 text-sm focus:outline-none focus:border-green-400 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.background ? "border-red-400" : "border-gray-200 dark:border-white/15"
+            className={`border px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 rounded-lg bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 ${error.background ? "border-red-400" : "border-gray-200 dark:border-white/15"
               }`}
           />
           {error.background && (
@@ -437,3 +564,4 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+

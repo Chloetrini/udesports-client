@@ -87,7 +87,7 @@ export default function NewsArticle() {
                 setHeadline(e.target.value);
                 setError({ ...error, headline: "" });
               }}
-              className={`border-2 px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-500 ${
+              className={`border-2 px-3 py-2 rounded-lg text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-500 ${
                 error.headline
                   ? "border-red-400"
                   : "border-gray-100 dark:border-white/15 hover:border-green-500"
@@ -105,7 +105,7 @@ export default function NewsArticle() {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="border bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 focus:outline-none focus:border-green-500"
+              className="border bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-300 focus:outline-none focus:border-green-500"
             >
               <option>Transfer</option>
               <option>Academy</option>
@@ -123,7 +123,7 @@ export default function NewsArticle() {
               placeholder="Player Name"
               value={featuredPlayer}
               onChange={(e) => setFeaturedPlayer(e.target.value)}
-              className="border bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/15 text-gray-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:border-green-500"
+              className="border bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/15 text-gray-900 dark:text-white px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-500"
             />
           </div>
         </div>
@@ -142,7 +142,7 @@ export default function NewsArticle() {
                 setSummary(e.target.value);
                 setError({ ...error, summary: "" });
               }}
-              className={`border px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-400 resize-none ${
+              className={`border px-3 py-2 rounded-lg text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-400 resize-none ${
                 error.summary ? "border-red-400" : "border-gray-200 dark:border-white/15"
               }`}
             />
@@ -190,7 +190,7 @@ export default function NewsArticle() {
           </label>
 
           {/* Toolbar */}
-          <div className="border border-gray-200 dark:border-white/15 rounded-t-lg px-3 py-2 flex items-center gap-2 flex-wrap bg-gray-50 dark:bg-white/5">
+          <div className="border border-gray-200 dark:border-white/15 rounded-t-lg px-3 py-2 rounded-lg flex items-center gap-2 flex-wrap bg-gray-50 dark:bg-white/5">
             {/*Heading 1 */}
             <button
               type="button"
@@ -302,7 +302,7 @@ export default function NewsArticle() {
           {/* Editor Content */}
           <EditorContent
             editor={editor}
-            className={`border border-t-0 rounded-b-lg px-3 py-2 text-sm min-h-50 bg-white dark:bg-white/5 text-gray-900 dark:text-white [&_.tiptap]:outline-none ${
+            className={`border border-t-0 rounded-b-lg px-3 py-2 rounded-lg text-sm min-h-50 bg-white dark:bg-white/5 text-gray-900 dark:text-white [&_.tiptap]:outline-none ${
               error.body ? "border-red-400" : "border-gray-200 dark:border-white/15"
             }`}
           />

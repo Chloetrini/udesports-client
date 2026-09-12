@@ -53,7 +53,7 @@ export default function GalleryUpload() {
                   Photo Headline <span className="text-gray-400 font-medium">(Optional on Insta URL paste)</span>
                 </label>
                 <input type="text" placeholder='Input Headline' value={headline} onChange={(e) => {setHeadline(e.target.value); setError({...error, headline: ""})}}
-                className={`border px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-500 ${error.headline ? 'border-red-400' : 'border-gray-200 dark:border-white/15 hover:border-green-400'}`} />
+                className={`border px-3 py-2 rounded-lg text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-500 ${error.headline ? 'border-red-400' : 'border-gray-200 dark:border-white/15 hover:border-green-400'}`} />
                 {error.headline && <p className='text-xs text-red-500'>{error.headline}</p>}
               </div>
 
@@ -70,7 +70,7 @@ export default function GalleryUpload() {
             Photo Description <span className="text-gray-400 font-normal">(Optional on Insta URL paste)</span>
           </label>
           <textarea placeholder="Input Description" rows={5} value={description} onChange={(e) => {setDescription(e.target.value); setError({...error, description: ""})}}
-               className={`border px-3 py-2 text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-400 resize-none rounded-lg ${error.description ? 'border-red-400' : 'border-gray-200 dark:border-white/15 hover:border-green-400'}`} />
+               className={`border px-3 py-2 rounded-lg text-sm bg-white dark:bg-white/5 text-gray-900 dark:text-white focus:outline-none focus:border-green-400 resize-none rounded-lg ${error.description ? 'border-red-400' : 'border-gray-200 dark:border-white/15 hover:border-green-400'}`} />
                {error.description && <p className='text-xs text-red-500'>{error.description}</p>}
         </div>
         </div>
@@ -112,5 +112,4 @@ export default function GalleryUpload() {
     </div>
   )
 }
-
 

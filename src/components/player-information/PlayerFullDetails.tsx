@@ -242,15 +242,18 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
               }
             </div>
 
-            <div className="flex gap-4">
-              <div>
-                <img src={player?.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="w-[50px]" />
+            {/* Optional field — only shown once an admin actually sets a current club */}
+            {player?.currentClubName && (
+              <div className="flex gap-4">
+                <div>
+                  <img src={player.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="w-[50px]" />
+                </div>
+                <div>
+                  <p className="font-manrope font-medium text-lg text-[#060A0F] dark:text-white">Club Name</p>
+                  <p className="font-manrope text-[16px] text-[#060A0F] dark:text-white">{player.currentClubName}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-manrope font-medium text-lg text-[#060A0F] dark:text-white">Club Name</p>
-                <p className="font-manrope text-[16px] text-[#060A0F] dark:text-white">{player?.currentClubName ? player?.currentClubName : "Unknown"}</p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -302,4 +305,5 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 }
 
 export default PlayerFullDetails
+
 

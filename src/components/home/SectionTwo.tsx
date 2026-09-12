@@ -231,14 +231,16 @@ const SectionTwo = () => {
                         <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.playerAppearance ? result.playerAppearance : "?"}</span>
                       </div>
 
-                      {/* current club */}
-                      <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] rounded-br-2xl flex justify-center items-end pb-5">
-                        <img
-                          src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo}
-                          alt=""
-                          className={result.currentClubLogo === "" ? 'w-[53px] h-[72px] lg:w-[53px] lg:h-[72px]' : 'w-[53px] h-[53px]'}
-                        />
-                      </div>
+                      {/* current club — optional field, only shown once an admin actually sets it */}
+                      {result.currentClubName && (
+                        <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] rounded-br-2xl flex justify-center items-end pb-5">
+                          <img
+                            src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo}
+                            alt=""
+                            className='w-[53px] h-[53px]'
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CarouselItem>
@@ -252,4 +254,5 @@ const SectionTwo = () => {
 };
 
 export default SectionTwo;
+
 
