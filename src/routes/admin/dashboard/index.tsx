@@ -101,6 +101,10 @@ export default function Dashboard() {
         (player) => player.ageGroup === "U-23"
     ).length ?? 0;
 
+    const professionalPlayers = players?.filter(
+        (player) => player.ageGroup === "Professional"
+    ).length ?? 0;
+
     const publishedArticles = articles?.filter(
         (article) => article.published === true
     ).length ?? 0;
@@ -174,6 +178,11 @@ export default function Dashboard() {
             label: 'U - 23',
             value: under23,
             color: 'text-orange-400'
+        },
+        {
+            label: 'Professional',
+            value: professionalPlayers,
+            color: 'text-gray-900 dark:text-white'
         },
         {
 
@@ -281,6 +290,7 @@ export default function Dashboard() {
         </div>
     )
 }
+
 
 
 

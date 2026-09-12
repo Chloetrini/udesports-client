@@ -15,7 +15,7 @@ export type Player = {
   nationality: string,
   height: number | null,
   preferredFoot: string,
-  ageGroup: "U-17" | "U-21" | "U-23",
+  ageGroup: "U-17" | "U-21" | "U-23" | "Professional",
   status: PlayerStatus,
   position: string,
   goals: number,
@@ -114,4 +114,5 @@ export interface QuickUpdate {
     avatarUrl: string;
   };
 }
+
 

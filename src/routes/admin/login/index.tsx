@@ -52,24 +52,24 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F7F5] flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+    <div className="min-h-screen bg-[#F5F7F5] dark:bg-black flex items-center justify-center px-4 transition-colors duration-300">
+      <div className="w-full max-w-md bg-white dark:bg-white/5 border border-transparent dark:border-white/10 rounded-2xl shadow-lg p-8 transition-colors duration-300">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <img src={logo} alt="Udesport Logo" className="w-24" />
         </div>
 
-        <h1 className="text-2xl font-bold text-center mb-2">
+        <h1 className="text-2xl font-bold text-center mb-2 text-gray-900 dark:text-white">
           Login to Account
         </h1>
 
-        <p className="text-gray-500 text-center mb-8">
+        <p className="text-gray-500 dark:text-gray-400 text-center mb-8">
           Please enter your email and password to continue
         </p>
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="text-sm font-medium"> Email Address</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300"> Email Address</label>
 
             <input
               type="email"
@@ -82,8 +82,8 @@ export default function Login() {
                     email: ""
                 }))
               }}
-              className={`w-full mt-2 border rounded-lg px-4 py-3 focus:outline-none ${
-                errors.email ? "border-red-500" : "focus:border-green-500"
+              className={`w-full mt-2 border rounded-lg px-4 py-3 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none ${
+                errors.email ? "border-red-500" : "border-gray-200 dark:border-white/15 focus:border-green-500"
               }`}
             />
             {errors.email && (
@@ -92,7 +92,7 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="text-sm font-medium"> Password</label>
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300"> Password</label>
 
             <div className="relative mt-2">
               <input
@@ -106,8 +106,8 @@ export default function Login() {
                         password: ""
                     }))
                 }}
-                className={`w-full border rounded-lg px-4 py-3 pr-12 focus:outline-none ${
-                  errors.password ? "border-red-500" : "focus:border-green-500"
+                className={`w-full border rounded-lg px-4 py-3 pr-12 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none ${
+                  errors.password ? "border-red-500" : "border-gray-200 dark:border-white/15 focus:border-green-500"
                 }`}
               />
 
@@ -118,7 +118,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-300"
               >
                 {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
@@ -126,7 +126,7 @@ export default function Login() {
           </div>
 
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap2 text-sm">
+            <label className="flex items-center gap2 text-sm text-gray-700 dark:text-gray-300">
               <input
                 type="checkbox"
                 checked={rememberPassword}
@@ -138,7 +138,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => navigate("/admin/forgot-password")}
-              className="text-green-600 text-sm"
+              className="text-green-600 dark:text-green-400 text-sm"
             >
               Forgot Password
             </button>
@@ -160,3 +160,4 @@ export default function Login() {
     </div>
   );
 }
+

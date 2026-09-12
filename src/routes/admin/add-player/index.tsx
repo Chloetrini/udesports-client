@@ -74,7 +74,7 @@ const AddPlayer = () => {
 
   const [name, setName] = useState("");
   const [position, setPosition] = useState("LW");
-  const [group, setGroup] = useState<"U-17" | "U-21" | "U-23">("U-17");
+  const [group, setGroup] = useState<"U-17" | "U-21" | "U-23" | "Professional">("U-17");
   const [dob, setDob] = useState("");
   const [nationality, setNationality] = useState("");
   const [foot, setFoot] = useState("Both");
@@ -318,12 +318,13 @@ const AddPlayer = () => {
             </label>
             <select
               value={group}
-              onChange={(e) => setGroup(e.target.value as "U-17" | "U-21" | "U-23")}
+              onChange={(e) => setGroup(e.target.value as "U-17" | "U-21" | "U-23" | "Professional")}
               className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
               <option>U-17</option>
               <option>U-21</option>
               <option>U-23</option>
+              <option>Professional</option>
             </select>
           </div>
 
@@ -569,5 +570,6 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+
 
 

@@ -6,7 +6,7 @@ import { useGetPlayers, useDeletePlayer } from "@/hooks/useApi";
 import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus";
 import type { PlayerStatus } from "@/types/dataTypes";
 
-const GROUP_OPTIONS = ["U-17", "U-21", "U-23"] as const;
+const GROUP_OPTIONS = ["U-17", "U-21", "U-23", "Professional"] as const;
 
 function PlayerRowSkeleton() {
     return (
@@ -177,6 +177,7 @@ return(
     </div>
 )
 }
+
 
 
 
