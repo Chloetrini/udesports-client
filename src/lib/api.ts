@@ -1,10 +1,19 @@
-import axios from 'axios';
+import axios from 'axios'
+
+// Eventra-style axios client, adapted to the UDESport backend: routes are
+// mounted at plain `/api/...` (not `/api/v1`), and updates use PUT (not
+// PATCH) — see src/server.ts + src/routes/*.routes.ts on udesports-server.
+//
+// The backend replies with either:
+//   { success: true,  message: string, body?: T }
+//   { success: false, message: string, details?: unknown }
+// and auth is a JWT stored in an httpOnly cookie set by /auth/login, so
+// every request needs `withCredentials: true` for that cookie to be sent.
 
 function resolveBaseUrl(): string {
   const raw = import.meta.env.VITE_API_URL
-  if (!raw) return '/api/v1'
-  const trimmed = raw.replace(/\/+$/, '')
-  return trimmed.endsWith('/api/v1') ? trimmed : `${trimmed}/api/v1`
+  if (!raw) return '/api'
+  return raw.replace(/\/+$/, '')
 }
 
 const BASE_URL = resolveBaseUrl()
@@ -15,17 +24,22 @@ export const axiosClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-
 const SESSION_MISSING_MESSAGE = 'Unauthorized: please log in to continue'
 function friendlyErrorMessage(message: string | undefined): string | undefined {
   return message === SESSION_MISSING_MESSAGE ? "We couldn't verify your session. Please try again." : message
 }
 
-async function request(
+export interface ApiEnvelope<T> {
+  success: boolean
+  message: string
+  body?: T
+}
+
+async function request<T = unknown>(
   method: string,
   path: string,
   body?: unknown
-): Promise<{ success: boolean; message: string; body?: unknown }> {
+): Promise<ApiEnvelope<T>> {
   try {
     const response = await axiosClient.request({
       method,
@@ -47,12 +61,16 @@ async function request(
 // never gets a chance to set the multipart boundary itself and the server
 // can't parse the body. Overriding it to `undefined` here drops it for this
 // request only.
-async function upload(
+async function upload<T = unknown>(
   path: string,
-  formData: FormData
-): Promise<{ success: boolean; message: string; body?: unknown }> {
+  formData: FormData,
+  method: 'POST' | 'PUT' = 'POST'
+): Promise<ApiEnvelope<T>> {
   try {
-    const response = await axiosClient.post(path, formData, {
+    const response = await axiosClient.request({
+      method,
+      url: path,
+      data: formData,
       headers: { 'Content-Type': undefined },
     })
     return response.data
@@ -66,12 +84,10 @@ async function upload(
 }
 
 export const api = {
-  get: (path: string) => request('GET', path),
-  post: (path: string, body: unknown) => request('POST', path, body),
-  patch: (path: string, body: unknown) => request('PATCH', path, body),
-  // Optional body — every existing caller passes none (a plain path
-  // delete-by-url), but a bulk delete needs a JSON body (e.g. { ids: [...] })
-  // on the same DELETE verb.
-  delete: (path: string, body?: unknown) => request('DELETE', path, body),
-  upload,
+  get: <T = unknown>(path: string) => request<T>('GET', path),
+  post: <T = unknown>(path: string, body?: unknown) =>
+    body instanceof FormData ? upload<T>(path, body, 'POST') : request<T>('POST', path, body),
+  put: <T = unknown>(path: string, body?: unknown) =>
+    body instanceof FormData ? upload<T>(path, body, 'PUT') : request<T>('PUT', path, body),
+  delete: <T = unknown>(path: string, body?: unknown) => request<T>('DELETE', path, body),
 }

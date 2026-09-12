@@ -1,4 +1,4 @@
-import { api } from "@/lib/apiClient";
+import { api } from "@/lib/api";
 import type { AdminRole } from "@/types/dataTypes";
 
 export interface AdminUser {
