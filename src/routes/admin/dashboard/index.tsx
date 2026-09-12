@@ -78,15 +78,15 @@ export default function Dashboard() {
     const { data: articles, isLoading: loadingArticles } = useGetNewsArticles();
 
     const freePlayers = players?.filter(
-        (player) => player.status === "Free"
+        (player) => player.status === "FREE"
     ).length ?? 0;
 
     const transferredPlayers = players?.filter(
-        (player) => player.status === "Transferred"
+        (player) => player.status === "TRANSFERRED"
     ).length ?? 0;
 
     const negotiationPlayers = players?.filter(
-        (player) => player.status === "Negotiation"
+        (player) => player.status === "NEGOTIATION"
     ).length ?? 0;
 
     const under17 = players?.filter(
@@ -281,5 +281,6 @@ export default function Dashboard() {
         </div>
     )
 }
+
 
 

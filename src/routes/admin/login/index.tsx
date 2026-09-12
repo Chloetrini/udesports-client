@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 import logo from "@/assets/green udeLogo.png";
+import { useLogin } from "@/hooks/useApi";
 
 export default function Login() {
   const navigate = useNavigate();
+  const loginMutation = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,14 +15,16 @@ export default function Login() {
   const [errors, setErrors] = useState({
     email: "",
     password: "",
+    form: "",
   });
 
-  function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
     const newErrors = {
       email: "",
       password: "",
+      form: "",
     };
 
     if (!email.trim()) {
@@ -36,7 +40,15 @@ export default function Login() {
       return;
     }
 
-    navigate("/admin/dashboard");
+    try {
+      await loginMutation.mutateAsync({ email: email.trim(), password });
+      navigate("/admin/dashboard");
+    } catch (err) {
+      setErrors((prev) => ({
+        ...prev,
+        form: err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      }));
+    }
   }
 
   return (
@@ -132,8 +144,16 @@ export default function Login() {
             </button>
           </div>
 
-          <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
-            Sign In
+          {errors.form && (
+            <p className="text-sm text-red-500 text-center">{errors.form}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loginMutation.isPending}
+            className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {loginMutation.isPending ? "Signing In..." : "Sign In"}
           </button>
         </form>
       </div>

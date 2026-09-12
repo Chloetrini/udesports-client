@@ -8,6 +8,7 @@ import closeIcon from "@/assets/closeIcon.png"
 import silhouette from '@/assets/silhouette.png'
 import { Skeleton } from "@mui/material"
 import { useEffect } from "react"
+import { STATUS_LABEL } from "@/lib/playerStatus"
 
 
 interface PlayerFullDetailsProps {
@@ -196,10 +197,10 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
               {
                 player?.status && (
                   <div className={`flex items-center gap-[8px] px-[16px] py-[8px] rounded-[99px] font-manrope text-[16px] font-bold
-                ${player?.status === "Transferred" ? "bg-[#00D46A4D] text-[#00A553]" : player?.status === "Negotiation" ? "bg-[#D47F0033] text-[#D47F00]" : "bg-[#1778FB33] text-[#045BD0]"}`}>
-                    {player?.status}
+                ${player?.status === "TRANSFERRED" ? "bg-[#00D46A4D] text-[#00A553]" : player?.status === "NEGOTIATION" ? "bg-[#D47F0033] text-[#D47F00]" : "bg-[#1778FB33] text-[#045BD0]"}`}>
+                    {STATUS_LABEL[player.status]}
                     <div className={`w-[8px] h-[8px] rounded-full
-                  ${player?.status === "Transferred" ? "bg-[#00D46A]" : player?.status === "Negotiation" ? "bg-[#D47F00]" : "bg-[#045BD0]"}`}>
+                  ${player?.status === "TRANSFERRED" ? "bg-[#00D46A]" : player?.status === "NEGOTIATION" ? "bg-[#D47F00]" : "bg-[#045BD0]"}`}>
                     </div>
                   </div>
                 )}
@@ -301,3 +302,4 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 }
 
 export default PlayerFullDetails
+

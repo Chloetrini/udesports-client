@@ -1,27 +1,34 @@
 
 
+// Wire-format status, matching the backend's PlayerStatus enum exactly.
+// Display labels ("Free" / "Transferred" / "Negotiation") live in
+// STATUS_LABEL / STATUS_STYLE (src/lib/playerStatus.ts) — same pattern
+// already used for NewsCategory below.
+export type PlayerStatus = "FREE" | "TRANSFERRED" | "NEGOTIATION";
+
 export type Player = {
-  _id: string;
-  playerPhoto: string,
+  id: string;
+  playerPhoto: string | null,
   playerName: string,
-  playerFullName: string,
+  playerFullName: string | null,
   DOB: string,
   nationality: string,
-  height: number,
+  height: number | null,
   preferredFoot: string,
   ageGroup: "U-17" | "U-21" | "U-23",
-  status: "Free" | "Transferred" | "Negotiation",
+  status: PlayerStatus,
   position: string,
   goals: number,
   assists: number,
-  rating: number,
-  currentClubName: string,
-  currentClubLogo: string,
-  playerHistory: string,
+  rating: number | null,
+  currentClubName: string | null,
+  currentClubLogo: string | null,
+  playerHistory: string | null,
   playerAppearance: number
   isFeatured:boolean
-  isDraft:boolean
 }
+
+export type AdminRole = "SUPER_ADMIN" | "ADMIN" | "SUB_ADMIN";
 
 export type NewsCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT';
 
@@ -105,5 +112,6 @@ export interface QuickUpdate {
     avatarUrl: string;
   };
 }
+
 
 

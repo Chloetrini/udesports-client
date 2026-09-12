@@ -164,10 +164,10 @@ const SectionTwo = () => {
               style={{ minHeight: '340px' }}
             >
               {featuredPlayers?.map((result: Player) => (
-                <CarouselItem key={result._id} className="basis-auto pl-0 "
+                <CarouselItem key={result.id} className="basis-auto pl-0 "
                   onClick={() => {
                     navigate('/players', {
-                      state: { playerId: result._id }
+                      state: { playerId: result.id }
                     });
                   }}>
                   <div className="w-[358px] h-[318px] md:w-[384px] md:h-[340px] lg:w-[490px] lg:h-[430px] flex gap-2 cursor-pointer relative  transition-transform duration-200 ease-out
@@ -252,3 +252,4 @@ const SectionTwo = () => {
 };
 
 export default SectionTwo;
+
