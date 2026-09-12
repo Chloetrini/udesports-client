@@ -1,5 +1,5 @@
 import type { Player } from "@/types/dataTypes";
-import { api } from "@/lib/apiClient";
+import { api } from "@/lib/api";
 
 export const fetchAllPlayers = async (): Promise<Player[]> => {
   const res = await api.get<{ count: number; players: Player[] }>("/players");
