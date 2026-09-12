@@ -14,10 +14,11 @@ import {
   Moon,
 } from "lucide-react";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import udeLogo from "../assets/udeLogo.png";
-import { adminUser } from "@/lib/adminUser";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useMe, useLogout } from "@/hooks/useApi";
+import type { AdminUser } from "@/services/Auth";
 
 const navItems = [
   {
@@ -47,7 +48,7 @@ function getInitials(name: string) {
   return name.charAt(0).toUpperCase();
 }
 
-function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
+function Topbar({ onMenuClick, admin }: { onMenuClick: () => void; admin?: AdminUser }) {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   return (
@@ -77,19 +78,21 @@ function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
           Visit Sites
           <ArrowUpRight size={15} />
         </button>
-        <div className="hidden sm:flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-black text-[14px] font-medium">
-            {getInitials(adminUser.name)}
+        {admin && (
+          <div className="hidden sm:flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-black text-[14px] font-medium">
+              {getInitials(admin.name)}
+            </div>
+            <div className="leading-tight">
+              <p className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white">
+                {admin.name}
+              </p>
+              <p className="text-[10px] text-gray-600 dark:text-gray-400 font-semibold">
+                {admin.role}
+              </p>
+            </div>
           </div>
-          <div className="leading-tight">
-            <p className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white">
-              {adminUser.name}
-            </p>
-            <p className="text-[10px] text-gray-600 dark:text-gray-400 font-semibold">
-              {adminUser.role}
-            </p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -197,10 +200,6 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  function handleLogout() {
-    navigate("/admin/login");
-  }
-
   const authPages = [
     "/admin/login",
     "/admin/forgot-password",
@@ -209,6 +208,39 @@ export default function AdminLayout() {
   ];
 
   const isAuthPage = authPages.includes(location.pathname);
+
+  const { data: meData, isLoading: meLoading, isError: meError } = useMe();
+  const logoutMutation = useLogout();
+
+  // Not logged in and not already on an auth page — bounce to login.
+  useEffect(() => {
+    if (!isAuthPage && !meLoading && meError) {
+      navigate("/admin/login", { replace: true });
+    }
+  }, [isAuthPage, meLoading, meError, navigate]);
+
+  async function handleLogout() {
+    try {
+      await logoutMutation.mutateAsync();
+    } finally {
+      navigate("/admin/login");
+    }
+  }
+
+  // Checking the session — don't flash protected content (or the login
+  // redirect) before we know whether the admin is actually logged in.
+  if (!isAuthPage && meLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-black transition-colors duration-300">
+        <div className="w-8 h-8 rounded-full border-2 border-gray-200 dark:border-white/15 border-t-green-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAuthPage && meError) {
+    // useEffect above is redirecting — render nothing in the meantime.
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen bg-white dark:bg-black transition-colors duration-300 max-w-screen-2xl mx-auto w-full">
@@ -223,7 +255,7 @@ export default function AdminLayout() {
       <div
         className={`flex-1 min-w-0 ${!isAuthPage ? "lg:ml-56" : ""}`}
       >
-        {!isAuthPage && <Topbar onMenuClick={() => setSidebarOpen(true)} />}
+        {!isAuthPage && <Topbar onMenuClick={() => setSidebarOpen(true)} admin={meData?.admin} />}
         <div className="overflow-x-hidden">
           <Outlet />
         </div>

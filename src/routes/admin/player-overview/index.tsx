@@ -2,13 +2,11 @@
 import { Search, Plus } from "lucide-react"
 import { useNavigate } from "react-router"
 import { useState } from "react"
-import { useGetPlayers } from "@/hooks/useApi";
+import { useGetPlayers, useDeletePlayer } from "@/hooks/useApi";
+import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus";
+import type { PlayerStatus } from "@/types/dataTypes";
 
-const statusStyle : Record<string, string> = {
-    Transferred: "bg-green-200 dark:bg-green-900/40 text-green-600 dark:text-green-400",
-    Negotiation: 'bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400',
-    Free: 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400',
-}
+const GROUP_OPTIONS = ["U-17", "U-21", "U-23"] as const;
 
 function PlayerRowSkeleton() {
     return (
@@ -36,16 +34,28 @@ export default function PlayerOverview() {
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
     const [groupFilter, setGroupFilter] = useState('All Groups')
-    const [statusFilter, setStatusFilter] = useState('All Statuses')
+    const [statusFilter, setStatusFilter] = useState<'All Statuses' | PlayerStatus>('All Statuses')
+    const [deletingId, setDeletingId] = useState<string | null>(null)
 
       const { data: players, isLoading } = useGetPlayers();
+      const deletePlayerMutation = useDeletePlayer();
+
+      function handleDelete(id: string, name: string) {
+        if (!window.confirm(`Delete ${name}? This can't be undone.`)) return
+        setDeletingId(id)
+        deletePlayerMutation.mutate(id, {
+          onSettled: () => setDeletingId(null),
+        })
+      }
 
 
 const filteredPlayers = players?.filter((player) => {
+    const name = player.playerFullName || player.playerName
+    const club = player.currentClubName || ""
     const matchSearch =
-    player.playerFullName.toLowerCase().includes(search.toLowerCase()) ||
-    player.status.toLowerCase().includes(search.toLowerCase()) ||
-    player.currentClubName.toLowerCase().includes(search.toLowerCase())
+    name.toLowerCase().includes(search.toLowerCase()) ||
+    STATUS_LABEL[player.status].toLowerCase().includes(search.toLowerCase()) ||
+    club.toLowerCase().includes(search.toLowerCase())
 
     const matchGroup = groupFilter === "All Groups" || player.ageGroup === groupFilter
     const matchStatus = statusFilter === 'All Statuses' || player.status === statusFilter
@@ -82,16 +92,16 @@ return(
               <div className="flex gap-3 flex-wrap">
               <select value={groupFilter} onChange={(e) => setGroupFilter(e.target.value)} className="text-xs border border-gray-200 dark:border-white/15 rounded-lg px-3 py-2 focus:border-green-400 focus:bg-green-100 dark:focus:bg-green-900/30 text-gray-600 dark:text-gray-300 bg-white dark:bg-white/5">
                 <option>All Groups</option>
-                <option>U - 17</option>
-                <option>U - 21</option>
-                <option>U - 23</option>
+                {GROUP_OPTIONS.map((group) => (
+                  <option key={group} value={group}>{group}</option>
+                ))}
               </select>
 
-              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="text-xs border border-gray-200 dark:border-white/15 focus:bg-green-100 dark:focus:bg-green-900/30 rounded-lg px-3 py-2 focus:outline-none focus:border-green-400 text-gray-600 dark:text-gray-300 bg-white dark:bg-white/5">
-                <option>All Statuses</option>
-                <option>Transferred</option>
-                <option>Negotiation</option>
-                <option>Free</option>
+              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as 'All Statuses' | PlayerStatus)} className="text-xs border border-gray-200 dark:border-white/15 focus:bg-green-100 dark:focus:bg-green-900/30 rounded-lg px-3 py-2 focus:outline-none focus:border-green-400 text-gray-600 dark:text-gray-300 bg-white dark:bg-white/5">
+                <option value="All Statuses">All Statuses</option>
+                {(Object.keys(STATUS_LABEL) as PlayerStatus[]).map((status) => (
+                  <option key={status} value={status}>{STATUS_LABEL[status]}</option>
+                ))}
               </select>
               </div>
           </div>
@@ -114,45 +124,52 @@ return(
             {isLoading ? (
                 Array.from({ length: 6 }).map((_, i) => <PlayerRowSkeleton key={i} />)
             ) : (
-            filteredPlayers?.map((player, i) => (
-                <tr key={i} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+            filteredPlayers?.map((player) => {
+                const displayName = player.playerFullName || player.playerName
+                return (
+                <tr key={player.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                    {/* Player */}
                    <td className="px-5 py-4">
                      <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-semibold shrink-0">
-                          {player.playerFullName.charAt(0)}
+                          {displayName.charAt(0)}
                         </div>
                         <div>
-                            <p className="font-medium text-gray-900 dark:text-white">{player.playerFullName}</p>
+                            <p className="font-medium text-gray-900 dark:text-white">{displayName}</p>
                             <p className="text-xs text-gray-400">Pos. {player.position}</p>
                         </div>
                      </div>
                    </td>
                      <td className="px-5 py-4 text-gray-600 dark:text-gray-300">{player.ageGroup}</td>
                      <td className="px-5 py-4 text-gray-600 dark:text-gray-300">{player.position}</td>
-                     <td className="px-5 py-4 text-gray-600 dark:text-gray-300">{player.rating}</td>
-                     <td className="px-5 py-4 text-gray-600 dark:text-gray-300">{player.currentClubName}</td>
+                     <td className="px-5 py-4 text-gray-600 dark:text-gray-300">{player.rating ?? "—"}</td>
+                     <td className="px-5 py-4 text-gray-600 dark:text-gray-300">{player.currentClubName || "—"}</td>
 
  {/* Status */}
              <td className="px-5 py-4">
-               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusStyle[player.status]}`}>
-                 {player.status}
+               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLE[player.status]}`}>
+                 {STATUS_LABEL[player.status]}
                </span>
              </td>
 
              {/* Actions */}
              <td className="px-5 py-4">
                <div className="flex items-center gap-2">
-                 <button onClick={() => navigate(`/admin/player-overview/edit/${i}`)} className="text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-3 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+                 <button onClick={() => navigate(`/admin/player-overview/edit/${player.id}`)} className="text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-3 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
                     Edit
                  </button>
-                 <button className="text-xs text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg transition-colors">
-                    Delete
+                 <button
+                   onClick={() => handleDelete(player.id, displayName)}
+                   disabled={deletingId === player.id}
+                   className="text-xs text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                 >
+                    {deletingId === player.id ? "Deleting…" : "Delete"}
                  </button>
                </div>
              </td>
                 </tr>
-            )))}
+                )
+            }))}
           </tbody>
          </table>
        </div>

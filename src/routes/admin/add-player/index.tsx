@@ -1,9 +1,25 @@
 // import React from 'react'
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
-import { useState } from "react";
-import { useGetPlayers } from "@/hooks/useApi";
+import { useEffect, useState } from "react";
+import { useGetSinglePlayer, useCreatePlayer, useUpdatePlayer } from "@/hooks/useApi";
+import { STATUS_LABEL, STATUS_OPTIONS } from "@/lib/playerStatus";
+import type { PlayerStatus } from "@/types/dataTypes";
 import countries from "world-countries";
+
+// Backend stores DOB as a DateTime; the form edits it as MM/DD/YYYY text.
+function isoToInputDate(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(d.getUTCDate()).padStart(2, "0");
+  return `${mm}/${dd}/${d.getUTCFullYear()}`;
+}
+
+function inputDateToIso(input: string): string {
+  const [mm, dd, yyyy] = input.split("/");
+  return new Date(Date.UTC(Number(yyyy), Number(mm) - 1, Number(dd))).toISOString();
+}
 
 function FieldSkeleton() {
   return (
@@ -48,30 +64,52 @@ function AddPlayerSkeleton() {
 }
 
 const AddPlayer = () => {
-  const { data: players, isLoading, isError } = useGetPlayers();
   const navigate = useNavigate();
-  const { index } = useParams();
-  const player = index !== undefined ? players?.[Number(index)] ?? null : null;
-  const [name, setName] = useState(player?.playerFullName);
-  const [position, setPosition] = useState(player?.position);
-  const [group, setGroup] = useState(player?.ageGroup);
-  const [dob, setDob] = useState(player?.DOB);
-  const [nationality, setNationality] = useState(player?.nationality);
-  const [foot, setFoot] = useState(player?.preferredFoot);
-  const [height, setHeight] = useState(player?.height);
-  const [status, setStatus] = useState(player?.status || "Free");
-  const [goals, setGoals] = useState(player?.goals);
-  const [assists, setAssists] = useState(player?.assists);
-  const [ratings, setRatings] = useState(player?.rating?.toString() || "");
-  const [background, setBackground] = useState(player?.playerHistory);
+  const { id } = useParams();
+  const isEditMode = !!id;
+
+  const { data: player, isLoading, isError } = useGetSinglePlayer(id ?? "");
+  const createPlayerMutation = useCreatePlayer();
+  const updatePlayerMutation = useUpdatePlayer();
+
+  const [name, setName] = useState("");
+  const [position, setPosition] = useState("LW");
+  const [group, setGroup] = useState<"U-17" | "U-21" | "U-23">("U-17");
+  const [dob, setDob] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [foot, setFoot] = useState("Both");
+  const [height, setHeight] = useState<number | "">("");
+  const [status, setStatus] = useState<PlayerStatus>("FREE");
+  const [goals, setGoals] = useState(0);
+  const [assists, setAssists] = useState(0);
+  const [ratings, setRatings] = useState("");
+  const [background, setBackground] = useState("");
 
   const [error, setError] = useState<Record<string, string>>({});
 
-  if (isLoading) {
+  // Player loads asynchronously — sync the form once it arrives (the
+  // useState calls above only run once on mount, before the fetch resolves).
+  useEffect(() => {
+    if (!player) return;
+    setName(player.playerFullName || player.playerName);
+    setPosition(player.position);
+    setGroup(player.ageGroup);
+    setDob(isoToInputDate(player.DOB));
+    setNationality(player.nationality);
+    setFoot(player.preferredFoot);
+    setHeight(player.height ?? "");
+    setStatus(player.status);
+    setGoals(player.goals);
+    setAssists(player.assists);
+    setRatings(player.rating?.toString() || "");
+    setBackground(player.playerHistory || "");
+  }, [player]);
+
+  if (isEditMode && isLoading) {
     return <AddPlayerSkeleton />
   }
-  if (isError) {
-    return <div className="p-6 text-gray-900 dark:text-white">Something went wrong</div>
+  if (isEditMode && isError) {
+    return <div className="p-6 text-gray-900 dark:text-white">Something went wrong loading this player.</div>
   }
 
   function validate() {
@@ -100,14 +138,45 @@ const AddPlayer = () => {
     return newError;
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const newError = validate();
     if (Object.keys(newError).length > 0) {
       setError(newError);
       return;
     }
-    navigate("/admin/player-overview");
+
+    const payload = {
+      playerName: name,
+      playerFullName: name,
+      DOB: inputDateToIso(dob),
+      nationality,
+      height: height === "" ? undefined : height,
+      preferredFoot: foot,
+      ageGroup: group,
+      status,
+      position,
+      goals,
+      assists,
+      rating: ratings ? Number(ratings) : undefined,
+      playerHistory: background,
+    };
+
+    try {
+      if (isEditMode && id) {
+        await updatePlayerMutation.mutateAsync({ id, data: payload });
+      } else {
+        await createPlayerMutation.mutateAsync(payload);
+      }
+      navigate("/admin/player-overview");
+    } catch (err) {
+      setError((prev) => ({
+        ...prev,
+        form: err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      }));
+    }
   }
+
+  const isSaving = createPlayerMutation.isPending || updatePlayerMutation.isPending;
   return (
     <div className="p-6">
       {/* Header */}
@@ -265,12 +334,12 @@ const AddPlayer = () => {
             </label>
             <select
               value={status}
-              onChange={(e) => setStatus(e.target.value as "Free" | "Transferred" | "Negotiation")}
+              onChange={(e) => setStatus(e.target.value as PlayerStatus)}
               className="border border-gray-200 dark:border-white/15 px-3 py-2 text-sm text-gray-400 dark:text-gray-300 bg-white dark:bg-white/5 focus:outline-none focus:border-green-400"
             >
-              <option>Free</option>
-              <option>Transferred</option>
-              <option>Negotiation</option>
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>{STATUS_LABEL[s]}</option>
+              ))}
             </select>
           </div>
 
@@ -336,13 +405,18 @@ const AddPlayer = () => {
           )}
         </div>
 
+        {error.form && (
+          <p className="text-xs text-red-500 mt-4">{error.form}</p>
+        )}
+
         {/* Buttons */}
         <div className="flex items-center gap-3 mt-6 flex-wrap">
           <button
             onClick={handleSubmit}
-            className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors"
+            disabled={isSaving}
+            className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {player ? "Save Changes" : "+ Add Player"}
+            {isSaving ? "Saving…" : isEditMode ? "Save Changes" : "+ Add Player"}
           </button>
           <button
             onClick={() => navigate("/admin/player-overview")}
@@ -363,6 +437,3 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
-
-
-

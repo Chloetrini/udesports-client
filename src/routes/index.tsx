@@ -178,7 +178,7 @@ const routes = [
                 },
             },
             {
-                path: "player-overview/edit/:index",
+                path: "player-overview/edit/:id",
                 lazy: async () => {
                     const { default: Component } = await import("@/routes/admin/add-player");
                     return { Component };

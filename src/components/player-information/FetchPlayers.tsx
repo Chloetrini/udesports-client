@@ -5,13 +5,14 @@ import udeSportLogo from '@/assets/udeSportLogo.png'
 import { getAge } from '@/hooks/getAge';
 import silhouette from '@/assets/silhouette.png'
 import type { AgeGroup, Status } from './FilterPlayers';
+import { STATUS_LABEL } from '@/lib/playerStatus';
 
 
 type FetchPlayersProps = {
   ageFilter: AgeGroup
   statusFilter: Status
   searchInput: string
-  onPlayerClick: (id: string) => void   // called with the player's _id when a card is clicked
+  onPlayerClick: (id: string) => void   // called with the player's id when a card is clicked
   onClearFilters: () => void            // resets age/status/search back to defaults in the parent
 }
 
@@ -110,7 +111,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
       ageFilter === "All" || currentAge <= ageFilter
 
     const statusMatch =
-      statusFilter === "All" || player.status === statusFilter
+      statusFilter === "All" || STATUS_LABEL[player.status] === statusFilter
 
     const q = searchInput.toLowerCase()
 
@@ -155,8 +156,8 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
       {
         filteredData.map((result) => {
           return (
-            <div key={result._id}
-              onClick={() => onPlayerClick(result._id)}
+            <div key={result.id}
+              onClick={() => onPlayerClick(result.id)}
               className=' w-[255px] h-[226px] md:w-[240px] md:h-[211px] lg:w-[306px] lg:h-[272px] flex gap-2 cursor-pointer relative rounded-[10px] transition-transform duration-300 hover:scale-105'>
 
               <div className={`flex flex-row-reverse items-center gap-[8px] px-[9px] py-[4.5px] rounded-[99px] font-manrope text-[10px] font-bold absolute top-3 left-3 md:top-2 md:left-2 lg:top-3 lg:left-3 bg-[#155535] text-[#00D46A]`}>
@@ -236,4 +237,5 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
+
 
