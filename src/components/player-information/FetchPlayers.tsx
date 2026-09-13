@@ -107,8 +107,11 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 
   const filteredData = data.filter((player) => {
     const currentAge = getAge(player.DOB)
+    // "Professional" isn't a numeric age bracket like 17/21/23 — it matches
+    // the player's ageGroup field directly instead of a computed-age threshold.
     const ageMatch =
-      ageFilter === "All" || currentAge <= ageFilter
+      ageFilter === "All" ||
+      (ageFilter === "Professional" ? player.ageGroup === "Professional" : currentAge <= ageFilter)
 
     const statusMatch =
       statusFilter === "All" || STATUS_LABEL[player.status] === statusFilter
@@ -171,9 +174,13 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 {/* gradient panel: three stacked layers (silhouette / gradient / text) */}
                 <div className='w-full h-[126px] relative rounded-b-[10px] '>
 
-                  {/* silhouette - bottom layer */}
+                  {/* silhouette - bottom layer. Sized to sit entirely above the
+                      panel (mb-[130px] = the panel's own height) so the photo
+                      never renders behind the name/stats text below, and
+                      object-top keeps the head at the top of that space
+                      instead of sinking toward the bottom. */}
                   <div className='absolute inset-0 z-10 flex items-end justify-center '>
-                    <img src={result.playerPhoto ? result.playerPhoto : silhouette} alt="" className='w-[174px] h-[187px] md:w-[165px] md:h-[175px] lg:w-[200px] lg:h-[224px] object-contain object-bottom' />
+                    <img src={result.playerPhoto ? result.playerPhoto : silhouette} alt="" className='w-[82px] h-[92px] md:w-[70px] md:h-[78px] lg:w-[119px] lg:h-[134px] mb-[130px] object-contain object-top' />
                   </div>
 
                   {/* gradient - middle layer, sits above the silhouette */}
@@ -206,24 +213,28 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 </div>
 
               </div>
-              <div className='h-full w-[69.1px] rounded-r-3xl flex flex-col justify-between'>
+              <div className='h-full w-[69.1px] rounded-r-3xl overflow-hidden flex flex-col justify-between'>
 
-                {/* G/A */}
-                <div className='bg-[#00D46A] w-full h-[63px] lg:h-[75.9px] rounded-tr-2xl flex flex-col justify-center items-center'>
-                  <span className='font-manrope font-bold text-[11px] leading-[100%]'>G/A</span>
-                  <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{(result.goals + result.assists) ? (result.goals + result.assists) : "?"}</span>
-                </div>
+                {/* G/A — optional stat, only shown once an admin has actually recorded a goal or assist */}
+                {(result.goals + result.assists) > 0 && (
+                  <div className='bg-[#00D46A] w-full h-[63px] lg:h-[75.9px] flex flex-col justify-center items-center'>
+                    <span className='font-manrope font-bold text-[11px] leading-[100%]'>G/A</span>
+                    <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.goals + result.assists}</span>
+                  </div>
+                )}
 
-                {/* APP. */}
-                <div className='w-full justify-center items-center flex flex-col'>
-                  <span className='font-manrope font-bold text-[11px] leading-[100%]'>APP.</span>
-                  <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.playerAppearance ? result.playerAppearance : "?"}</span>
-                </div>
+                {/* APP. — optional, only shown once an admin has recorded an appearance count */}
+                {result.playerAppearance > 0 && (
+                  <div className='w-full justify-center items-center flex flex-col'>
+                    <span className='font-manrope font-bold text-[11px] leading-[100%]'>APP.</span>
+                    <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.playerAppearance}</span>
+                  </div>
+                )}
 
                 {/* current club — optional field, only shown once an admin actually sets it */}
                 {result.currentClubName && (
                   <div
-                    className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] rounded-br-2xl flex justify-center items-end pb-3'>
+                    className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] flex justify-center items-end pb-3'>
                     <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className='w-[30px] h-[30px]' />
                   </div>
                 )}
@@ -239,6 +250,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
+
 
 
 

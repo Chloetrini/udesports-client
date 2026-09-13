@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, LayoutDashboard } from 'lucide-react';
 import udeLogo from '@/assets/udeLogo.png';
 import hamburgerLogo from '@/assets/hamburgerLogo.png';
 import PageWrapper from '../page-wrapper';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useMe } from '@/hooks/useApi';
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
+    // Quietly checks whether an admin session cookie is already active (e.g.
+    // the admin browsing the public site in another tab) so we can offer a
+    // way back to the dashboard without them having to type the URL or log
+    // in again. A logged-out visitor gets a normal 401 here — isError just
+    // means "not logged in," not a real failure — so nothing extra shows.
+    const { data: meData, isError: notLoggedIn } = useMe();
+    const isAdminLoggedIn = !!meData && !notLoggedIn;
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -21,6 +29,11 @@ const NavBar: React.FC = () => {
 
     const handleContactClick = () => {
         navigate('/contact');
+        closeMenu();
+    };
+
+    const handleDashboardClick = () => {
+        navigate('/admin/dashboard');
         closeMenu();
     };
 
@@ -59,6 +72,26 @@ const NavBar: React.FC = () => {
                         >
                             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
                         </button>
+
+                        {/* Dashboard button — only rendered when an admin session is already active */}
+                        {isAdminLoggedIn && (
+                            <button
+                                className="
+                                    hidden md:flex
+                                    w-auto min-w-30 lg:w-41 h-11.25 px-4 lg:px-3
+                                    bg-transparent border border-[#00D46A]
+                                    rounded-md text-[#00D46A] font-manrope text-sm font-medium
+                                    items-center justify-center gap-2
+                                    cursor-pointer transition-all duration-200
+                                    hover:bg-[#00D46A1A]
+                                    active:scale-95
+                                "
+                                onClick={handleDashboardClick}
+                            >
+                                <LayoutDashboard size={16} />
+                                Dashboard
+                            </button>
+                        )}
 
                         {/* Desktop Contact Button */}
                         <button
@@ -173,6 +206,25 @@ const NavBar: React.FC = () => {
                             News
                         </NavLink>
 
+                        {/* Dashboard link — only rendered when an admin session is already active */}
+                        {isAdminLoggedIn && (
+                            <button
+                                className="
+                    w-full max-w-xs h-11.25 p-3
+                    bg-transparent border border-[#00D46A]
+                    rounded-md text-[#00D46A] font-manrope text-sm font-medium
+                    flex items-center justify-center gap-2
+                    cursor-pointer transition-all duration-200
+                    hover:bg-[#00D46A1A]
+                    active:scale-95
+                "
+                                onClick={handleDashboardClick}
+                            >
+                                <LayoutDashboard size={16} />
+                                Dashboard
+                            </button>
+                        )}
+
                         <button
                             className="
                 w-full max-w-xs h-11.25 p-3
@@ -197,4 +249,5 @@ const NavBar: React.FC = () => {
 };
 
 export default NavBar;
+
 

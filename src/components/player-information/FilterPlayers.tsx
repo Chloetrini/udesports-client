@@ -2,7 +2,7 @@ import filterIcon from '@/assets/filterIcon.png'
 import searchIcon from '@/assets/Search.png'
 
 
-export type AgeGroup = "All" | 17 | 21 | 23
+export type AgeGroup = "All" | 17 | 21 | 23 | "Professional"
 export type Status = "All" | "Free" | "Transferred" | "Negotiation"
 
 
@@ -23,7 +23,7 @@ const FilterPlayers = ({
   searchInput,
   setSearchInput
 }: FilterProps) => {
-  const ageOptions: AgeGroup[] = ["All", 17, 21, 23]
+  const ageOptions: AgeGroup[] = ["All", 17, 21, 23, "Professional"]
   const statusOptions: Status[] = ["All", "Free", "Transferred", "Negotiation"]
 
   // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,4 +103,5 @@ const FilterPlayers = ({
 }
 
 export default FilterPlayers
+
 

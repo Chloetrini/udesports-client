@@ -250,7 +250,7 @@ const AddPlayer = () => {
         <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-white/10">
           <div className="w-[87px] h-[94px] rounded-b-[10px] overflow-hidden bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/15 flex items-center justify-center flex-shrink-0">
             {photoPreview ? (
-              <img src={photoPreview} alt="Player" className="w-full h-full object-contain object-bottom" />
+              <img src={photoPreview} alt="Player" className="w-full h-full object-contain object-top" />
             ) : (
               <span className="text-[10px] text-gray-400 text-center px-1">No photo</span>
             )}
@@ -571,6 +571,7 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+
 
 
 

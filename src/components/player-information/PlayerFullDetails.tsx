@@ -208,20 +208,27 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             </div>
 
             <div className="flex gap-2 lg:gap-3">
-              <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
-                <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player?.goals}</p>
-                <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">GOALS</p>
-              </div>
+              {/* Goals / Assists / Ratings — each optional, only shown once an admin has actually recorded a non-zero value */}
+              {!!player?.goals && (
+                <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                  <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.goals}</p>
+                  <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">GOALS</p>
+                </div>
+              )}
 
-              <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
-                <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player?.assists}</p>
-                <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">ASSISTS</p>
-              </div>
+              {!!player?.assists && (
+                <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                  <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.assists}</p>
+                  <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">ASSISTS</p>
+                </div>
+              )}
 
-              <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
-                <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player?.rating}</p>
-                <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">RATINGS</p>
-              </div>
+              {!!player?.rating && (
+                <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                  <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.rating}</p>
+                  <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">RATINGS</p>
+                </div>
+              )}
 
               {/* Preferred Foot */}
               {
@@ -305,6 +312,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 }
 
 export default PlayerFullDetails
+
 
 
 

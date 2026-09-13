@@ -180,12 +180,15 @@ const SectionTwo = () => {
                     <div className="h-full w-[317px] md:w-[340px] lg:w-[399px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover flex items-end">
                       {/* gradient panel: three stacked layers (silhouette / gradient / text) */}
                       <div className="w-full h-[177px] md:h-[190px] lg:h-[222px] relative rounded-b-[10px]">
-                        {/* silhouette - bottom layer */}
+                        {/* silhouette - bottom layer. Sized to sit entirely above the
+                            panel (margin-bottom = the panel's own height per breakpoint)
+                            so the photo never renders behind the name/stats text below,
+                            and object-top keeps the head at the top instead of sinking. */}
                         <div className="absolute inset-0 z-10 flex items-end justify-center">
                           <img
                             src={result.playerPhoto ? result.playerPhoto : silhouette}
                             alt=""
-                            className="w-[244px] h-[262px] md:w-[260px] md:h-[280px] lg:w-[323px] lg:h-[365px] object-contain object-bottom"
+                            className="w-[113px] h-[127px] mb-[177px] md:w-[120px] md:h-[135px] md:mb-[190px] lg:w-[166px] lg:h-[187px] lg:mb-[222px] object-contain object-top"
                           />
                         </div>
 
@@ -218,22 +221,26 @@ const SectionTwo = () => {
                       </div>
                     </div>
 
-                    <div className="h-full w-[97px] md:w-[104px] lg:w-[122px] rounded-r-3xl flex flex-col justify-between">
-                      {/* G/A */}
-                      <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] rounded-tr-2xl flex flex-col justify-center items-center">
-                        <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">G/A</span>
-                        <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{(result.goals + result.assists) ? (result.goals + result.assists) : "?"}</span>
-                      </div>
+                    <div className="h-full w-[97px] md:w-[104px] lg:w-[122px] rounded-r-3xl overflow-hidden flex flex-col justify-between">
+                      {/* G/A — optional stat, only shown once an admin has actually recorded a goal or assist */}
+                      {(result.goals + result.assists) > 0 && (
+                        <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] flex flex-col justify-center items-center">
+                          <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">G/A</span>
+                          <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.goals + result.assists}</span>
+                        </div>
+                      )}
 
-                      {/* APP. */}
-                      <div className="w-full justify-center items-center flex flex-col">
-                        <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">APP.</span>
-                        <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.playerAppearance ? result.playerAppearance : "?"}</span>
-                      </div>
+                      {/* APP. — optional, only shown once an admin has recorded an appearance count */}
+                      {result.playerAppearance > 0 && (
+                        <div className="w-full justify-center items-center flex flex-col">
+                          <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">APP.</span>
+                          <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.playerAppearance}</span>
+                        </div>
+                      )}
 
                       {/* current club — optional field, only shown once an admin actually sets it */}
                       {result.currentClubName && (
-                        <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] rounded-br-2xl flex justify-center items-end pb-5">
+                        <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] flex justify-center items-end pb-5">
                           <img
                             src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo}
                             alt=""
@@ -254,6 +261,7 @@ const SectionTwo = () => {
 };
 
 export default SectionTwo;
+
 
 
 
