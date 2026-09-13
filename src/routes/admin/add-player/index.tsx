@@ -306,6 +306,7 @@ const AddPlayer = () => {
               <option>RW</option>
               <option>ST</option>
               <option>CM</option>
+              <option>CB</option>
               <option>RB</option>
               <option>LB</option>
               <option>GK</option>
