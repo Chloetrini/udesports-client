@@ -243,13 +243,14 @@ const AddPlayer = () => {
 
       {/* Form */}
       <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm p-6">
-        {/* Player photo — preview uses the same portrait shape (and object-cover
-            crop) as the public player card / detail page, so what you see here
-            is what visitors will actually see, not a generic round avatar. */}
+        {/* Player photo — preview uses the same portrait shape as the public
+            player card / detail page, with object-contain (not a crop) so a
+            cut-out PNG with a transparent background shows in full, matching
+            how the site actually displays it. */}
         <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-white/10">
           <div className="w-[87px] h-[94px] rounded-b-[10px] overflow-hidden bg-gray-100 dark:bg-white/10 border border-gray-200 dark:border-white/15 flex items-center justify-center flex-shrink-0">
             {photoPreview ? (
-              <img src={photoPreview} alt="Player" className="w-full h-full object-cover" />
+              <img src={photoPreview} alt="Player" className="w-full h-full object-contain object-bottom" />
             ) : (
               <span className="text-[10px] text-gray-400 text-center px-1">No photo</span>
             )}
@@ -265,7 +266,7 @@ const AddPlayer = () => {
               className="text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-green-500 file:text-gray-900 hover:file:bg-green-600 cursor-pointer"
             />
             <p className="text-[11px] text-gray-400">
-              Shown as a tall portrait crop on the site — a headshot or upper-body photo works best.
+              Use a PNG with the background already removed (a head-and-shoulders or upper-body cutout) for the best look — it's shown as-is, not cropped to a box.
             </p>
             {error.photo && <p className="text-xs text-red-500">{error.photo}</p>}
           </div>

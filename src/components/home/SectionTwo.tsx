@@ -185,7 +185,7 @@ const SectionTwo = () => {
                           <img
                             src={result.playerPhoto ? result.playerPhoto : silhouette}
                             alt=""
-                            className="w-[244px] h-[262px] md:w-[260px] md:h-[280px] lg:w-[323px] lg:h-[365px] rounded-b-[10px] object-cover"
+                            className="w-[244px] h-[262px] md:w-[260px] md:h-[280px] lg:w-[323px] lg:h-[365px] object-contain object-bottom"
                           />
                         </div>
 
@@ -254,6 +254,7 @@ const SectionTwo = () => {
 };
 
 export default SectionTwo;
+
 
 
 

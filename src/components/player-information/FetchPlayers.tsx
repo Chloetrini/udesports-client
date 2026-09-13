@@ -173,7 +173,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 
                   {/* silhouette - bottom layer */}
                   <div className='absolute inset-0 z-10 flex items-end justify-center '>
-                    <img src={result.playerPhoto ? result.playerPhoto : silhouette} alt="" className='w-[174px] h-[187px] md:w-[165px] md:h-[175px] lg:w-[200px] lg:h-[224px] rounded-b-[10px] object-cover' />
+                    <img src={result.playerPhoto ? result.playerPhoto : silhouette} alt="" className='w-[174px] h-[187px] md:w-[165px] md:h-[175px] lg:w-[200px] lg:h-[224px] object-contain object-bottom' />
                   </div>
 
                   {/* gradient - middle layer, sits above the silhouette */}
@@ -239,6 +239,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
+
 
 
 
