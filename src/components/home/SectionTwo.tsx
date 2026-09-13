@@ -177,45 +177,39 @@ const SectionTwo = () => {
                       <div className="w-[11px] h-[11px] lg:w-[14px] lg:h-[14px] rounded-full bg-[#00D46A]"></div>
                     </div>
 
-                    <div className="h-full w-[317px] md:w-[340px] lg:w-[399px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover flex items-end">
-                      {/* gradient panel: three stacked layers (silhouette / gradient / text) */}
-                      <div className="w-full h-[177px] md:h-[190px] lg:h-[222px] relative rounded-b-[10px]">
-                        {/* silhouette - bottom layer. Sized to sit entirely above the
-                            panel (margin-bottom = the panel's own height per breakpoint)
-                            so the photo never renders behind the name/stats text below,
-                            and object-top keeps the head at the top instead of sinking. */}
-                        <div className="absolute inset-0 z-10 flex items-end justify-center">
-                          <img
-                            src={result.playerPhoto ? result.playerPhoto : silhouette}
-                            alt=""
-                            className="w-[113px] h-[127px] mb-[177px] md:w-[120px] md:h-[135px] md:mb-[190px] lg:w-[166px] lg:h-[187px] lg:mb-[222px] object-contain object-top"
-                          />
+                    <div className="h-full w-[317px] md:w-[340px] lg:w-[399px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover relative overflow-hidden">
+                      {/* photo - fills the whole card, anchored to the top
+                          (object-top) so the head sits high on the card
+                          instead of being pushed down toward the panel. */}
+                      <img
+                        src={result.playerPhoto ? result.playerPhoto : silhouette}
+                        alt=""
+                        className="absolute inset-0 z-10 w-full h-full object-cover object-top"
+                      />
+
+                      {/* gradient - overlays only the lower portion of the photo (shoulder height) */}
+                      <div className="absolute bottom-0 left-0 z-20 w-full h-[177px] md:h-[190px] lg:h-[222px] bg-gradient-to-b from-transparent to-[#00D46A] rounded-b-[10px]" />
+
+                      {/* text content - sits on top of the gradient, over the shoulders rather than the face */}
+                      <div className="absolute bottom-0 left-0 z-30 w-full h-[177px] md:h-[190px] lg:h-[222px] flex flex-col items-center justify-center gap-2 lg:gap-3">
+                        <div className="px-[11px] lg:px-[14px] bg-[#00D46A] mt-12 lg:mt-11">
+                          <p className="font-bebas font-normal text-[24px] lg:text-[30px]">{result.playerName}</p>
                         </div>
 
-                        {/* gradient - middle layer, sits above the silhouette */}
-                        <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent to-[#00D46A] rounded-b-[10px]" />
-
-                        {/* text content - top layer */}
-                        <div className="relative z-30 h-full flex flex-col items-center justify-center gap-2 lg:gap-3">
-                          <div className="px-[11px] lg:px-[14px] bg-[#00D46A] mt-12 lg:mt-11">
-                            <p className="font-bebas font-normal text-[24px] lg:text-[30px]">{result.playerName}</p>
+                        <div className="flex gap-6 lg:gap-7 text-center">
+                          <div className="flex flex-col items-center justify-center">
+                            <p className="text-[14px] lg:text-[15px] font-medium text-[#FFFFFF]">Age</p>
+                            <p className="text-[24px] lg:text-[30px] font-bold text-[#FFFFFF]">{getAge(result.DOB)}</p>
                           </div>
 
-                          <div className="flex gap-6 lg:gap-7 text-center">
-                            <div className="flex flex-col items-center justify-center">
-                              <p className="text-[14px] lg:text-[15px] font-medium text-[#FFFFFF]">Age</p>
-                              <p className="text-[24px] lg:text-[30px] font-bold text-[#FFFFFF]">{getAge(result.DOB)}</p>
-                            </div>
+                          <div className="flex flex-col items-center justify-center">
+                            <p className="text-[14px] lg:text-[15px] font-medium text-[#FFFFFF]">Position</p>
+                            <p className="text-[24px] lg:text-[30px] font-bold text-[#FFFFFF]">{result.position}</p>
+                          </div>
 
-                            <div className="flex flex-col items-center justify-center">
-                              <p className="text-[14px] lg:text-[15px] font-medium text-[#FFFFFF]">Position</p>
-                              <p className="text-[24px] lg:text-[30px] font-bold text-[#FFFFFF]">{result.position}</p>
-                            </div>
-
-                            <div className="flex flex-col items-center justify-center">
-                              <p className="text-[14px] lg:text-[15px] font-medium text-[#FFFFFF]">{'Height (cm)'}</p>
-                              <p className="text-[24px] lg:text-[30px] font-bold text-[#FFFFFF]">{result.height}</p>
-                            </div>
+                          <div className="flex flex-col items-center justify-center">
+                            <p className="text-[14px] lg:text-[15px] font-medium text-[#FFFFFF]">{'Height (cm)'}</p>
+                            <p className="text-[24px] lg:text-[30px] font-bold text-[#FFFFFF]">{result.height}</p>
                           </div>
                         </div>
                       </div>
@@ -261,7 +255,6 @@ const SectionTwo = () => {
 };
 
 export default SectionTwo;
-
 
 
 

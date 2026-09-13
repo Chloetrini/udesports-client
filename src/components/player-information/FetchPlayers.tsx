@@ -169,47 +169,42 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 </div>
               </div>
 
-              <div className='h-full w-[226px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover flex items-end'>
+              <div className='h-full w-[226px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover relative overflow-hidden'>
 
-                {/* gradient panel: three stacked layers (silhouette / gradient / text) */}
-                <div className='w-full h-[126px] relative rounded-b-[10px] '>
+                {/* photo - fills the whole card, anchored to the top
+                    (object-top) so the head sits high on the card instead
+                    of being pushed down toward the name/stats panel. */}
+                <img
+                  src={result.playerPhoto ? result.playerPhoto : silhouette}
+                  alt=""
+                  className='absolute inset-0 z-10 w-full h-full object-cover object-top'
+                />
 
-                  {/* silhouette - bottom layer. Sized to sit entirely above the
-                      panel (mb-[130px] = the panel's own height) so the photo
-                      never renders behind the name/stats text below, and
-                      object-top keeps the head at the top of that space
-                      instead of sinking toward the bottom. */}
-                  <div className='absolute inset-0 z-10 flex items-end justify-center '>
-                    <img src={result.playerPhoto ? result.playerPhoto : silhouette} alt="" className='w-[82px] h-[92px] md:w-[70px] md:h-[78px] lg:w-[119px] lg:h-[134px] mb-[130px] object-contain object-top' />
+                {/* gradient - overlays only the lower portion of the photo (shoulder height) */}
+                <div className='absolute bottom-0 left-0 z-20 w-full h-[126px] bg-gradient-to-b from-transparent to-[#00D46A] rounded-b-[10px]' />
+
+                {/* text content - sits on top of the gradient, over the shoulders rather than the face */}
+                <div className='absolute bottom-0 left-0 z-30 w-full h-[126px] flex flex-col items-center justify-center gap-1 lg:gap-2'>
+                  <div className='px-[7.9px] bg-[#00D46A] mt-9 lg:mt-6'>
+                    <p className='font-bebas font-normal text-[17px] lg:text-[20px]'>{result.playerName}</p>
                   </div>
 
-                  {/* gradient - middle layer, sits above the silhouette */}
-                  <div className='absolute inset-0 z-20 bg-gradient-to-b from-transparent to-[#00D46A] rounded-b-[10px]' />
-
-                  {/* text content - top layer */}
-                  <div className='relative z-30 h-full flex flex-col items-center justify-center gap-1 lg:gap-2 '>
-                    <div className='px-[7.9px] bg-[#00D46A] mt-9 lg:mt-6'>
-                      <p className='font-bebas font-normal text-[17px] lg:text-[20px]'>{result.playerName}</p>
+                  <div className='flex gap-4 text-center'>
+                    <div className='flex flex-col items-center justify-center'>
+                      <p className=' text-[10px] lg:text-[12px] font-medium text-[#FFFFFF]'>Age</p>
+                      <p className='lg:text-[20px] font-bold text-[#FFFFFF]'>{getAge(result.DOB)}</p>
                     </div>
 
-                    <div className='flex gap-4 text-center'>
-                      <div className='flex flex-col items-center justify-center'>
-                        <p className=' text-[10px] lg:text-[12px] font-medium text-[#FFFFFF]'>Age</p>
-                        <p className='lg:text-[20px] font-bold text-[#FFFFFF]'>{getAge(result.DOB)}</p>
-                      </div>
+                    <div className=' flex flex-col items-center justify-center'>
+                      <p className='text-[10px] lg:text-[12px] font-medium text-[#FFFFFF]'>Position</p>
+                      <p className='lg:text-[20px] font-bold text-[#FFFFFF]'>{result.position}</p>
+                    </div>
 
-                      <div className=' flex flex-col items-center justify-center'>
-                        <p className='text-[10px] lg:text-[12px] font-medium text-[#FFFFFF]'>Position</p>
-                        <p className='lg:text-[20px] font-bold text-[#FFFFFF]'>{result.position}</p>
-                      </div>
-
-                      <div className='flex flex-col items-center justify-center'>
-                        <p className='text-[10px] lg:text-[12px] font-medium text-[#FFFFFF]'> {'Height (cm)'}</p>
-                        <p className='lg:text-[20px] font-bold text-[#FFFFFF]'>{result.height}</p>
-                      </div>
+                    <div className='flex flex-col items-center justify-center'>
+                      <p className='text-[10px] lg:text-[12px] font-medium text-[#FFFFFF]'> {'Height (cm)'}</p>
+                      <p className='lg:text-[20px] font-bold text-[#FFFFFF]'>{result.height}</p>
                     </div>
                   </div>
-
                 </div>
 
               </div>
@@ -250,7 +245,6 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
-
 
 
 
