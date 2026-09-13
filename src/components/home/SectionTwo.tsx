@@ -134,6 +134,28 @@ const SectionTwo = () => {
     );
   }
 
+  // No players have been marked "Featured" in the admin yet — show a
+  // friendly placeholder instead of leaving the carousel area blank.
+  if (!featuredPlayers || featuredPlayers.length === 0) {
+    return (
+      <div className="my-14">
+        <PageWrapper className="p-[20px] flex flex-col lg:flex-row items-start gap-8">
+          {LeftSide}
+          <div className="w-full min-w-0 flex items-center justify-center" style={{ minHeight: '340px' }}>
+            <div className="flex flex-col items-center justify-center text-center gap-3 py-16 px-6 border border-dashed border-gray-300 dark:border-white/15 rounded-2xl w-full max-w-xl">
+              <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-lg">
+                No featured players yet
+              </p>
+              <p className="font-manrope font-normal text-[#68717D] dark:text-gray-400 text-sm max-w-sm">
+                Mark a player as "Featured" from the admin panel to have them show up here.
+              </p>
+            </div>
+          </div>
+        </PageWrapper>
+      </div>
+    );
+  }
+
   return (
     <div className="my-14">
       {/* container holds the left content; carousel sits outside its right padding so it can bleed */}

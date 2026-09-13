@@ -90,6 +90,7 @@ const AddPlayer = () => {
   const [currentClubLogo, setCurrentClubLogo] = useState("");
   const [newClubName, setNewClubName] = useState("");
   const [newClubLogo, setNewClubLogo] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
 
   const [error, setError] = useState<Record<string, string>>({});
 
@@ -114,6 +115,7 @@ const AddPlayer = () => {
     setCurrentClubLogo(player.currentClubLogo || "");
     setNewClubName(player.newClubName || "");
     setNewClubLogo(player.newClubLogo || "");
+    setIsFeatured(!!player.isFeatured);
   }, [player]);
 
   // Local preview for a newly-picked file — revoked on change/unmount so we
@@ -200,6 +202,7 @@ const AddPlayer = () => {
       currentClubLogo: currentClubLogo.trim() || undefined,
       newClubName: newClubName.trim() || undefined,
       newClubLogo: newClubLogo.trim() || undefined,
+      isFeatured,
     };
 
     // Only include a photo when a new one was picked — omitting it on edit
@@ -270,6 +273,21 @@ const AddPlayer = () => {
             </p>
             {error.photo && <p className="text-xs text-red-500">{error.photo}</p>}
           </div>
+        </div>
+
+        {/* Featured — controls whether this player shows in the homepage
+            "Featured Players" carousel (SectionTwo.tsx filters on this flag). */}
+        <div className="flex items-center gap-2 mt-4">
+          <input
+            id="isFeatured"
+            type="checkbox"
+            checked={isFeatured}
+            onChange={(e) => setIsFeatured(e.target.checked)}
+            className="w-4 h-4 rounded border-gray-300 dark:border-white/20 text-green-500 focus:ring-green-400 cursor-pointer"
+          />
+          <label htmlFor="isFeatured" className="text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
+            Show on homepage "Featured Players" section
+          </label>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
