@@ -27,10 +27,14 @@ export const deletePlayer = async (id: string): Promise<void> => {
   await api.delete<undefined>(`/players/${id}`);
 };
 
-// Builds a FormData body when a photo File is present (so express-fileupload
-// on the backend receives it), otherwise sends plain JSON.
+// Builds a FormData body when any image File is present (playerPhoto or
+// either club logo) so express-fileupload on the backend receives it,
+// otherwise sends plain JSON.
 function toRequestBody(data: Record<string, unknown>): FormData | Record<string, unknown> {
-  const hasFile = data.playerPhoto instanceof File;
+  const hasFile =
+    data.playerPhoto instanceof File ||
+    data.currentClubLogo instanceof File ||
+    data.newClubLogo instanceof File;
   if (!hasFile) return data;
 
   const formData = new FormData();

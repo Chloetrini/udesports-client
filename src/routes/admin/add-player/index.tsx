@@ -82,14 +82,19 @@ const AddPlayer = () => {
   const [status, setStatus] = useState<PlayerStatus>("FREE");
   const [goals, setGoals] = useState(0);
   const [assists, setAssists] = useState(0);
+  const [saves, setSaves] = useState(0);
+  const [cleanSheets, setCleanSheets] = useState(0);
+  const [playerAppearance, setPlayerAppearance] = useState(0);
   const [ratings, setRatings] = useState("");
   const [background, setBackground] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string>("");
   const [currentClubName, setCurrentClubName] = useState("");
   const [currentClubLogo, setCurrentClubLogo] = useState("");
+  const [currentClubLogoFile, setCurrentClubLogoFile] = useState<File | null>(null);
   const [newClubName, setNewClubName] = useState("");
   const [newClubLogo, setNewClubLogo] = useState("");
+  const [newClubLogoFile, setNewClubLogoFile] = useState<File | null>(null);
   const [isFeatured, setIsFeatured] = useState(false);
 
   const [error, setError] = useState<Record<string, string>>({});
@@ -108,6 +113,9 @@ const AddPlayer = () => {
     setStatus(player.status);
     setGoals(player.goals);
     setAssists(player.assists);
+    setSaves(player.saves ?? 0);
+    setCleanSheets(player.cleanSheets ?? 0);
+    setPlayerAppearance(player.playerAppearance ?? 0);
     setRatings(player.rating?.toString() || "");
     setBackground(player.playerHistory || "");
     setPhotoPreview(player.playerPhoto || "");
@@ -142,6 +150,30 @@ const AddPlayer = () => {
 
     setError((prev) => ({ ...prev, photo: "" }));
     setPhoto(file);
+  }
+
+  // Shared validation for a club-logo file upload (current or new club) —
+  // same rules as the player photo, just a smaller size cap since these are
+  // simple badge/crest images, not portraits.
+  function handleLogoFileChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: "currentClubLogo" | "newClubLogo",
+    setFile: (file: File | null) => void
+  ) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError((prev) => ({ ...prev, [field]: "Please choose an image file" }));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError((prev) => ({ ...prev, [field]: "Image must be smaller than 5MB" }));
+      return;
+    }
+
+    setError((prev) => ({ ...prev, [field]: "" }));
+    setFile(file);
   }
 
   if (isEditMode && isLoading) {
@@ -196,6 +228,9 @@ const AddPlayer = () => {
       position,
       goals,
       assists,
+      saves,
+      cleanSheets,
+      playerAppearance,
       rating: ratings ? Number(ratings) : undefined,
       playerHistory: background,
       currentClubName: currentClubName.trim() || undefined,
@@ -211,6 +246,16 @@ const AddPlayer = () => {
     // toRequestBody() in Players.ts to send this as multipart FormData.
     if (photo) {
       payload.playerPhoto = photo;
+    }
+
+    // Same pattern for club logos: an uploaded file takes priority over the
+    // pasted URL (the URL field is disabled while a file is selected, so in
+    // practice only one or the other is ever set at a time).
+    if (currentClubLogoFile) {
+      payload.currentClubLogo = currentClubLogoFile;
+    }
+    if (newClubLogoFile) {
+      payload.newClubLogo = newClubLogoFile;
     }
 
     try {
@@ -323,6 +368,7 @@ const AddPlayer = () => {
               <option>LW</option>
               <option>RW</option>
               <option>ST</option>
+              <option>FW</option>
               <option>CM</option>
               <option>CB</option>
               <option>RB</option>
@@ -441,31 +487,61 @@ const AddPlayer = () => {
             </select>
           </div>
 
-          {/* Goals */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Goals</label>
-            <input
-              value={goals}
-              onChange={(e) => setGoals(Number(e.target.value))}
-              type="number"
-              placeholder="0"
-              min={0}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-            />
-          </div>
+          {/* Goals / Assists (outfield) or Saves / Clean Sheets (goalkeeper) —
+              the public card shows whichever pair matches the position. */}
+          {position === "GK" ? (
+            <>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Saves</label>
+                <input
+                  value={saves}
+                  onChange={(e) => setSaves(Number(e.target.value))}
+                  type="number"
+                  placeholder="0"
+                  min={0}
+                  className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                />
+              </div>
 
-          {/* Assists */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Assists</label>
-            <input
-              value={assists}
-              onChange={(e) => setAssists(Number(e.target.value))}
-              type="number"
-              placeholder="0"
-              min={0}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-            />
-          </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Clean Sheets</label>
+                <input
+                  value={cleanSheets}
+                  onChange={(e) => setCleanSheets(Number(e.target.value))}
+                  type="number"
+                  placeholder="0"
+                  min={0}
+                  className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Goals</label>
+                <input
+                  value={goals}
+                  onChange={(e) => setGoals(Number(e.target.value))}
+                  type="number"
+                  placeholder="0"
+                  min={0}
+                  className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Assists</label>
+                <input
+                  value={assists}
+                  onChange={(e) => setAssists(Number(e.target.value))}
+                  type="number"
+                  placeholder="0"
+                  min={0}
+                  className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                />
+              </div>
+            </>
+          )}
 
           {/* Ratings */}
 
@@ -474,6 +550,21 @@ const AddPlayer = () => {
             <input
               value={ratings}
               onChange={(e) => setRatings(e.target.value)}
+              type="number"
+              placeholder="0"
+              min={0}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            />
+          </div>
+
+          {/* Appearances — backs the "APP." box on the public player cards.
+              This field existed on the backend and the card display already,
+              but had no input anywhere in this form to actually set it. */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Appearances</label>
+            <input
+              value={playerAppearance}
+              onChange={(e) => setPlayerAppearance(Number(e.target.value))}
               type="number"
               placeholder="0"
               min={0}
@@ -499,15 +590,35 @@ const AddPlayer = () => {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
-              Current Club Logo (Image URL)
+              Current Club Logo
             </label>
             <input
               type="text"
-              placeholder="https://..."
+              placeholder="Paste an image URL..."
               value={currentClubLogo}
               onChange={(e) => setCurrentClubLogo(e.target.value)}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+              disabled={!!currentClubLogoFile}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
             />
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-gray-400">or</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleLogoFileChange(e, "currentClubLogo", setCurrentClubLogoFile)}
+                className="text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-green-500 file:text-gray-900 hover:file:bg-green-600 cursor-pointer"
+              />
+              {currentClubLogoFile && (
+                <button
+                  type="button"
+                  onClick={() => setCurrentClubLogoFile(null)}
+                  className="text-[11px] text-red-500 hover:underline cursor-pointer"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+            {error.currentClubLogo && <p className="text-xs text-red-500">{error.currentClubLogo}</p>}
           </div>
 
           <div className="flex flex-col gap-1.5">
@@ -525,15 +636,35 @@ const AddPlayer = () => {
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
-              New Club Logo (Image URL)
+              New Club Logo
             </label>
             <input
               type="text"
-              placeholder="https://..."
+              placeholder="Paste an image URL..."
               value={newClubLogo}
               onChange={(e) => setNewClubLogo(e.target.value)}
-              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+              disabled={!!newClubLogoFile}
+              className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
             />
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-gray-400">or</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleLogoFileChange(e, "newClubLogo", setNewClubLogoFile)}
+                className="text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-green-500 file:text-gray-900 hover:file:bg-green-600 cursor-pointer"
+              />
+              {newClubLogoFile && (
+                <button
+                  type="button"
+                  onClick={() => setNewClubLogoFile(null)}
+                  className="text-[11px] text-red-500 hover:underline cursor-pointer"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+            {error.newClubLogo && <p className="text-xs text-red-500">{error.newClubLogo}</p>}
           </div>
         </div>
 
@@ -590,6 +721,3 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
-
-
-

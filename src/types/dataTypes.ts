@@ -4,7 +4,7 @@
 // Display labels ("Free" / "Transferred" / "Negotiation") live in
 // STATUS_LABEL / STATUS_STYLE (src/lib/playerStatus.ts) — same pattern
 // already used for NewsCategory below.
-export type PlayerStatus = "FREE" | "TRANSFERRED" | "NEGOTIATION";
+export type PlayerStatus = "FREE" | "TRANSFERRED" | "NEGOTIATION" | "RETIRED";
 
 export type Player = {
   id: string;
@@ -20,6 +20,11 @@ export type Player = {
   position: string,
   goals: number,
   assists: number,
+  // Goalkeeper-specific stats — shown instead of goals/assists on the card
+  // when position === "GK". Every player has these columns (default 0),
+  // the frontend just decides which pair to display.
+  saves: number,
+  cleanSheets: number,
   rating: number | null,
   currentClubName: string | null,
   currentClubLogo: string | null,

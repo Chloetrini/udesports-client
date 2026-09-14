@@ -45,7 +45,7 @@ const NavBar: React.FC = () => {
                     <div className="">
                         <Link to="/" className="flex justify-center items-center cursor-pointer">
                             <img
-                                className="w-5 h-7 sm:w-5.75 sm:h-8"
+                                className="w-9 h-[50px] sm:w-10 sm:h-[56px]"
                                 src={udeLogo}
                                 alt="udeLogo"
                             />

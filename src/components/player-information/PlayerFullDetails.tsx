@@ -8,7 +8,16 @@ import closeIcon from "@/assets/closeIcon.png"
 import silhouette from '@/assets/silhouette.png'
 import { Skeleton } from "@mui/material"
 import { useEffect } from "react"
-import { STATUS_LABEL } from "@/lib/playerStatus"
+import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus"
+import PlayerImage from "./PlayerImage"
+
+// Backend sends DOB as an ISO 8601 string (e.g. "1996-03-03T00:00:00.000Z") —
+// format it for display instead of showing the raw string.
+function formatDOB(iso: string): string {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return "Unknown"
+  return new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(d)
+}
 
 
 interface PlayerFullDetailsProps {
@@ -184,7 +193,11 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
         <div className="flex flex-col items-center md:flex-row gap-15 lg:gap-20 md:mt-4 mb-10 md:mb-0">
           <div className="relative w-[330px] h-[290px]  md:w-[360px] md:h-[300px] rounded-[10px] bg-[url(./assets/PlayerFullDetailsBG.png)] bg-cover">
             <div className='absolute inset-0 z-10 flex items-end justify-center '>
-              <img src={player?.playerPhoto ? player?.playerPhoto : silhouette} alt="" className='w-[270px] h-[280px] md:w-[280px] md:h-[290px] object-contain object-bottom' />
+              <PlayerImage
+                src={player?.playerPhoto ? player?.playerPhoto : silhouette}
+                alt=""
+                className='w-[270px] h-[280px] md:w-[280px] md:h-[290px] object-contain object-bottom'
+              />
             </div>
           </div>
 
@@ -196,11 +209,9 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             <div className="flex items-center gap-10">
               {
                 player?.status && (
-                  <div className={`flex items-center gap-[8px] px-[16px] py-[8px] rounded-[99px] font-manrope text-[16px] font-bold
-                ${player?.status === "TRANSFERRED" ? "bg-[#00D46A4D] text-[#00A553]" : player?.status === "NEGOTIATION" ? "bg-[#D47F0033] text-[#D47F00]" : "bg-[#1778FB33] text-[#045BD0]"}`}>
+                  <div className={`flex items-center gap-[8px] px-[16px] py-[8px] rounded-[99px] font-manrope text-[16px] font-bold ${STATUS_STYLE[player.status]}`}>
                     {STATUS_LABEL[player.status]}
-                    <div className={`w-[8px] h-[8px] rounded-full
-                  ${player?.status === "TRANSFERRED" ? "bg-[#00D46A]" : player?.status === "NEGOTIATION" ? "bg-[#D47F00]" : "bg-[#045BD0]"}`}>
+                    <div className="w-[8px] h-[8px] rounded-full bg-current">
                     </div>
                   </div>
                 )}
@@ -208,19 +219,41 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             </div>
 
             <div className="flex gap-2 lg:gap-3">
-              {/* Goals / Assists / Ratings — each optional, only shown once an admin has actually recorded a non-zero value */}
-              {!!player?.goals && (
-                <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
-                  <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.goals}</p>
-                  <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">GOALS</p>
-                </div>
-              )}
+              {/* Goals / Assists (outfield) or Saves / Clean Sheets (goalkeeper) /
+                  Ratings — each optional, only shown once an admin has actually
+                  recorded a non-zero value */}
+              {player?.position === "GK" ? (
+                <>
+                  {!!player?.saves && (
+                    <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                      <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.saves}</p>
+                      <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">SAVES</p>
+                    </div>
+                  )}
 
-              {!!player?.assists && (
-                <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
-                  <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.assists}</p>
-                  <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">ASSISTS</p>
-                </div>
+                  {!!player?.cleanSheets && (
+                    <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                      <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.cleanSheets}</p>
+                      <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">CLEAN SHEETS</p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {!!player?.goals && (
+                    <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                      <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.goals}</p>
+                      <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">GOALS</p>
+                    </div>
+                  )}
+
+                  {!!player?.assists && (
+                    <div className="w-[78px] h-[78px] lg:w-[100px] lg:h-[100px] bg-[#1FC16B1A] rounded-2xl flex flex-col items-center justify-center">
+                      <p className="font-wdxl-lubrifont-sc text-[37px] lg:text-[48px] leading-[130%]">{player.assists}</p>
+                      <p className="font-manrope text-[9px] text-[#8E8E8E] leading-[130%] font-bold">ASSISTS</p>
+                    </div>
+                  )}
+                </>
               )}
 
               {!!player?.rating && (
@@ -275,7 +308,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
               </div>
               <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
                 <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Date of Birth:</p>
-                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.DOB ? player?.DOB : "Unknown"}</p>
+                <p className="text-end text-[20px] text-[#060A0F] dark:text-white">{player?.DOB ? formatDOB(player.DOB) : "Unknown"}</p>
               </div>
               <div className="flex justify-between pb-2 pt-2 border-b border-b-[#CACACA] dark:border-b-white/15 font-manrope">
                 <p className="text-[18px] text-[#8E8E8E] dark:text-gray-400">Nationality:</p>

@@ -11,6 +11,8 @@ import udeSportLogo from '@/assets/udeSportLogo.png';
 import { useGetPlayers } from '@/hooks/useApi';
 import type { Player } from '@/types/dataTypes';
 import { getAge } from '@/hooks/getAge';
+import { STATUS_LABEL } from '@/lib/playerStatus';
+import PlayerImage from '@/components/player-information/PlayerImage';
 import PageWrapper from '../page-wrapper';
 
 
@@ -195,7 +197,7 @@ const SectionTwo = () => {
                   <div className="w-[358px] h-[318px] md:w-[384px] md:h-[340px] lg:w-[490px] lg:h-[430px] flex gap-2 cursor-pointer relative  transition-transform duration-200 ease-out
     hover:scale-[0.97]">
                     <div className="flex flex-row-reverse items-center gap-[8px] px-[13px] py-[6px] rounded-[99px] font-manrope text-[13px] lg:text-[16px] font-bold absolute top-4 left-4 md:top-3 md:left-3 lg:top-5 lg:left-5 bg-[#155535] text-[#00D46A]">
-                      {result?.status}
+                      {result?.status && STATUS_LABEL[result.status]}
                       <div className="w-[11px] h-[11px] lg:w-[14px] lg:h-[14px] rounded-full bg-[#00D46A]"></div>
                     </div>
 
@@ -203,10 +205,11 @@ const SectionTwo = () => {
                       {/* photo - fills the whole card, anchored to the top
                           (object-top) so the head sits high on the card
                           instead of being pushed down toward the panel. */}
-                      <img
+                      <PlayerImage
                         src={result.playerPhoto ? result.playerPhoto : silhouette}
                         alt=""
                         className="absolute inset-0 z-10 w-full h-full object-cover object-top"
+                        skeletonClassName="absolute inset-0 z-10 w-full h-full"
                       />
 
                       {/* gradient - overlays only the lower portion of the photo (shoulder height) */}
@@ -238,12 +241,22 @@ const SectionTwo = () => {
                     </div>
 
                     <div className="h-full w-[97px] md:w-[104px] lg:w-[122px] rounded-r-3xl overflow-hidden flex flex-col justify-between">
-                      {/* G/A — optional stat, only shown once an admin has actually recorded a goal or assist */}
-                      {(result.goals + result.assists) > 0 && (
-                        <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] flex flex-col justify-center items-center">
-                          <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">G/A</span>
-                          <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.goals + result.assists}</span>
-                        </div>
+                      {/* G/A (outfield) or Saves/Clean Sheets (goalkeeper) — optional
+                          stat, only shown once an admin has actually recorded one */}
+                      {result.position === "GK" ? (
+                        (result.saves + result.cleanSheets) > 0 && (
+                          <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] flex flex-col justify-center items-center">
+                            <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">SV/CS</span>
+                            <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.saves + result.cleanSheets}</span>
+                          </div>
+                        )
+                      ) : (
+                        (result.goals + result.assists) > 0 && (
+                          <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] flex flex-col justify-center items-center">
+                            <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">G/A</span>
+                            <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.goals + result.assists}</span>
+                          </div>
+                        )
                       )}
 
                       {/* APP. — optional, only shown once an admin has recorded an appearance count */}
@@ -254,16 +267,20 @@ const SectionTwo = () => {
                         </div>
                       )}
 
-                      {/* current club — optional field, only shown once an admin actually sets it */}
-                      {result.currentClubName && (
-                        <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] flex justify-center items-end pb-5">
+                      {/* current club — always rendered so every card is the same
+                          height; shows a "Retired" badge for a retired player, and
+                          the default udeSportLogo mark as a placeholder otherwise. */}
+                      <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] flex justify-center items-end pb-5">
+                        {result.status === "RETIRED" ? (
+                          <span className="font-manrope font-bold text-[11px] lg:text-[13px] text-white text-center leading-tight px-1">Retired</span>
+                        ) : (
                           <img
                             src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo}
                             alt=""
                             className='w-[53px] h-[53px]'
                           />
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </CarouselItem>

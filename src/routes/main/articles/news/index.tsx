@@ -50,13 +50,15 @@ function ArticleCardSkeleton({ variant }: { variant: 'featured' | 'grid' }) {
 export function ArticleCard({ article, variant }: { article: NewsArticle; variant: 'featured' | 'grid' }) {
   return (
     <article className={`${variant === 'featured' ? 'article-card--featured' : 'article-card--grid'} font-manrope py-6 md:py-8 lg:py-10 flex flex-col gap-2 hover:scale-105 transition-transform`}>
-      <div>
+      <Link to={`/news/${article.id}`}>
         <img className='h-full w-full' src={article.coverImage ? article.coverImage : news} alt={article.headline} loading="lazy" />
-      </div>
+      </Link>
       <span className={`pill ${CATEGORY_STYLE[article.category]} w-36 text-center font-bold py-1`}>
         • {CATEGORY_LABEL[article.category]}
       </span>
-      <h3 className='font-bold text-[17px] md:text-[18px] lg:text-[20px] text-[#1A1A1A] dark:text-white'>{article.headline}</h3>
+      <Link to={`/news/${article.id}`}>
+        <h3 className='font-bold text-[17px] md:text-[18px] lg:text-[20px] text-[#1A1A1A] dark:text-white hover:text-[#00A553] dark:hover:text-[#00A553] transition-colors'>{article.headline}</h3>
+      </Link>
       <p className='text-[14px] md:text-[15px] lg:text-[15px] text-[#464646] dark:text-gray-400'>{article.excerpt}</p>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
