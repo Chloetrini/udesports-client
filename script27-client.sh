@@ -1,3 +1,10 @@
+#!/bin/bash
+set -e
+
+echo "Applying script27: redesigns the Current/New Club Name+Logo section into two clearer grouped boxes (was a cramped 4-column grid that mismatched row heights once the logo upload row was added), and adds a note in the admin form when a player is marked Retired explaining the club logo fields will be hidden in favor of the Retired badge on the public site."
+
+mkdir -p "src/routes/admin/add-player"
+cat > "src/routes/admin/add-player/index.tsx" << 'UDESPORT_EOF_MARKER'
 // import React from 'react'
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
@@ -744,3 +751,6 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+UDESPORT_EOF_MARKER
+
+echo "Done. Now run: npx tsc --noEmit -p tsconfig.app.json && npx eslint . && npm run build"
