@@ -326,38 +326,21 @@ const AddPlayer = () => {
 
         {/* Featured — controls whether this player shows in the homepage
             "Featured Players" carousel (SectionTwo.tsx filters on this flag).
-            Retired — a quick on/off next to it for the same status you can
-            also set via the "Current Status" dropdown further down; this
-            just makes the Retired flag a single obvious click instead of
-            something you have to know to look for inside a select. Checking
-            it sets status to RETIRED, unchecking it sets status back to
-            FREE — both stay in sync with the dropdown either way. */}
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4">
-          <div className="flex items-center gap-2">
-            <input
-              id="isFeatured"
-              type="checkbox"
-              checked={isFeatured}
-              onChange={(e) => setIsFeatured(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 dark:border-white/20 accent-[#00D46A] focus:ring-green-400 cursor-pointer"
-            />
-            <label htmlFor="isFeatured" className="text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
-              Show on homepage "Featured Players" section
-            </label>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <input
-              id="isRetired"
-              type="checkbox"
-              checked={status === "RETIRED"}
-              onChange={(e) => setStatus(e.target.checked ? "RETIRED" : "FREE")}
-              className="w-4 h-4 rounded border-gray-300 dark:border-white/20 accent-[#00D46A] focus:ring-green-400 cursor-pointer"
-            />
-            <label htmlFor="isRetired" className="text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
-              Mark this player as Retired
-            </label>
-          </div>
+            (Retired is set via the "Current Status" dropdown further down —
+            a separate checkbox for it was tried and removed, since toggling
+            it off reset any Transferred/Negotiation status back to Free
+            instead of restoring it, and the dropdown alone already works.) */}
+        <div className="flex items-center gap-2 mt-4">
+          <input
+            id="isFeatured"
+            type="checkbox"
+            checked={isFeatured}
+            onChange={(e) => setIsFeatured(e.target.checked)}
+            className="w-4 h-4 rounded border-gray-300 dark:border-white/20 accent-[#00D46A] focus:ring-green-400 cursor-pointer"
+          />
+          <label htmlFor="isFeatured" className="text-xs font-medium text-gray-600 dark:text-gray-300 cursor-pointer">
+            Show on homepage "Featured Players" section
+          </label>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
