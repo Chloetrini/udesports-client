@@ -7,6 +7,7 @@ import silhouette from '@/assets/silhouette.png'
 import type { AgeGroup, Status } from './FilterPlayers';
 import { STATUS_LABEL } from '@/lib/playerStatus';
 import PlayerImage from './PlayerImage';
+import { Award } from 'lucide-react';
 
 
 type FetchPlayersProps = {
@@ -244,7 +245,14 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 <div
                   className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] flex justify-center items-end pb-3'>
                   {result.status === "RETIRED" ? (
-                    <span className='font-manrope font-bold text-[8px] lg:text-[9px] text-white text-center leading-tight px-0.5'>Retired</span>
+                    <div className='flex flex-col items-center gap-1'>
+                      <div className='w-[22px] h-[22px] lg:w-[26px] lg:h-[26px] rounded-full bg-white/15 border border-white/30 flex items-center justify-center'>
+                        <Award className='w-[12px] h-[12px] lg:w-[14px] lg:h-[14px] text-white' strokeWidth={2} />
+                      </div>
+                      <span className='font-manrope font-bold text-[7px] lg:text-[8px] text-white text-center leading-none tracking-wide'>
+                        RETIRED
+                      </span>
+                    </div>
                   ) : (
                     <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className='w-[30px] h-[30px]' />
                   )}
@@ -261,8 +269,3 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 }
 
 export default FetchPlayers
-
-
-
-
-

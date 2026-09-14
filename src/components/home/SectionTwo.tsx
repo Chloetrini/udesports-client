@@ -12,6 +12,7 @@ import { useGetPlayers } from '@/hooks/useApi';
 import type { Player } from '@/types/dataTypes';
 import { getAge } from '@/hooks/getAge';
 import { STATUS_LABEL } from '@/lib/playerStatus';
+import { Award } from 'lucide-react';
 import PlayerImage from '@/components/player-information/PlayerImage';
 import PageWrapper from '../page-wrapper';
 
@@ -272,7 +273,14 @@ const SectionTwo = () => {
                           the default udeSportLogo mark as a placeholder otherwise. */}
                       <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] flex justify-center items-end pb-5">
                         {result.status === "RETIRED" ? (
-                          <span className="font-manrope font-bold text-[11px] lg:text-[13px] text-white text-center leading-tight px-1">Retired</span>
+                          <div className="flex flex-col items-center gap-1.5">
+                            <div className="w-[34px] h-[34px] lg:w-[46px] lg:h-[46px] rounded-full bg-white/15 border border-white/30 flex items-center justify-center">
+                              <Award className="w-[18px] h-[18px] lg:w-[24px] lg:h-[24px] text-white" strokeWidth={2} />
+                            </div>
+                            <span className="font-manrope font-bold text-[10px] lg:text-[12px] text-white text-center leading-none tracking-wide">
+                              RETIRED
+                            </span>
+                          </div>
                         ) : (
                           <img
                             src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo}
@@ -294,7 +302,3 @@ const SectionTwo = () => {
 };
 
 export default SectionTwo;
-
-
-
-
