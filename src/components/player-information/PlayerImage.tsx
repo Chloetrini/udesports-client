@@ -14,8 +14,18 @@ type PlayerImageProps = {
 // image has actually finished loading, instead of a blank gap or a pop-in.
 // Each instance tracks its own loaded state, so this is safe to use inside
 // a list of many cards.
+//
+// If the image fails to load (broken URL, blocked host, network error) we
+// stop the pulsing and fall back to a plain static placeholder — otherwise
+// a single bad image would pulse forever and look indistinguishable from
+// "no image is showing".
 const PlayerImage = ({ src, alt, className, skeletonClassName }: PlayerImageProps) => {
   const [loaded, setLoaded] = useState(false)
+  const [failed, setFailed] = useState(false)
+
+  if (failed) {
+    return <div className={`${skeletonClassName ?? className} bg-gray-200 dark:bg-white/10`} />
+  }
 
   return (
     <>
@@ -27,6 +37,7 @@ const PlayerImage = ({ src, alt, className, skeletonClassName }: PlayerImageProp
         alt={alt}
         loading="lazy"
         onLoad={() => setLoaded(true)}
+        onError={() => setFailed(true)}
         className={`${className} ${loaded ? '' : 'hidden'}`}
       />
     </>
