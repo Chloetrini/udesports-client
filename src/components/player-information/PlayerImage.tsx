@@ -19,6 +19,14 @@ type PlayerImageProps = {
 // stop the pulsing and fall back to a plain static placeholder — otherwise
 // a single bad image would pulse forever and look indistinguishable from
 // "no image is showing".
+//
+// IMPORTANT: the <img> is hidden via opacity, not `display:none`/`hidden`.
+// Native `loading="lazy"` never fetches an image that isn't part of the
+// rendered layout (display:none has no box to intersect the viewport with),
+// so hiding it that way created a deadlock — the image stayed hidden until
+// it loaded, but could never load while it was hidden. Opacity keeps it in
+// the layout (so the browser actually requests it) while still keeping it
+// invisible until it's ready.
 const PlayerImage = ({ src, alt, className, skeletonClassName }: PlayerImageProps) => {
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -38,7 +46,7 @@ const PlayerImage = ({ src, alt, className, skeletonClassName }: PlayerImageProp
         loading="lazy"
         onLoad={() => setLoaded(true)}
         onError={() => setFailed(true)}
-        className={`${className} ${loaded ? '' : 'hidden'}`}
+        className={`${className} transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
       />
     </>
   )
