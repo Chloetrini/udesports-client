@@ -51,7 +51,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             src={closeIcon}
             alt="close"
             onClick={onClose}
-            className="w-[27px] h-[27px] absolute md:top-6 md:right-6 top-3 right-2 cursor-pointer z-10"
+            className="w-[27px] h-[27px] absolute md:top-6 md:right-6 top-3 right-2 cursor-pointer z-10 dark:invert"
           />
 
           <div className="flex flex-col md:flex-row md:gap-10 gap-15 mt-4 pt-10 md:pt-0">
@@ -123,7 +123,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
             src={closeIcon}
             alt="close"
             onClick={onClose}
-            className="w-[27px] h-[27px] absolute md:top-6 md:right-6 top-3 right-2 cursor-pointer z-10"
+            className="w-[27px] h-[27px] absolute md:top-6 md:right-6 top-3 right-2 cursor-pointer z-10 dark:invert"
           />
 
           <svg
@@ -176,7 +176,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
           src={closeIcon}
           alt="close"
           onClick={onClose}
-          className="w-[27px] h-[27px] absolute top-3 right-1 md:top-6 md:right-6 cursor-pointer z-10"
+          className="w-[27px] h-[27px] absolute top-3 right-1 md:top-6 md:right-6 cursor-pointer z-10 dark:invert"
         />
 
         <div className='flex flex-col gap-[8px] relative md:hidden'>
@@ -197,6 +197,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
                 src={player?.playerPhoto ? player?.playerPhoto : silhouette}
                 alt=""
                 className='w-[270px] h-[280px] md:w-[280px] md:h-[290px] object-contain object-bottom'
+                width={720}
               />
             </div>
           </div>
@@ -284,9 +285,9 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 
             {/* Optional field — only shown once an admin actually sets a current club */}
             {player?.currentClubName && (
-              <div className="flex gap-4">
-                <div>
-                  <img src={player.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="w-[50px]" />
+              <div className="flex items-center gap-4">
+                <div className="w-[50px] h-[50px] flex items-center justify-center shrink-0">
+                  <img src={player.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="max-w-[50px] max-h-[50px] object-contain" />
                 </div>
                 <div>
                   <p className="font-manrope font-medium text-lg text-[#060A0F] dark:text-white">Club Name</p>
@@ -331,7 +332,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 
 
           <div className=" md:w-[300px] lg:w-[400px]">
-            <p className="font-bebas text-[#00D46A] text-[26px]">BRIEF HISTORY</p>
+            <p className="pb-2 font-bebas text-[#00D46A] text-[26px]">BRIEF HISTORY</p>
             <div className="font-manrope font-medium text-[#8E8E8E] dark:text-gray-400 leading-[24px] lg:text-[16px] w-[90%]">
               <p>
                 {player?.playerHistory ? player.playerHistory : "No Player History"}
@@ -345,7 +346,3 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 }
 
 export default PlayerFullDetails
-
-
-
-

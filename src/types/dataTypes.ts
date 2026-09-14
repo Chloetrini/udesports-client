@@ -40,25 +40,23 @@ export type AdminRole = "SUPER_ADMIN" | "ADMIN" | "SUB_ADMIN";
 
 export type NewsCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT';
 
-// export interface Admin {
-//   id: string;
-//   name: string;
-//   avatarUrl?: string;
-// }
-
+// Matches the backend News model exactly. There's no excerpt/subtitle/date/
+// authorPhoto on the backend — summary stands in for excerpt, the category
+// badge stands in for subtitle, createdAt stands in for date, and there's no
+// per-article author photo (just the admin's name).
 export interface NewsArticle {
   id: string;
   category: NewsCategory;
   headline: string;
-  excerpt:string;
-  subtitle: string | null;
+  summary: string | null;
   body: string;
-  coverImage: string;
-  author: string;
-  date: string;
-  published:boolean
-  authorPhoto: string
-  createdAt: string
+  coverImage: string | null;
+  published: boolean;
+  featuredPlayerId: string | null;
+  featuredPlayer: { id: string; playerName: string } | null;
+  author: { name: string };
+  createdAt: string;
+  updatedAt: string;
 }
 
 // export interface Article {
@@ -101,12 +99,19 @@ export interface Headlines {
   headline: string;
 }
 
+// Matches the backend GalleryItem model exactly. A gallery item is a single
+// photo — no video type on the backend — usually with a link to the
+// Instagram post it came from (instaUrl), which is what "The Archives"
+// carousel on the home page links out to.
 export interface GalleryImages {
- id: string;
- type: "image" | "video";
- link: string;
- title: string;
- description: string;
+  id: string;
+  headline: string | null;
+  instaUrl: string | null;
+  description: string | null;
+  coverImage: string | null;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 export type QuickUpdateCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT' | 'MILESTONE' | 'INTERNATIONAL';
 

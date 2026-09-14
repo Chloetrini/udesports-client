@@ -2,9 +2,22 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchAllPlayers, fetchAllPlayersAdmin, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer } from '../services/Players'
 import { login as loginRequest, logout as logoutRequest, getMe } from '@/services/Auth'
 import { fetchAllTestimonials  } from '../services/Testimonials'
-import { fetchNewsArticles } from '@/services/Articles'
+import {
+  fetchNewsArticles,
+  fetchNewsArticlesAdmin,
+  fetchSingleNewsArticle,
+  createNewsArticle,
+  updateNewsArticle,
+  deleteNewsArticle,
+} from '@/services/Articles'
 import { fetchAllHeadlines } from '@/services/Headlines'
-import { fetchGalleryImages } from '@/services/GalleryImages'
+import {
+  fetchGalleryImages,
+  fetchGalleryImagesAdmin,
+  createGalleryItem,
+  updateGalleryItem,
+  deleteGalleryItem,
+} from '@/services/GalleryImages'
 import { fetchQuickUpdates } from '@/services/QuickUpdates'
 import { fetchStaff } from '@/services/Staff'
 import { fetchAwards } from '@/services/Awards'
@@ -137,10 +150,95 @@ export const useGetNewsArticles = () => {
   })
 }
 
+// Admin-only — includes drafts. ['news', ...] invalidation below covers this
+// too via React Query's prefix matching, same as players/gallery.
+export const useGetNewsArticlesAdmin = () => {
+  return useQuery({
+    queryKey: ['news', 'admin'],
+    queryFn: fetchNewsArticlesAdmin
+  })
+}
+
+export const useGetSingleNewsArticle = (id?: string) => {
+  return useQuery({
+    queryKey: ['news', 'article', id],
+    queryFn: () => fetchSingleNewsArticle(id as string),
+    enabled: !!id,
+  })
+}
+
+export const useCreateNewsArticle = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createNewsArticle(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['news'] })
+    },
+  })
+}
+
+export const useUpdateNewsArticle = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateNewsArticle(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['news'] })
+    },
+  })
+}
+
+export const useDeleteNewsArticle = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteNewsArticle(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['news'] })
+    },
+  })
+}
+
 export const useGetGalleryImages = () => {
   return useQuery({
-    queryKey: ["images"],
+    queryKey: ["gallery"],
     queryFn: fetchGalleryImages
+  })
+}
+
+// Admin-only — includes drafts.
+export const useGetGalleryAdmin = () => {
+  return useQuery({
+    queryKey: ["gallery", "admin"],
+    queryFn: fetchGalleryImagesAdmin
+  })
+}
+
+export const useCreateGalleryItem = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createGalleryItem(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gallery"] })
+    },
+  })
+}
+
+export const useUpdateGalleryItem = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateGalleryItem(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gallery"] })
+    },
+  })
+}
+
+export const useDeleteGalleryItem = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteGalleryItem(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gallery"] })
+    },
   })
 }
 

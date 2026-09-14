@@ -1,29 +1,67 @@
-// import React from 'react'
-import { useNavigate } from "react-router";
-import { ArrowLeft, List, ListOrdered, Quote, Eye, Share2, ImagePlus, CircleUserRound } from "lucide-react";
-import { useState } from "react";
-import { useParams } from "react-router";
-import { articleHistory } from "@/data/articles";
+import { useNavigate, useParams } from "react-router";
+import { ArrowLeft, List, ListOrdered, Quote, ImagePlus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import {
+  useGetSingleNewsArticle,
+  useGetPlayersAdmin,
+  useCreateNewsArticle,
+  useUpdateNewsArticle,
+} from "@/hooks/useApi";
+import type { NewsArticle, NewsCategory } from "@/types/dataTypes";
 
-export default function NewsArticle() {
+const CATEGORY_OPTIONS: { value: NewsCategory; label: string }[] = [
+  { value: "TRANSFER", label: "Transfer" },
+  { value: "ACADEMY", label: "Academy" },
+  { value: "ANNOUNCEMENT", label: "Announcement" },
+];
+
+export default function NewsArticleForm() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = !!id;
+
+  const { data: article, isLoading: articleLoading } = useGetSingleNewsArticle(id);
+  const { data: players } = useGetPlayersAdmin();
+  const createMutation = useCreateNewsArticle();
+  const updateMutation = useUpdateNewsArticle();
+
   const [coverImage, setCoverImage] = useState<string | null>(null);
-  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [headline, setHeadline] = useState("");
-  const [category, setCategory] = useState("Transfer");
-  const [featuredPlayer, setFeaturedPlayer] = useState("");
+  const [category, setCategory] = useState<NewsCategory>("TRANSFER");
+  const [featuredPlayerId, setFeaturedPlayerId] = useState("");
   const [summary, setSummary] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
-
-  const { index } = useParams();
-  const article = index !== undefined ? articleHistory[Number(index)] : null;
 
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
   });
+
+  // Sync the form once the article arrives — adjusted during render (same
+  // pattern used on the gallery/player edit forms) rather than in an effect,
+  // so it happens in the same commit instead of an extra render pass.
+  const [syncedArticle, setSyncedArticle] = useState<NewsArticle | undefined>(undefined);
+  if (article && article !== syncedArticle) {
+    setSyncedArticle(article);
+    setHeadline(article.headline);
+    setCategory(article.category);
+    setSummary(article.summary ?? "");
+    setFeaturedPlayerId(article.featuredPlayerId ?? "");
+    setCoverImage(article.coverImage ?? null);
+  }
+
+  // The editor instance isn't ready on the very first render, and setting
+  // its content isn't a React state update, so this is a plain effect (not
+  // the render-time pattern above) keyed on the article and the editor.
+  useEffect(() => {
+    if (article && editor) {
+      editor.commands.setContent(article.body ?? "");
+    }
+  }, [article, editor]);
 
   function validate() {
     const newError: Record<string, string> = {};
@@ -35,13 +73,40 @@ export default function NewsArticle() {
     return newError;
   }
 
-  function handlePublish() {
+  async function handleSave(publishTarget: boolean) {
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setError(newErrors);
       return;
     }
-    setShowPublishModal(true);
+
+    const payload: Record<string, unknown> = {
+      headline: headline.trim(),
+      category,
+      summary: summary.trim(),
+      body: editor?.getHTML() ?? "",
+      featuredPlayerId: featuredPlayerId || undefined,
+      isDraft: !publishTarget,
+    };
+    if (coverImageFile) payload.coverImage = coverImageFile;
+
+    try {
+      if (isEditMode && id) {
+        await updateMutation.mutateAsync({ id, data: payload });
+      } else {
+        await createMutation.mutateAsync(payload);
+      }
+      toast.success(publishTarget ? "Article published" : "Saved as draft");
+      navigate("/admin/news");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
+  }
+
+  const isSaving = createMutation.isPending || updateMutation.isPending;
+
+  if (isEditMode && articleLoading) {
+    return <div className="p-6 text-sm text-gray-400">Loading…</div>;
   }
 
   return (
@@ -53,8 +118,13 @@ export default function NewsArticle() {
         <div>
           <h1 className="text-2xl">
             <strong className="text-gray-500">NEWS UPDATE</strong>{" "}
-            <span className="text-gray-900 dark:text-white">››</span>{" "}
-            <strong className="text-gray-900 dark:text-white">{article ? "EDIT ARTICLE" : "NEWS ARTICLE"}</strong>
+            <span className="text-gray-900 dark:text-white">›</span>{" "}
+            <strong className="text-gray-900 dark:text-white">{isEditMode ? "EDIT ARTICLE" : "NEWS ARTICLE"}</strong>
+            {isEditMode && article && !article.published && (
+              <span className="ml-3 align-middle text-xs font-medium px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400">
+                Draft — not visible on the public site
+              </span>
+            )}
           </h1>
           <p className="text-[15px] text-gray-400 mt-0.5">
             Publish and manage transfer updates, academy news, and announcements
@@ -104,27 +174,31 @@ export default function NewsArticle() {
             </label>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => setCategory(e.target.value as NewsCategory)}
               className="border bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-300 focus:outline-none focus:border-green-500"
             >
-              <option>Transfer</option>
-              <option>Academy</option>
-              <option>Negotiation</option>
-              <option>International</option>
+              {CATEGORY_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
             </select>
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">
-              Featured Player
+              Featured Player <span className="text-gray-400 font-normal">(Optional)</span>
             </label>
-            <input
-              type="text"
-              placeholder="Player Name"
-              value={featuredPlayer}
-              onChange={(e) => setFeaturedPlayer(e.target.value)}
+            <select
+              value={featuredPlayerId}
+              onChange={(e) => setFeaturedPlayerId(e.target.value)}
               className="border bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/15 text-gray-900 dark:text-white px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-500"
-            />
+            >
+              <option value="">None</option>
+              {players?.map((player) => (
+                <option key={player.id} value={player.id}>
+                  {player.playerFullName || player.playerName}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -176,7 +250,10 @@ export default function NewsArticle() {
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) setCoverImage(URL.createObjectURL(file));
+                  if (file) {
+                    setCoverImageFile(file);
+                    setCoverImage(URL.createObjectURL(file));
+                  }
                 }}
               />
             </label>
@@ -312,12 +389,17 @@ export default function NewsArticle() {
         {/* buttons */}
         <div className="flex items-center gap-3 flex-wrap">
           <button
-            onClick={handlePublish}
-            className="bg-white dark:bg-white/5 hover:bg-green-500 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-black text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 dark:border-white/15 transition-colors"
+            onClick={() => handleSave(true)}
+            disabled={isSaving}
+            className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {article ? "Save Changes" : "+ Publish"}
+            {isSaving ? "Saving…" : isEditMode ? "Save Changes" : "+ Publish"}
           </button>
-          <button className="bg-white dark:bg-white/5 hover:bg-green-500 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-black text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 dark:border-white/15 transition-colors">
+          <button
+            onClick={() => handleSave(false)}
+            disabled={isSaving}
+            className="bg-white dark:bg-white/5 hover:bg-green-500 text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-black text-sm font-medium px-6 py-2 rounded-lg border border-gray-300 dark:border-white/15 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
             Save as Draft
           </button>
           <button
@@ -328,101 +410,6 @@ export default function NewsArticle() {
           </button>
         </div>
       </div>
-
-      {/* Publish modal */}
-      {showPublishModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-[#0d1117] rounded-xl shadow-xl w-full max-w-2xl overflow-hidden border-2 border-green-500">
-            <div className="p-8 pb-0 pt-0">
-              {coverImage && (
-                <img
-                  src={coverImage}
-                  alt="Cover image"
-                  className="w-full h-48 object-cover"
-                />
-              )}
-
-              <div className="pb-8">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mt-3 mb-1">
-                  {headline}
-                </h3>
-
-                {/* Summary */}
-                <p className="text-xs text-gray-400 mb-4">{summary}</p>
-
-                {/* Author views and shares */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-semibold">
-                      <CircleUserRound className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                        Anwar pandar
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        March 16, 2022 · 6 min read
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <div className="text-center">
-                      <p className="text-xs text-gray-400 flex items-center gap-1">
-                        <Eye size={11} /> Views
-                      </p>
-                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">1.6K</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xs text-gray-400 flex items-center gap-1">
-                        <Share2 size={11} />
-                        Shares
-                      </p>
-                      <p className="text-xs font-medium text-gray-700 dark:text-gray-300">14K</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Featured Player */}
-                {featuredPlayer && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
-                    Featured Player:{" "}
-                    <span className="font-medium text-gray-700 dark:text-gray-200">
-                      {featuredPlayer}
-                    </span>
-                  </p>
-                )}
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">
-                  Are you sure you want to{" "}
-                  <span className="font-semibold text-gray-900 dark:text-white">
-                    {" "}
-                    {article ? "save changes to" : "publish"}
-                  </span>{" "}
-                  this Article?
-                </p>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => {
-                      setShowPublishModal(false);
-                      navigate("/admin/news");
-                    }}
-                    className="bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-10 py-1.5 rounded-lg transition-colors"
-                  >
-                    {article ? "Save Changes" : "+ Publish"}
-                  </button>
-                  <button
-                    onClick={() => setShowPublishModal(false)}
-                    className="bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 text-sm font-medium px-10 py-1.5 rounded-lg transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
-

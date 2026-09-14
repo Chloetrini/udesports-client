@@ -211,6 +211,7 @@ const SectionTwo = () => {
                         alt=""
                         className="absolute inset-0 z-10 w-full h-full object-cover object-top"
                         skeletonClassName="absolute inset-0 z-10 w-full h-full"
+                        width={800}
                       />
 
                       {/* gradient - overlays only the lower portion of the photo (shoulder height) */}

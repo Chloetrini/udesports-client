@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { X, Trash2 } from "lucide-react"
+import { toast } from "react-toastify"
 import {
   useGetNotifications,
   useMarkNotificationRead,
@@ -16,6 +17,26 @@ function initialsFor(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
+function NotificationRowSkeleton() {
+  return (
+    <tr className="animate-pulse">
+      <td className="px-5 py-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 shrink-0" />
+          <div className="space-y-1.5">
+            <div className="h-3 w-28 rounded bg-gray-200 dark:bg-white/10" />
+            <div className="h-2.5 w-36 rounded bg-gray-200 dark:bg-white/10" />
+          </div>
+        </div>
+      </td>
+      <td className="px-5 py-4"><div className="h-3 w-40 rounded bg-gray-200 dark:bg-white/10" /></td>
+      <td className="px-5 py-4"><div className="h-3 w-16 rounded bg-gray-200 dark:bg-white/10" /></td>
+      <td className="px-5 py-4"><div className="h-5 w-16 rounded-full bg-gray-200 dark:bg-white/10" /></td>
+      <td className="px-5 py-4"><div className="h-6 w-24 rounded bg-gray-200 dark:bg-white/10" /></td>
+    </tr>
+  )
+}
+
 export default function Notifications() {
   const { data, isLoading, isError } = useGetNotifications()
   const markReadMutation = useMarkNotificationRead()
@@ -23,31 +44,28 @@ export default function Notifications() {
   const deleteMutation = useDeleteNotification()
 
   const [selectedNotification, setSelectedNotification] = useState<AppNotification | null>(null)
-  const [toast, setToast] = useState<string | null>(null)
 
   const notificationList = data?.notifications ?? []
 
-  function showToast(message: string) {
-    setToast(message)
-    setTimeout(() => setToast(null), 3000)
-  }
-
   function markAsRead(id: string) {
     markReadMutation.mutate(id, {
-      onSuccess: () => showToast("Notification read — Message marked as read"),
+      onSuccess: () => toast.success("Marked as read"),
+      onError: () => toast.error("Couldn't mark this as read"),
     })
     setSelectedNotification(null)
   }
 
   function markAllAsRead() {
     markAllReadMutation.mutate(undefined, {
-      onSuccess: () => showToast("All notifications marked as read"),
+      onSuccess: () => toast.success("All notifications marked as read"),
+      onError: () => toast.error("Couldn't mark all as read"),
     })
   }
 
   function handleDelete(id: string) {
     deleteMutation.mutate(id, {
-      onSuccess: () => showToast("Notification deleted"),
+      onSuccess: () => toast.success("Notification deleted"),
+      onError: () => toast.error("Couldn't delete this notification"),
     })
     setSelectedNotification(null)
   }
@@ -55,7 +73,7 @@ export default function Notifications() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="flex items-start justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-6">
         <div>
           <p className="text-xs font-medium text-green-500 mb-1">Communication</p>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">NOTIFICATIONS</h1>
@@ -64,82 +82,107 @@ export default function Notifications() {
         <button
           onClick={markAllAsRead}
           disabled={notificationList.length === 0 || markAllReadMutation.isPending}
-          className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
         >
           + Mark all as read
         </button>
       </div>
 
-      {isLoading && (
-        <div className="flex flex-col gap-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="rounded-xl border border-gray-100 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm p-5 animate-pulse h-24" />
-          ))}
-        </div>
-      )}
-
       {isError && (
-        <p className="text-sm text-red-500">Couldn't load notifications. Please refresh the page.</p>
+        <p className="text-sm text-red-500 mb-4">Couldn't load notifications. Please refresh the page.</p>
       )}
 
-      {!isLoading && !isError && notificationList.length === 0 && (
-        <p className="text-sm text-gray-400">No messages yet — submissions from the Contact page will show up here.</p>
-      )}
+      {/* Table Section */}
+      <div className="bg-white dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-gray-100 dark:border-white/10 text-gray-400 text-xs">
+              <th className="text-left px-5 py-3 font-medium">Sender</th>
+              <th className="text-left px-5 py-3 font-medium">Message</th>
+              <th className="text-left px-5 py-3 font-medium">Received</th>
+              <th className="text-left px-5 py-3 font-medium">Status</th>
+              <th className="text-left px-5 py-3 font-medium">Action</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-50 dark:divide-white/10">
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, i) => <NotificationRowSkeleton key={i} />)
+            ) : notificationList.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="px-5 py-8 text-center text-sm text-gray-400">
+                  No messages yet — submissions from the Contact page will show up here.
+                </td>
+              </tr>
+            ) : (
+              notificationList.map((notificat) => (
+                <tr
+                  key={notificat.id}
+                  onClick={() => setSelectedNotification(notificat)}
+                  className={`hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer ${notificat.isRead ? "opacity-60" : ""}`}
+                >
+                  {/* Sender */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-gray-900 text-xs font-semibold shrink-0">
+                        {initialsFor(notificat.senderName)}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">{notificat.senderName}</p>
+                        {notificat.email && <p className="text-xs text-gray-400">{notificat.email}</p>}
+                      </div>
+                    </div>
+                  </td>
 
-      {/* Notification list */}
-      <div className="flex flex-col gap-3">
-        {notificationList.map((notificat) => (
-          <div key={notificat.id} className={`rounded-xl border border-gray-100 dark:border-white/10 bg-white dark:bg-white/5 hover:border-green-400 focus:outline-none shadow-sm p-5 ${notificat.isRead ? 'opacity-40' : ''}`}>
-            <div className="flex items-start gap-3">
-              {/* Avatar */}
-              <div className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-gray-900 text-xs font-semibold shrink-0">
-                {initialsFor(notificat.senderName)}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-0.5">
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{notificat.senderName}</p>
-                  <p className="text-xs text-gray-400">{formatRelativeTime(notificat.createdAt)}</p>
-                </div>
-                <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{notificat.subject}</p>
-                <p className="text-xs text-gray-400 mb-3 line-clamp-1">{notificat.body}</p>
+                  {/* Message */}
+                  <td className="px-5 py-4 max-w-xs">
+                    <p className="text-gray-700 dark:text-gray-300 font-medium truncate">{notificat.subject}</p>
+                    <p className="text-xs text-gray-400 truncate">{notificat.body}</p>
+                  </td>
 
-                <div className="flex items-center gap-4">
-                  {notificat.email && (
-                    <a
-                      href={`mailto:${notificat.email}?subject=${encodeURIComponent(`Re: ${notificat.subject}`)}`}
-                      className="text-xs text-gray-600 dark:text-gray-300 hover:text-green-500 transition-colors"
+                  <td className="px-5 py-4 text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                    {formatRelativeTime(notificat.createdAt)}
+                  </td>
+
+                  {/* Status */}
+                  <td className="px-5 py-4">
+                    <span
+                      className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                        notificat.isRead
+                          ? "bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-400"
+                          : "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400"
+                      }`}
                     >
-                      Reply Via Mail
-                    </a>
-                  )}
+                      {notificat.isRead ? "Read" : "Unread"}
+                    </span>
+                  </td>
 
-                  {!notificat.isRead && (
-                    <button onClick={() => markAsRead(notificat.id)} className="text-xs font-bold text-gray-600 dark:text-gray-300 hover:text-green-500 transition-colors cursor-pointer">
-                      Mark as read
-                    </button>
-                  )}
-
-                  <button
-                    onClick={() => setSelectedNotification(notificat)}
-                    className="text-xs text-gray-600 dark:text-gray-300 hover:text-green-500 transition-colors cursor-pointer"
-                  >
-                    View
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(notificat.id)}
-                    className="text-xs text-gray-600 dark:text-gray-300 hover:text-red-500 transition-colors cursor-pointer flex items-center gap-1 ml-auto"
-                  >
-                    <Trash2 size={12} /> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+                  {/* Actions */}
+                  <td className="px-5 py-4">
+                    <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                      {!notificat.isRead && (
+                        <button
+                          onClick={() => markAsRead(notificat.id)}
+                          className="text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-3 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors"
+                        >
+                          Mark read
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDelete(notificat.id)}
+                        className="text-xs text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 size={12} /> Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* Modal */}
+      {/* Detail modal */}
       {selectedNotification && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-[#0d1117] rounded-xl shadow-xl w-full max-w-lg border-2 border-green-500 p-8">
@@ -191,16 +234,6 @@ export default function Notifications() {
               </button>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* toast */}
-      {toast && (
-        <div className="fixed bottom-6 right-6 bg-green-500 text-white text-xs font-medium px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 z-50">
-          <div className="w-4 h-4 rounded-full bg-white/30 flex items-center justify-center">
-            ✓
-          </div>
-          {toast}
         </div>
       )}
     </div>

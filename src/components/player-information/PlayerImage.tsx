@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { optimizeImageUrl } from '@/lib/utils'
 
 type PlayerImageProps = {
   src: string
@@ -8,6 +9,10 @@ type PlayerImageProps = {
   // usually just the size/position classes without object-fit, since the
   // placeholder is a plain block, not an <img>.
   skeletonClassName?: string
+  // Pixel width to request from Cloudinary (roughly 2x the on-screen size
+  // covers retina without downloading a full-resolution original). Defaults
+  // to a sensible card-sized value.
+  width?: number
 }
 
 // Wraps a player photo with a pulsing placeholder that shows until the
@@ -27,7 +32,7 @@ type PlayerImageProps = {
 // it loaded, but could never load while it was hidden. Opacity keeps it in
 // the layout (so the browser actually requests it) while still keeping it
 // invisible until it's ready.
-const PlayerImage = ({ src, alt, className, skeletonClassName }: PlayerImageProps) => {
+const PlayerImage = ({ src, alt, className, skeletonClassName, width = 500 }: PlayerImageProps) => {
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -41,7 +46,7 @@ const PlayerImage = ({ src, alt, className, skeletonClassName }: PlayerImageProp
         <div className={`${skeletonClassName ?? className} bg-gray-200 dark:bg-white/10 animate-pulse`} />
       )}
       <img
-        src={src}
+        src={optimizeImageUrl(src, width)}
         alt={alt}
         loading="lazy"
         onLoad={() => setLoaded(true)}

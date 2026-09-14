@@ -1,5 +1,6 @@
 // import React from 'react'
 import { Users, ArrowLeftRight, Handshake, FileText, Newspaper, RefreshCw, Mail, Trophy } from "lucide-react"
+import { useNavigate } from "react-router"
 import { adminUser } from "@/lib/adminUser"
 import { useGetNewsArticles, useGetPlayersAdmin } from "@/hooks/useApi";
 
@@ -73,6 +74,7 @@ function StatRowSkeleton() {
 }
 
 export default function Dashboard() {
+    const navigate = useNavigate();
 
     const { data: players, isLoading: loadingPlayers } = useGetPlayersAdmin();
     const { data: articles, isLoading: loadingArticles } = useGetNewsArticles();
@@ -109,13 +111,19 @@ export default function Dashboard() {
         (article) => article.published === true
     ).length ?? 0;
 
+    // Each card navigates somewhere useful instead of sitting static — the
+    // player-status cards jump straight to the (already-filterable) Player
+    // Overview page with that status pre-selected via router state, so
+    // "Completed Transfers" lands on an already-filtered list rather than
+    // needing a brand new page.
     const statCards = [
         {
             label: "Players this Season",
             value: players?.length,
             sub: 'From Last Season +13% ',
             icon: Users,
-            bg: "bg-green-300"
+            bg: "bg-green-300",
+            onClick: () => navigate("/admin/player-overview"),
         },
         {
             label: 'Completed Transfers',
@@ -123,6 +131,7 @@ export default function Dashboard() {
             sub: 'All time Record',
             icon: ArrowLeftRight,
             bg: 'bg-green-500',
+            onClick: () => navigate("/admin/player-overview", { state: { statusFilter: "TRANSFERRED" } }),
         },
         {
             label: 'Live Negotiations',
@@ -130,6 +139,7 @@ export default function Dashboard() {
             sub: 'Active Now',
             icon: Handshake,
             bg: 'bg-orange-400',
+            onClick: () => navigate("/admin/player-overview", { state: { statusFilter: "NEGOTIATION" } }),
         },
         {
             label: 'Published Article',
@@ -137,6 +147,7 @@ export default function Dashboard() {
             sub: 'New Today',
             icon: FileText,
             bg: 'bg-blue-300',
+            onClick: () => navigate("/admin/news"),
         }
     ]
 
@@ -211,7 +222,11 @@ export default function Dashboard() {
                 {loadingPlayers || loadingArticles
                     ? Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)
                     : statCards.map((card) => (
-                        <div key={card.label} className={`${card.bg} rounded-xl shadow-sm p-4`}>
+                        <div
+                            key={card.label}
+                            onClick={card.onClick}
+                            className={`${card.bg} rounded-xl shadow-sm p-4 cursor-pointer transition-transform hover:scale-[1.03]`}
+                        >
                             <card.icon size={20} className="text-black opacity-80 mb-2" />
                             <p className="text-black text-xs font-medium mb-3">{card.label}</p>
                             <p className="text-3xl font-medium text-black">{card.value}</p>

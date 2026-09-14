@@ -59,12 +59,12 @@ export function ArticleCard({ article, variant }: { article: NewsArticle; varian
       <Link to={`/news/${article.id}`}>
         <h3 className='font-bold text-[17px] md:text-[18px] lg:text-[20px] text-[#1A1A1A] dark:text-white hover:text-[#00A553] dark:hover:text-[#00A553] transition-colors'>{article.headline}</h3>
       </Link>
-      <p className='text-[14px] md:text-[15px] lg:text-[15px] text-[#464646] dark:text-gray-400'>{article.excerpt}</p>
+      <p className='text-[14px] md:text-[15px] lg:text-[15px] text-[#464646] dark:text-gray-400'>{article.summary}</p>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
-          <img src={article.authorPhoto ? article.authorPhoto : noAuthorPhoto} alt={article.author} className="h-12 w-12 md:h-14 md:w-14 lg:h-15 lg:w-15 rounded-full" />
+          <img src={noAuthorPhoto} alt={article.author.name} className="h-12 w-12 md:h-14 md:w-14 lg:h-15 lg:w-15 rounded-full" />
           <div className='flex flex-col'>
-            <span className='text-[14px] md:text-[15px] lg:text-[15px] text-[#1A1A1A] dark:text-white font-medium'>{article.author}</span>
+            <span className='text-[14px] md:text-[15px] lg:text-[15px] text-[#1A1A1A] dark:text-white font-medium'>{article.author.name}</span>
             <time className='text-[13px] md:text-[14px] lg:text-[14px] text-[#959595] dark:text-gray-500' dateTime={article.createdAt}>
               {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(
                 new Date(article.createdAt)
@@ -88,11 +88,11 @@ const News = () => {
 
   if (isError) return <p className="dark:text-white">Something went wrong loading news.</p>;
 
-  const publishedArticles = (articles ?? []).filter((article) => article.published);
+  // The public endpoint only ever returns published articles, so no extra
+  // filtering is needed here — just order them newest first.
+  if (!isLoading && (articles ?? []).length === 0) return <p className="dark:text-white">No news yet.</p>;
 
-  if (!isLoading && publishedArticles.length === 0) return <p className="dark:text-white">No news yet.</p>;
-
-  const sortedArticles = [...publishedArticles].sort(
+  const sortedArticles = [...(articles ?? [])].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -139,4 +139,3 @@ const News = () => {
 }
 
 export default News
-

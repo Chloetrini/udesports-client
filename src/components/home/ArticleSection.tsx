@@ -2,11 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetNewsArticles } from '@/hooks/useApi';
 import arrow1 from '@/assets/arrow1.png';
-import type { NewsArticle } from '@/types/dataTypes';
+import type { NewsArticle, NewsCategory } from '@/types/dataTypes';
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import news from '@/assets/news.jpeg'
-import { estimateReadTime } from '@/lib/utils';
+import { estimateReadTime, formatDate } from '@/lib/utils';
 import PageWrapper from '../page-wrapper';
+
+// There's no "subtitle" field on the backend — the badge shows the article's
+// real category instead.
+const CATEGORY_LABEL: Record<NewsCategory, string> = {
+  TRANSFER: 'Transfer',
+  ACADEMY: 'Academy',
+  ANNOUNCEMENT: 'Announcement',
+};
 
 
 const SectionFive: React.FC = () => {
@@ -163,28 +171,28 @@ const SectionFive: React.FC = () => {
               <div className='bg-[#fae1bc] flex flex-row justify-start items-center rounded-4xl gap-2 py-2 px-4 mb-3 w-fit'>
                 <span className='bg-[#D47F00] w-2 h-2 rounded-full flex-shrink-0'></span>
                 <h5 className="font-manrope font-bold text-[#D47F00] text-[clamp(14px,1.5vw,16px)] leading-tight">
-                  {article.subtitle}
+                  {CATEGORY_LABEL[article.category]}
                 </h5>
               </div>
               <p className="font-manrope font-bold text-[#1A1A1A] dark:text-white text-[clamp(18px,2.5vw,20px)] leading-6 mb-3 line-clamp-2 min-h-[3rem]">
                 {article.headline}
               </p>
               <p className="font-manrope font-normal text-[#68717D] dark:text-gray-400 text-sm leading-[180%] mb-4 line-clamp-3">
-                {article.excerpt}
+                {article.summary}
               </p>
               <hr className="border-t border-[#E5E7EB] dark:border-white/10 my-4 mt-auto" />
               <div className="flex flex-row justify-between items-center gap-3">
                 <div className="flex items-center gap-3">
                   <img
                     className='w-10 h-10 md:w-15 md:h-15 rounded-full'
-                    src={article.authorPhoto ? article.authorPhoto : noAuthorPhoto} alt={article.author}
+                    src={noAuthorPhoto} alt={article.author.name}
                   />
                   <div className='flex flex-col items-start gap-1'>
                     <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-sm">
-                      {article.author}
+                      {article.author.name}
                     </p>
                     <p className="font-manrope font-normal text-[#8E8E8E] dark:text-gray-500 text-xs">
-                      {article.date} • {estimateReadTime(article.body)} read
+                      {formatDate(article.createdAt)} • {estimateReadTime(article.body)} read
                     </p>
                   </div>
                 </div>

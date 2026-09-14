@@ -228,6 +228,13 @@ const routes = [
                     return { Component };
                 },
             },
+            {
+                path: "gallery/edit/:id",
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/gallery-upload");
+                    return { Component };
+                },
+            },
 
             {
                 path: "news",
@@ -260,7 +267,7 @@ const routes = [
             },
 
             {
-                path: "news/article/:index",
+                path: "news/article/:id",
                 lazy: async () => {
                     const { default: Component } = await import("@/routes/admin/news-article");
                     return { Component };

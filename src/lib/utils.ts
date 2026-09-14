@@ -57,6 +57,24 @@ export function estimateReadTime(text: string) {
   return `${hours} ${hours === 1 ? 'hour' : 'hours'} ${minutes} min`;
 }
 
+// Rewrites a Cloudinary URL to ask Cloudinary for a resized, auto-format,
+// auto-quality version instead of the original upload. Some player photos
+// (and other images) were uploaded before every upload path applied a
+// transformation, so a handful of them are still full-resolution originals —
+// several MB each — which is what made those images so slow to load the
+// first time. Doing the resize on the URL, not at upload time, fixes it
+// retroactively for every image already stored, not just new uploads.
+// Non-Cloudinary URLs (local assets, empty/undefined src) pass through
+// unchanged.
+export function optimizeImageUrl(url: string | null | undefined, width: number): string {
+  if (!url) return ""
+  const marker = "/upload/"
+  const i = url.indexOf(marker)
+  if (!url.includes("res.cloudinary.com") || i === -1) return url
+  const insertAt = i + marker.length
+  return `${url.slice(0, insertAt)}w_${width},q_auto,f_auto,c_limit/${url.slice(insertAt)}`
+}
+
 // "10 mins ago" / "3 hours ago" / "5 days ago" style relative timestamp,
 // falling back to a plain date once it's more than a week old.
 export function formatRelativeTime(iso: string): string {

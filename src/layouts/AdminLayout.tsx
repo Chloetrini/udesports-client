@@ -17,7 +17,7 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import udeLogo from "../assets/udeLogo.png";
 import { useTheme } from "@/contexts/ThemeContext";
-import { useMe, useLogout } from "@/hooks/useApi";
+import { useMe, useLogout, useGetNotifications } from "@/hooks/useApi";
 import type { AdminUser } from "@/services/Auth";
 
 const navItems = [
@@ -51,6 +51,8 @@ function getInitials(name: string) {
 function Topbar({ onMenuClick, admin }: { onMenuClick: () => void; admin?: AdminUser }) {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { data: notificationsData } = useGetNotifications();
+  const unreadCount = notificationsData?.unreadCount ?? 0;
   return (
     <div className="h-20 bg-white dark:bg-black flex items-center justify-between gap-4 px-6 sticky top-0 z-10 border-b border-gray-100 dark:border-white/10 transition-colors duration-300">
       {/* Hamburger — mobile only */}
@@ -72,6 +74,21 @@ function Topbar({ onMenuClick, admin }: { onMenuClick: () => void; admin?: Admin
           className="flex-shrink-0 w-8 h-8 lg:w-9 lg:h-9 rounded-lg border border-gray-200 dark:border-white/15 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
         >
           {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+        </button>
+        {/* Notification bell — unread count from the same admin inbox as
+            the Notifications page, so it always matches what's there. */}
+        <button
+          type="button"
+          onClick={() => navigate("/admin/notifications")}
+          aria-label={unreadCount > 0 ? `${unreadCount} unread notifications` : "Notifications"}
+          className="relative flex-shrink-0 w-8 h-8 lg:w-9 lg:h-9 rounded-lg border border-gray-200 dark:border-white/15 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
+        >
+          <Bell size={15} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 min-w-[16px] h-[16px] px-1 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center leading-none">
+              {unreadCount > 9 ? "9+" : unreadCount}
+            </span>
+          )}
         </button>
         <button className="flex items-center gap-1.5 text-xs lg:text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-2 lg:px-3 py-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
           onClick={() => navigate("/")}>
@@ -263,6 +280,3 @@ export default function AdminLayout() {
     </div>
   );
 }
-
-
-

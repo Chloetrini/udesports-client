@@ -6,7 +6,7 @@ import type { NewsArticle, NewsCategory } from "@/types/dataTypes";
 import { useParams } from "react-router";
 import { calculateReadTime, estimateReadTime, formatDate } from "@/lib/utils";
 import { Seo } from "@/components/seo";
-import { useGetNewsArticles } from "@/hooks/useApi";
+import { useGetNewsArticles, useGetSingleNewsArticle } from "@/hooks/useApi";
 import news from '@/assets/news.jpeg'
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import PageWrapper from "@/components/page-wrapper";
@@ -47,17 +47,17 @@ function RelatedArticleCard({ article }: { article: NewsArticle }) {
       <h3 className="text-lg font-bold leading-snug text-[#1A1A1A] dark:text-white">
         {article.headline}
       </h3>
-      <p className="text-sm text-[#464646] dark:text-gray-400">{article.excerpt}</p>
+      <p className="text-sm text-[#464646] dark:text-gray-400">{article.summary}</p>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <img
-            src={article.authorPhoto ? article.authorPhoto : noAuthorPhoto}
-            alt={article.author}
+            src={noAuthorPhoto}
+            alt={article.author.name}
             className="h-9 w-9 rounded-full"
           />
           <div className="flex flex-col text-sm leading-tight">
             <span className="font-medium text-[#1A1A1A] dark:text-white">
-              {article.author}
+              {article.author.name}
             </span>
             <time dateTime={article.createdAt} className="text-[#959595] dark:text-gray-500">
               {formatDate(article.createdAt)} • {estimateReadTime(article.body)} read
@@ -149,28 +149,31 @@ function SingleNewsSkeleton() {
 const SingleNews = () => {
   const { id: articleId } = useParams<{ id: string }>();
 
+  // The single-article route isn't filtered server-side (an admin needs to
+  // be able to load a draft by id to preview it), so a draft's id typed into
+  // the public URL is still rejected below via article.published.
   const {
-    data: articles,
+    data: article,
     isLoading,
     isError,
-  } = useGetNewsArticles();
+  } = useGetSingleNewsArticle(articleId);
+
+  // Related articles come from the public (published-only) list, so no
+  // extra filtering is needed beyond excluding the current article.
+  const { data: articles } = useGetNewsArticles();
 
   if (isLoading) return <SingleNewsSkeleton />;
   if (isError) return <p className="min-h-screen bg-white dark:bg-black text-[#1A1A1A] dark:text-white text-center p-6">Something went wrong loading this article.</p>;
 
-  const article = (articles ?? []).find(
-    (a) => a.id === articleId && a.published,
-  );
-
-  if (!article) return <p className="min-h-screen bg-white dark:bg-black text-[#1A1A1A] dark:text-white p-6">Article not found.</p>;
+  if (!article || !article.published) return <p className="min-h-screen bg-white dark:bg-black text-[#1A1A1A] dark:text-white p-6">Article not found.</p>;
 
   const relatedArticles = (articles ?? [])
-    .filter((a) => a.published && a.id !== article.id)
+    .filter((a) => a.id !== article.id)
     .slice(0, 2);
 
   return (
     <PageWrapper className="p-[20px] bg-white dark:bg-black transition-colors duration-300">
-      <Seo title={article.headline} description={article.excerpt ?? 'Full article — UdeSport News & Transfers.'} />
+      <Seo title={article.headline} description={article.summary ?? 'Full article — UdeSport News & Transfers.'} />
       <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className="w-full lg:w-8/12">
           <img
@@ -186,13 +189,13 @@ const SingleNews = () => {
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <img
-                src={article.authorPhoto ? article.authorPhoto : noAuthorPhoto}
-                alt={article.author}
+                src={noAuthorPhoto}
+                alt={article.author.name}
                 className="h-12 w-12 rounded-full"
               />
               <div className="flex flex-col text-sm leading-tight">
                 <span className="font-medium text-[#1A1A1A] dark:text-white">
-                  {article.author}
+                  {article.author.name}
                 </span>
                 <time dateTime={article.createdAt} className="text-[#959595] dark:text-gray-500">
                   {formatDate(article.createdAt)} •{" "}
@@ -270,6 +273,3 @@ const SingleNews = () => {
 };
 
 export default SingleNews;
-
-
-

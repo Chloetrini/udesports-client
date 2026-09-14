@@ -1,6 +1,6 @@
 // import React from 'react'
 import { Search, Plus } from "lucide-react"
-import { useNavigate } from "react-router"
+import { useNavigate, useLocation } from "react-router"
 import { useState } from "react"
 import { useGetPlayersAdmin, useDeletePlayer } from "@/hooks/useApi";
 import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus";
@@ -33,9 +33,14 @@ function PlayerRowSkeleton() {
 
 export default function PlayerOverview() {
     const navigate = useNavigate()
+    const location = useLocation()
+    // Dashboard stat cards ("Completed Transfers", "Live Negotiations") link
+    // here with a status to pre-filter by, instead of always landing on the
+    // unfiltered list.
+    const initialStatusFilter = (location.state?.statusFilter as PlayerStatus | undefined) ?? 'All Statuses'
     const [search, setSearch] = useState('')
     const [groupFilter, setGroupFilter] = useState('All Groups')
-    const [statusFilter, setStatusFilter] = useState<'All Statuses' | PlayerStatus>('All Statuses')
+    const [statusFilter, setStatusFilter] = useState<'All Statuses' | PlayerStatus>(initialStatusFilter)
     const [deletingId, setDeletingId] = useState<string | null>(null)
 
       const { data: players, isLoading } = useGetPlayersAdmin();

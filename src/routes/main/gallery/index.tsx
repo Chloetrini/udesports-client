@@ -76,10 +76,10 @@ export default function Gallery() {
 
   const mediaItems = galleryImages.map((photo, index) => ({
     id: photo.id,
-    type: photo.type ?? "image",
-    title: photo.title,
-    desc: photo.description,
-    url: photo.link,
+    type: "image",
+    title: photo.headline ?? "",
+    desc: photo.description ?? "",
+    url: photo.coverImage ?? "",
     span: SPAN_PATTERNS[index % SPAN_PATTERNS.length],
   }));
 

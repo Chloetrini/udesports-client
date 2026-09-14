@@ -92,6 +92,7 @@ export default function PlayerView() {
               alt=""
               className="w-full h-full object-cover object-top"
               skeletonClassName="w-full h-full"
+              width={320}
             />
           </div>
 

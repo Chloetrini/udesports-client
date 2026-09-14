@@ -3,6 +3,7 @@ import React from 'react';
 import HeroSec from '@/components/home/HeroSec';
 import SectionTwo from '@/components/home/SectionTwo';
 import SectionThree from '@/components/home/SectionThree';
+import InstagramArchive from '@/components/home/InstagramArchive';
 import SectionFive from '@/components/home/ArticleSection';
 
 const HomePage: React.FC = () => {
@@ -11,11 +12,10 @@ const HomePage: React.FC = () => {
       <HeroSec />
       <SectionTwo />
       <SectionThree />
+      <InstagramArchive />
       <SectionFive />
     </div>
   );
 };
 
 export default HomePage;
-
-
