@@ -1,3 +1,10 @@
+#!/bin/bash
+set -e
+
+echo "Applying script28: adds a one-click Retired checkbox next to Featured (instead of only being reachable through the Status dropdown), restyles both checkboxes to the site green with a checkmark instead of the browser default blue, and fixes the player-photo caption text overflowing on small screens."
+
+mkdir -p "src/routes/admin/add-player"
+cat > "src/routes/admin/add-player/index.tsx" << 'UDESPORT_EOF_MARKER'
 // import React from 'react'
 import { useNavigate } from "react-router";
 import { useParams } from "react-router";
@@ -769,3 +776,6 @@ const AddPlayer = () => {
 };
 
 export default AddPlayer;
+UDESPORT_EOF_MARKER
+
+echo "Done. Now run: npx tsc --noEmit -p tsconfig.app.json && npx eslint . && npm run build"
