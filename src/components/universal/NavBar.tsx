@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Sun, Moon, LayoutDashboard } from 'lucide-react';
-import udeLogo from '@/assets/udeLogo.png';
+import udeLogo from '@/assets/logo.png';
 import hamburgerLogo from '@/assets/hamburgerLogo.png';
 import PageWrapper from '../page-wrapper';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -45,7 +45,7 @@ const NavBar: React.FC = () => {
                     <div className="">
                         <Link to="/" className="flex justify-center items-center cursor-pointer">
                             <img
-                                className="w-9 h-[50px] sm:w-10 sm:h-[56px]"
+                                className="w-[18px] h-[28px] sm:w-10 sm:h-[56px]"
                                 src={udeLogo}
                                 alt="udeLogo"
                             />
@@ -78,7 +78,7 @@ const NavBar: React.FC = () => {
                             <button
                                 className="
                                     hidden md:flex
-                                    w-auto min-w-30 lg:w-41 h-11.25 px-4 lg:px-3
+                                    w-auto min-w-30 lg:w-35 h-9 px-4 lg:px-3
                                     bg-transparent border border-[#00D46A]
                                     rounded-md text-[#00D46A] font-manrope text-sm font-medium
                                     items-center justify-center gap-2
@@ -97,7 +97,7 @@ const NavBar: React.FC = () => {
                         <button
                             className="
                                 hidden md:flex
-                                w-auto min-w-30 lg:w-41 h-11.25 px-4 lg:px-3
+                                w-auto min-w-30 lg:w-35 h-9 px-4 lg:px-3
                                 bg-[#00D46A]
                                 rounded-md text-white font-manrope text-sm font-medium
                                 items-center justify-center

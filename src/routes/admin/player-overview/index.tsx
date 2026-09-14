@@ -2,9 +2,10 @@
 import { Search, Plus } from "lucide-react"
 import { useNavigate } from "react-router"
 import { useState } from "react"
-import { useGetPlayers, useDeletePlayer } from "@/hooks/useApi";
+import { useGetPlayersAdmin, useDeletePlayer } from "@/hooks/useApi";
 import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus";
 import type { PlayerStatus } from "@/types/dataTypes";
+import { toast } from "react-toastify";
 
 const GROUP_OPTIONS = ["U-17", "U-21", "U-23", "Professional"] as const;
 
@@ -37,13 +38,15 @@ export default function PlayerOverview() {
     const [statusFilter, setStatusFilter] = useState<'All Statuses' | PlayerStatus>('All Statuses')
     const [deletingId, setDeletingId] = useState<string | null>(null)
 
-      const { data: players, isLoading } = useGetPlayers();
+      const { data: players, isLoading } = useGetPlayersAdmin();
       const deletePlayerMutation = useDeletePlayer();
 
       function handleDelete(id: string, name: string) {
         if (!window.confirm(`Delete ${name}? This can't be undone.`)) return
         setDeletingId(id)
         deletePlayerMutation.mutate(id, {
+          onSuccess: () => toast.success(`${name} deleted`),
+          onError: (err) => toast.error(err instanceof Error ? err.message : "Couldn't delete this player"),
           onSettled: () => setDeletingId(null),
         })
       }
@@ -127,7 +130,11 @@ return(
             filteredPlayers?.map((player) => {
                 const displayName = player.playerFullName || player.playerName
                 return (
-                <tr key={player.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                <tr
+                  key={player.id}
+                  onClick={() => navigate(`/admin/player-overview/view/${player.id}`)}
+                  className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                >
                    {/* Player */}
                    <td className="px-5 py-4">
                      <div className="flex items-center gap-3">
@@ -147,14 +154,21 @@ return(
 
  {/* Status */}
              <td className="px-5 py-4">
-               <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLE[player.status]}`}>
-                 {STATUS_LABEL[player.status]}
-               </span>
+               <div className="flex items-center gap-1.5 flex-wrap">
+                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLE[player.status]}`}>
+                   {STATUS_LABEL[player.status]}
+                 </span>
+                 {!player.published && (
+                   <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400">
+                     Draft
+                   </span>
+                 )}
+               </div>
              </td>
 
              {/* Actions */}
              <td className="px-5 py-4">
-               <div className="flex items-center gap-2">
+               <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                  <button onClick={() => navigate(`/admin/player-overview/edit/${player.id}`)} className="text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-3 py-1 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
                     Edit
                  </button>
@@ -177,7 +191,3 @@ return(
     </div>
 )
 }
-
-
-
-

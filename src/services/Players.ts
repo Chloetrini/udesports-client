@@ -6,6 +6,12 @@ export const fetchAllPlayers = async (): Promise<Player[]> => {
   return res.body?.players ?? [];
 };
 
+// Admin-only — includes drafts (published: false), unlike the public list above.
+export const fetchAllPlayersAdmin = async (): Promise<Player[]> => {
+  const res = await api.get<{ count: number; players: Player[] }>("/players/admin/all");
+  return res.body?.players ?? [];
+};
+
 export const fetchSinglePlayer = async (id: string): Promise<Player | null> => {
   if (!id) return null;
   const res = await api.get<{ player: Player }>(`/players/${id}`);

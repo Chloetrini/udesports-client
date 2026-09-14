@@ -33,6 +33,7 @@ export type Player = {
   playerHistory: string | null,
   playerAppearance: number
   isFeatured:boolean
+  published: boolean
 }
 
 export type AdminRole = "SUPER_ADMIN" | "ADMIN" | "SUB_ADMIN";
@@ -120,4 +121,15 @@ export interface QuickUpdate {
   };
 }
 
-
+// Matches the backend `Notification` model exactly (src/config: Prisma
+// schema on udesports-server) — created publicly from the Contact page's
+// form, read/managed only from the admin inbox.
+export interface AppNotification {
+  id: string;
+  senderName: string;
+  email: string | null;
+  subject: string;
+  body: string;
+  isRead: boolean;
+  createdAt: string;
+}

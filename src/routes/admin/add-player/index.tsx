@@ -6,6 +6,7 @@ import { useGetSinglePlayer, useCreatePlayer, useUpdatePlayer } from "@/hooks/us
 import { STATUS_LABEL, STATUS_OPTIONS } from "@/lib/playerStatus";
 import type { PlayerStatus } from "@/types/dataTypes";
 import countries from "world-countries";
+import { toast } from "react-toastify";
 
 // Backend stores DOB as a DateTime; the form edits it as MM/DD/YYYY text.
 function isoToInputDate(iso: string): string {
@@ -209,10 +210,18 @@ const AddPlayer = () => {
     return newError;
   }
 
-  async function handleSubmit() {
+  // publishTarget: true = "Publish" (visible on the live site), false =
+  // "Save as Draft" (saved, but hidden from the public site until published).
+  async function handleSubmit(publishTarget: boolean) {
     const newError = validate();
+    // A player can be saved as a draft with no photo yet, but going live
+    // without one isn't allowed — the public cards/detail page need it.
+    if (publishTarget && !photo && !photoPreview) {
+      newError.photo = "Add a player photo before publishing (you can still save as a draft without one)";
+    }
     if (Object.keys(newError).length > 0) {
       setError(newError);
+      if (newError.photo) toast.error(newError.photo);
       return;
     }
 
@@ -238,6 +247,7 @@ const AddPlayer = () => {
       newClubName: newClubName.trim() || undefined,
       newClubLogo: newClubLogo.trim() || undefined,
       isFeatured,
+      published: publishTarget,
     };
 
     // Only include a photo when a new one was picked — omitting it on edit
@@ -264,12 +274,14 @@ const AddPlayer = () => {
       } else {
         await createPlayerMutation.mutateAsync(payload);
       }
+      toast.success(publishTarget ? "Player published" : "Saved as draft");
       navigate("/admin/player-overview");
     } catch (err) {
       setError((prev) => ({
         ...prev,
         form: err instanceof Error ? err.message : "Something went wrong. Please try again.",
       }));
+      toast.error(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     }
   }
 
@@ -287,6 +299,11 @@ const AddPlayer = () => {
             Add, edit, and manage player profiles and status
           </p>
         </div>
+        {isEditMode && player && !player.published && (
+          <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400 shrink-0">
+            Draft — not visible on the public site
+          </span>
+        )}
       </div>
 
       {/* Form */}
@@ -502,8 +519,8 @@ const AddPlayer = () => {
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Saves</label>
                 <input
-                  value={saves}
-                  onChange={(e) => setSaves(Number(e.target.value))}
+                  value={saves === 0 ? "" : saves}
+                  onChange={(e) => setSaves(e.target.value === "" ? 0 : Number(e.target.value))}
                   type="number"
                   placeholder="0"
                   min={0}
@@ -514,8 +531,8 @@ const AddPlayer = () => {
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Clean Sheets</label>
                 <input
-                  value={cleanSheets}
-                  onChange={(e) => setCleanSheets(Number(e.target.value))}
+                  value={cleanSheets === 0 ? "" : cleanSheets}
+                  onChange={(e) => setCleanSheets(e.target.value === "" ? 0 : Number(e.target.value))}
                   type="number"
                   placeholder="0"
                   min={0}
@@ -528,8 +545,8 @@ const AddPlayer = () => {
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Goals</label>
                 <input
-                  value={goals}
-                  onChange={(e) => setGoals(Number(e.target.value))}
+                  value={goals === 0 ? "" : goals}
+                  onChange={(e) => setGoals(e.target.value === "" ? 0 : Number(e.target.value))}
                   type="number"
                   placeholder="0"
                   min={0}
@@ -540,8 +557,8 @@ const AddPlayer = () => {
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Assists</label>
                 <input
-                  value={assists}
-                  onChange={(e) => setAssists(Number(e.target.value))}
+                  value={assists === 0 ? "" : assists}
+                  onChange={(e) => setAssists(e.target.value === "" ? 0 : Number(e.target.value))}
                   type="number"
                   placeholder="0"
                   min={0}
@@ -571,8 +588,8 @@ const AddPlayer = () => {
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Appearances</label>
             <input
-              value={playerAppearance}
-              onChange={(e) => setPlayerAppearance(Number(e.target.value))}
+              value={playerAppearance === 0 ? "" : playerAppearance}
+              onChange={(e) => setPlayerAppearance(e.target.value === "" ? 0 : Number(e.target.value))}
               type="number"
               placeholder="0"
               min={0}
@@ -727,15 +744,16 @@ const AddPlayer = () => {
         {/* Buttons */}
         <div className="flex items-center gap-3 mt-6 flex-wrap">
           <button
-            onClick={handleSubmit}
+            onClick={() => handleSubmit(true)}
             disabled={isSaving}
             className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {isSaving ? "Saving…" : isEditMode ? "Save Changes" : "+ Add Player"}
+            {isSaving ? "Saving…" : isEditMode ? "Save Changes" : "Publish"}
           </button>
           <button
-            onClick={() => navigate("/admin/player-overview")}
-            className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/15 px-6 py-2 rounded-lg transition-colors"
+            onClick={() => handleSubmit(false)}
+            disabled={isSaving}
+            className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/15 px-6 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             Save as Draft
           </button>

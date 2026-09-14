@@ -3,6 +3,8 @@ import { MapPin } from "lucide-react"
 import ic_phone from "@/assets/ic_phone.png"
 import ic_mail from "@/assets/ic_mail.png"
 import icons_insta from "@/assets/icons_insta.png"
+import { useSubmitContactMessage } from "@/hooks/useApi"
+import { toast } from "react-toastify"
 
 const contactDetails = [
   {
@@ -32,6 +34,7 @@ const Contact = () => {
   })
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
+  const submitContactMutation = useSubmitContactMessage()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,11 +53,21 @@ const Contact = () => {
       return
     }
 
-    // TODO: wire to a real backend endpoint (send via Brevo, per EMAIL_OWNER env var)
-    // once contact-form submission is added on the server. Mocked for now.
-    console.log("Contact form submitted:", formData)
-    setSubmitted(true)
-    setFormData({ fullName: "", email: "", subject: "", message: "" })
+    try {
+      await submitContactMutation.mutateAsync({
+        senderName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim() || "General enquiry",
+        body: formData.message.trim(),
+      })
+      setSubmitted(true)
+      setFormData({ fullName: "", email: "", subject: "", message: "" })
+      toast.success("Message sent — we'll get back to you shortly.")
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong sending your message. Please try again."
+      setError(message)
+      toast.error(message)
+    }
   }
 
   return (
@@ -187,9 +200,10 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="w-fit min-w-41 h-11.25 px-3 bg-[#00D46A] rounded-md text-white font-manrope font-medium text-[14px] leading-[21px] flex items-center justify-center transition-all duration-200 shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C] hover:bg-[#00c45e] hover:shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C,0_4px_12px_rgba(0,212,106,0.3)] active:scale-95 cursor-pointer"
+                disabled={submitContactMutation.isPending}
+                className="w-fit min-w-41 h-11.25 px-3 bg-[#00D46A] rounded-md text-white font-manrope font-medium text-[14px] leading-[21px] flex items-center justify-center transition-all duration-200 shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C] hover:bg-[#00c45e] hover:shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C,0_4px_12px_rgba(0,212,106,0.3)] active:scale-95 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100"
               >
-                Contact Us
+                {submitContactMutation.isPending ? "Sending..." : "Contact Us"}
               </button>
             </form>
           )}
@@ -200,4 +214,3 @@ const Contact = () => {
 }
 
 export default Contact
-

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { fetchAllPlayers, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer } from '../services/Players'
+import { fetchAllPlayers, fetchAllPlayersAdmin, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer } from '../services/Players'
 import { login as loginRequest, logout as logoutRequest, getMe } from '@/services/Auth'
 import { fetchAllTestimonials  } from '../services/Testimonials'
 import { fetchNewsArticles } from '@/services/Articles'
@@ -8,6 +8,13 @@ import { fetchGalleryImages } from '@/services/GalleryImages'
 import { fetchQuickUpdates } from '@/services/QuickUpdates'
 import { fetchStaff } from '@/services/Staff'
 import { fetchAwards } from '@/services/Awards'
+import {
+  submitContactMessage,
+  fetchNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
+  deleteNotification,
+} from '@/services/Notifications'
 import type { Player } from '@/types/dataTypes'
 // import type { Player } from '../components/FetchPlayers'
 
@@ -15,6 +22,16 @@ export const useGetPlayers = () => {
   return useQuery({
     queryKey: ['players'],
     queryFn: fetchAllPlayers,
+  })
+}
+
+// Admin-only — includes drafts. Used by the admin player list/dashboard so
+// a player saved as a draft doesn't just disappear (useGetPlayers, the
+// public query, only ever returns published players).
+export const useGetPlayersAdmin = () => {
+  return useQuery({
+    queryKey: ['players', 'admin'],
+    queryFn: fetchAllPlayersAdmin,
   })
 }
 
@@ -56,6 +73,9 @@ export const useDeletePlayer = () => {
     },
   })
 }
+
+// ['players'] as a prefix covers both the public list (['players']) and the
+// admin list (['players', 'admin']) in one invalidation call.
 
 // ---- Auth ----
 
@@ -145,3 +165,48 @@ export const useGetAwards = () => {
   })
 }
 
+// ---- Notifications (contact form + admin inbox) ----
+
+export const useSubmitContactMessage = () => {
+  return useMutation({
+    mutationFn: (data: { senderName: string; email?: string; subject: string; body: string }) =>
+      submitContactMessage(data),
+  })
+}
+
+export const useGetNotifications = () => {
+  return useQuery({
+    queryKey: ['notifications'],
+    queryFn: fetchNotifications,
+  })
+}
+
+export const useMarkNotificationRead = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => markNotificationRead(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] })
+    },
+  })
+}
+
+export const useMarkAllNotificationsRead = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: markAllNotificationsRead,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] })
+    },
+  })
+}
+
+export const useDeleteNotification = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteNotification(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] })
+    },
+  })
+}

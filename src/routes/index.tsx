@@ -184,6 +184,20 @@ const routes = [
                     return { Component };
                 },
             },
+            {
+                path: "player-overview/view/:id",
+                handle: {
+                    seo: {
+                        title: "Player Details",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/player-view");
+                    return { Component };
+                },
+            },
 
             {
                 path: "gallery",
