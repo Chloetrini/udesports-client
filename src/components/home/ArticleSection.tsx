@@ -7,6 +7,8 @@ import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import news from '@/assets/news.jpeg'
 import { estimateReadTime, formatDate } from '@/lib/utils';
 import PageWrapper from '../page-wrapper';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import AutoScroll from 'embla-carousel-auto-scroll';
 
 // There's no "subtitle" field on the backend — the badge shows the article's
 // real category instead.
@@ -155,64 +157,74 @@ const SectionFive: React.FC = () => {
       {/* Header */}
       {Header}
 
-      {/* Article Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
-        {topArticles.map((article: NewsArticle) => (
-          <div
-            key={article.id}
-            role="link"
-            tabIndex={0}
-            onClick={() => navigate(`/news/${article.id}`)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                navigate(`/news/${article.id}`);
-              }
-            }}
-            className="bg-white dark:bg-[#111820] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full cursor-pointer"
-          >
-            <img
-              src={article.coverImage ? article.coverImage : news}
-              alt={article.headline}
-              className="w-full h-48 md:h-56 object-cover flex-shrink-0"
-            />
-            <div className="p-4 md:p-6 flex flex-col flex-1">
-              <div className='bg-[#fae1bc] flex flex-row justify-start items-center rounded-4xl gap-2 py-2 px-4 mb-3 w-fit'>
-                <span className='bg-[#D47F00] w-2 h-2 rounded-full flex-shrink-0'></span>
-                <h5 className="font-manrope font-bold text-[#D47F00] text-[clamp(14px,1.5vw,16px)] leading-tight">
-                  {CATEGORY_LABEL[article.category]}
-                </h5>
-              </div>
-              <p className="font-manrope font-bold text-[#1A1A1A] dark:text-white text-[clamp(18px,2.5vw,20px)] leading-6 mb-3 line-clamp-2 min-h-[3rem]">
-                {article.headline}
-              </p>
-              <p className="font-manrope font-normal text-[#68717D] dark:text-gray-400 text-sm leading-[180%] mb-4 line-clamp-3">
-                {article.summary}
-              </p>
-              <hr className="border-t border-[#E5E7EB] dark:border-white/10 my-4 mt-auto" />
-              <div className="flex flex-row justify-between items-center gap-3">
-                <div className="flex items-center gap-3">
-                  <img
-                    className='w-10 h-10 md:w-15 md:h-15 rounded-full'
-                    src={noAuthorPhoto} alt={article.author.name}
-                  />
-                  <div className='flex flex-col items-start gap-1'>
-                    <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-sm">
-                      {article.author.name}
-                    </p>
-                    <p className="font-manrope font-normal text-[#8E8E8E] dark:text-gray-500 text-xs">
-                      {formatDate(article.createdAt)} • {estimateReadTime(article.body)} read
-                    </p>
+      {/* Article Cards — same auto-scrolling embla carousel as the home
+          page's Featured Players and Instagram Archive sections: loops
+          through the real article list (no duplicated cards), pauses on
+          hover. */}
+      <Carousel
+        opts={{ align: 'start', loop: true }}
+        plugins={[AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
+        className="w-full -mx-5 px-5"
+      >
+        <CarouselContent className="ml-0 gap-6 md:gap-8">
+          {topArticles.map((article: NewsArticle) => (
+            <CarouselItem key={article.id} className="basis-auto pl-0">
+              <div
+                role="link"
+                tabIndex={0}
+                onClick={() => navigate(`/news/${article.id}`)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/news/${article.id}`);
+                  }
+                }}
+                className="w-[320px] md:w-[380px] bg-white dark:bg-[#111820] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full cursor-pointer"
+              >
+                <img
+                  src={article.coverImage ? article.coverImage : news}
+                  alt={article.headline}
+                  className="w-full h-48 md:h-56 object-cover flex-shrink-0"
+                />
+                <div className="p-4 md:p-6 flex flex-col flex-1">
+                  <div className='bg-[#fae1bc] flex flex-row justify-start items-center rounded-4xl gap-2 py-2 px-4 mb-3 w-fit'>
+                    <span className='bg-[#D47F00] w-2 h-2 rounded-full flex-shrink-0'></span>
+                    <h5 className="font-manrope font-bold text-[#D47F00] text-[clamp(14px,1.5vw,16px)] leading-tight">
+                      {CATEGORY_LABEL[article.category]}
+                    </h5>
+                  </div>
+                  <p className="font-manrope font-bold text-[#1A1A1A] dark:text-white text-[clamp(18px,2.5vw,20px)] leading-6 mb-3 line-clamp-2 min-h-[3rem]">
+                    {article.headline}
+                  </p>
+                  <p className="font-manrope font-normal text-[#68717D] dark:text-gray-400 text-sm leading-[180%] mb-4 line-clamp-3">
+                    {article.summary}
+                  </p>
+                  <hr className="border-t border-[#E5E7EB] dark:border-white/10 my-4 mt-auto" />
+                  <div className="flex flex-row justify-between items-center gap-3">
+                    <div className="flex items-center gap-3">
+                      <img
+                        className='w-10 h-10 md:w-15 md:h-15 rounded-full'
+                        src={noAuthorPhoto} alt={article.author.name}
+                      />
+                      <div className='flex flex-col items-start gap-1'>
+                        <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-sm">
+                          {article.author.name}
+                        </p>
+                        <p className="font-manrope font-normal text-[#8E8E8E] dark:text-gray-500 text-xs">
+                          {formatDate(article.createdAt)} • {estimateReadTime(article.body)} read
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-manrope font-bold text-[#00A553] text-sm inline-block whitespace-nowrap">
+                      Read more →
+                    </span>
                   </div>
                 </div>
-                <span className="font-manrope font-bold text-[#00A553] text-sm inline-block whitespace-nowrap">
-                  Read more →
-                </span>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </PageWrapper>
   );
 };

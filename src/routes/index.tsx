@@ -107,8 +107,9 @@ const routes = [
                         path: "gallery",
                         handle: {
                             seo: {
-                                title: '',
-                                description: '',
+                                title: 'Gallery',
+                                description:
+                                    "Photos and videos from UdeSport's academy sessions, trials, and player placements.",
                             }
                         },
                         lazy: async () => {
@@ -150,6 +151,7 @@ const routes = [
                 path: "dashboard",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Dashboard",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -165,6 +167,7 @@ const routes = [
                 path: "player-overview",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Player Overview",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -180,6 +183,7 @@ const routes = [
                 path: "player-overview/add",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Add Player",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -192,6 +196,12 @@ const routes = [
             },
             {
                 path: "player-overview/edit/:id",
+                handle: {
+                    seo: {
+                        noIndex: true,
+                        title: "Edit Player",
+                    },
+                },
                 lazy: async () => {
                     const { default: Component } = await import("@/routes/admin/add-player");
                     return { Component };
@@ -201,6 +211,7 @@ const routes = [
                 path: "player-overview/view/:id",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Player Details",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -216,6 +227,7 @@ const routes = [
                 path: "gallery",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Gallery",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -231,6 +243,7 @@ const routes = [
                 path: "gallery/upload",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Gallery Upload",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -243,6 +256,12 @@ const routes = [
             },
             {
                 path: "gallery/edit/:id",
+                handle: {
+                    seo: {
+                        noIndex: true,
+                        title: "Edit Gallery Item",
+                    },
+                },
                 lazy: async () => {
                     const { default: Component } = await import("@/routes/admin/gallery-upload");
                     return { Component };
@@ -253,6 +272,7 @@ const routes = [
                 path: "news",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "News",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -268,6 +288,7 @@ const routes = [
                 path: "news/article",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "News",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -281,6 +302,12 @@ const routes = [
 
             {
                 path: "news/article/:id",
+                handle: {
+                    seo: {
+                        noIndex: true,
+                        title: "Edit Article",
+                    },
+                },
                 lazy: async () => {
                     const { default: Component } = await import("@/routes/admin/news-article");
                     return { Component };
@@ -291,6 +318,7 @@ const routes = [
                 path: "quick-updates",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Quick Updates",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -306,6 +334,7 @@ const routes = [
                 path: "testimonials",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Testimonials",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -321,6 +350,7 @@ const routes = [
                 path: "staff",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Staff",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -336,6 +366,7 @@ const routes = [
                 path: "headlines",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Ticker Headlines",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -351,6 +382,7 @@ const routes = [
                 path: "awards",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Award & Certification",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -366,6 +398,7 @@ const routes = [
                 path: "settings",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Settings",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -381,6 +414,7 @@ const routes = [
                 path: "notifications",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Notifications",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -396,6 +430,7 @@ const routes = [
                 path: "login",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Login",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -411,6 +446,7 @@ const routes = [
                 path: "forgot-password",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Forgot Password",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -425,6 +461,7 @@ const routes = [
                 path: "verification",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "Verification",
                         description:
                             "View and manage your UdeSport account, events, and activities",
@@ -440,6 +477,7 @@ const routes = [
                 path: "new-password",
                 handle: {
                     seo: {
+                        noIndex: true,
                         title: "New Password",
                         description:
                             "View and manage your UdeSport account, events, and activities",

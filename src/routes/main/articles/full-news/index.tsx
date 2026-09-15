@@ -10,6 +10,7 @@ import { useGetNewsArticles, useGetSingleNewsArticle } from "@/hooks/useApi";
 import news from '@/assets/news.jpeg'
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import PageWrapper from "@/components/page-wrapper";
+import { SITE_URL } from "@/lib/site";
 
 const CATEGORY_LABEL: Record<NewsCategory, string> = {
   TRANSFER: "Transferred",
@@ -171,9 +172,42 @@ const SingleNews = () => {
     .filter((a) => a.id !== article.id)
     .slice(0, 2);
 
+  // NewsArticle structured data — only real, already-fetched fields (no
+  // fabricated dateModified/word count/etc). coverImage is only set when
+  // the article actually has one uploaded (a real absolute Cloudinary URL),
+  // so this — and the og:image below — are omitted rather than falling
+  // back to the local placeholder image, which wouldn't be a useful share
+  // preview anyway.
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.headline,
+    description: article.summary ?? undefined,
+    image: article.coverImage ?? undefined,
+    datePublished: article.createdAt,
+    dateModified: article.updatedAt,
+    author: {
+      '@type': 'Person',
+      name: article.author.name,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'UdeSport',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${SITE_URL}/news/${article.id}`,
+    },
+  };
+
   return (
     <PageWrapper className="p-[20px] bg-white dark:bg-black transition-colors duration-300">
-      <Seo title={article.headline} description={article.summary ?? 'Full article — UdeSport News & Transfers.'} />
+      <Seo
+        title={article.headline}
+        description={article.summary ?? 'Full article — UdeSport News & Transfers.'}
+        image={article.coverImage ?? undefined}
+        jsonLd={articleJsonLd}
+      />
       <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className="w-full lg:w-8/12">
           <img

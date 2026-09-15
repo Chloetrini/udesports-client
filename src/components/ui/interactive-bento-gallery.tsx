@@ -146,6 +146,16 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
 
     return (
         <>
+            {/* dimmed backdrop — only really visible now that the modal itself
+                is inset on mobile instead of covering the full screen; tapping
+                it closes the modal, same as the close button. */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/60 z-0"
+                onClick={onClose}
+            />
             <motion.div
                 initial={{ scale: 0.98 }}
                 animate={{ scale: 1 }}
@@ -155,8 +165,8 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                     stiffness: 400,
                     damping: 30
                 }}
-                className="fixed inset-0 w-full min-h-screen sm:h-[90vh] md:h-[600px] backdrop-blur-lg 
-                          rounded-none sm:rounded-lg md:rounded-xl overflow-hidden z-10"
+                className="fixed inset-4 sm:inset-0 sm:w-full sm:min-h-screen sm:h-[90vh] md:h-[600px] bg-white dark:bg-[#0d1117] backdrop-blur-lg
+                          rounded-2xl sm:rounded-lg md:rounded-xl overflow-hidden z-10 shadow-2xl"
 
             >
                 <div className="h-full flex flex-col">

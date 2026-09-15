@@ -1,7 +1,26 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import frame from '@/assets/frame.png';
 import PageWrapper from '../page-wrapper';
+
+// Staggered intro: the headline, copy, buttons, and each stat fade/slide up
+// in sequence on first mount, instead of the whole hero appearing at once.
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
 
 const HeroSec: React.FC = () => {
   const navigate = useNavigate();
@@ -17,21 +36,26 @@ const HeroSec: React.FC = () => {
   return (
     <section className="bg-[url(./assets/bgMobile.png)] md:bg-[url(./assets/bgphoto.png)] bg-no-repeat bg-cover bg-center min-h-screen flex items-center py-16">
       <PageWrapper className="p-[20px]">
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-8 lg:gap-12 pb-12 md:pb-20">
+        <motion.div
+          className="flex flex-col md:flex-row items-start md:items-center gap-8 lg:gap-12 pb-12 md:pb-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Left content */}
           <div className="flex-1">
-            <h1 className="font-bebas font-normal text-white leading-[1.3]">
+            <motion.h1 variants={itemVariants} className="font-bebas font-normal text-white leading-[1.3]">
               <span className="block text-[clamp(40px,8vw,96px)]">
                 <img src={frame} alt="" className="w-full max-w-125" />
               </span>
-            </h1>
+            </motion.h1>
 
-            <p className="font-manrope font-medium text-[#8E8E8E] text-[clamp(14px,2.5vw,18px)] leading-relaxed max-w-150 mt-6">
+            <motion.p variants={itemVariants} className="font-manrope font-medium text-[#8E8E8E] text-[clamp(14px,2.5vw,18px)] leading-relaxed max-w-150 mt-6">
               From Nigeria to the world's biggest stadiums. UdeSport has placed 100+ players at elite clubs across Europe, Asia, and Africa.
-            </p>
+            </motion.p>
 
             {/* Buttons */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 mt-8 pt-8 md:pt-14">
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 sm:gap-6 mt-8 pt-8 md:pt-14">
               <button
                 type="button"
                 onClick={handleViewPlayers}
@@ -46,11 +70,11 @@ const HeroSec: React.FC = () => {
               >
                 Our Story
               </button>
-            </div>
+            </motion.div>
           </div>
 
           {/* Stats */}
-          <div className="flex flex-wrap items-center gap-6 md:gap-10 pt-8 md:pt-100">
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6 md:gap-10 pt-8 md:pt-100">
             <div className="text-center flex flex-col items-center">
               <div className="flex flex-row items-start relative">
                 <p className="font-manrope font-bold text-[#FFFFFF] text-[clamp(40px,10vw,110px)] leading-none">
@@ -81,8 +105,8 @@ const HeroSec: React.FC = () => {
                 Years of XP
               </p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </PageWrapper>
     </section>
   );

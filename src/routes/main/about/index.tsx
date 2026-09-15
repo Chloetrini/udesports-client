@@ -3,6 +3,8 @@ import noProfilePhoto from "@/assets/no profile photo.jpg"
 import PageWrapper from "@/components/page-wrapper"
 import { useGetStaff, useGetAwards } from "@/hooks/useApi"
 import udeSportLogo from "@/assets/udess.png"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import AutoScroll from "embla-carousel-auto-scroll"
 
 const About = () => {
   const { data: staff, isLoading: staffLoading } = useGetStaff()
@@ -130,33 +132,41 @@ const About = () => {
           // border, a square photo (real Cloudinary upload, falling back to
           // the generic silhouette when a member has none yet), and the
           // name/role stacked underneath with a verified checkmark.
-          <div className="flex gap-4 overflow-x-auto pb-2 -mx-5 px-5 lg:mx-0 lg:px-0">
-            {staff.map((member) => (
-              <div
-                key={member.id}
-                className="w-[220px] sm:w-[258px] flex-shrink-0 bg-[#00D46A] border-[1.5px] border-white rounded-[40px] p-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col items-start"
-              >
-                <div className="w-full aspect-square rounded-[32px] border border-white overflow-hidden bg-[#060A0F]/20">
-                  <img
-                    src={member.photo || noProfilePhoto}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col gap-2 p-4 w-full">
-                  <div className="flex items-center gap-1">
-                    <p className="font-manrope font-medium text-white text-[16px] sm:text-[18px] leading-[1.5] truncate">
-                      {member.name}
-                    </p>
-                    {member.verified && (
-                      <BadgeCheck className="w-4 h-4 text-white flex-shrink-0" fill="#00A553" />
-                    )}
+          // Same auto-scrolling embla carousel as the home page's Featured
+          // Players section — loops through the real staff list (no
+          // duplicated cards), pauses on hover.
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
+            className="w-full -mx-5 px-5 lg:mx-0 lg:px-0"
+          >
+            <CarouselContent className="ml-0 gap-4">
+              {staff.map((member) => (
+                <CarouselItem key={member.id} className="basis-auto pl-0">
+                  <div className="w-[220px] sm:w-[258px] bg-[#00D46A] border-[1.5px] border-white rounded-[40px] p-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col items-start">
+                    <div className="w-full aspect-square rounded-[32px] border border-white overflow-hidden bg-[#060A0F]/20">
+                      <img
+                        src={member.photo || noProfilePhoto}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2 p-4 w-full">
+                      <div className="flex items-center gap-1">
+                        <p className="font-manrope font-medium text-white text-[16px] sm:text-[18px] leading-[1.5] truncate">
+                          {member.name}
+                        </p>
+                        {member.verified && (
+                          <BadgeCheck className="w-4 h-4 text-white flex-shrink-0" fill="#00A553" />
+                        )}
+                      </div>
+                      <p className="font-manrope text-[#EBEBEB] text-[14px] sm:text-[16px] leading-[1.5]">{member.role}</p>
+                    </div>
                   </div>
-                  <p className="font-manrope text-[#EBEBEB] text-[14px] sm:text-[16px] leading-[1.5]">{member.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         )}
       </div>
 
@@ -184,34 +194,41 @@ const About = () => {
         ) : (
           // Full-bleed certificate/logo image with a dark gradient scrim at
           // the bottom holding the name + subtitle, matching the Figma card
-          // (not a small icon with a caption underneath).
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {awards.map((award) => (
-              <div
-                key={award.id}
-                className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[#060A0F]"
-              >
-                {award.image ? (
-                  <img
-                    src={award.image}
-                    alt={award.name}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-[#00D46A4D] flex items-center justify-center">
-                      <AwardIcon className="w-5 h-5 text-[#00D46A]" />
+          // (not a small icon with a caption underneath). Same auto-scrolling
+          // embla carousel as Staff above — loops through the real award
+          // list, no duplicated cards.
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
+            className="w-full -mx-5 px-5 lg:mx-0 lg:px-0"
+          >
+            <CarouselContent className="ml-0 gap-4">
+              {awards.map((award) => (
+                <CarouselItem key={award.id} className="basis-auto pl-0">
+                  <div className="relative w-[160px] sm:w-[200px] lg:w-[240px] aspect-[3/4] rounded-2xl overflow-hidden bg-[#060A0F]">
+                    {award.image ? (
+                      <img
+                        src={award.image}
+                        alt={award.name}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-[#00D46A4D] flex items-center justify-center">
+                          <AwardIcon className="w-5 h-5 text-[#00D46A]" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+                    <div className="absolute inset-x-0 bottom-0 p-4">
+                      <p className="font-manrope font-bold text-white text-[14px] sm:text-[16px] leading-[1.3]">{award.name}</p>
+                      <p className="font-manrope text-[#D7D7D7] text-[12px] sm:text-[13px] leading-[1.3]">{award.subtitle}</p>
                     </div>
                   </div>
-                )}
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="font-manrope font-bold text-white text-[14px] sm:text-[16px] leading-[1.3]">{award.name}</p>
-                  <p className="font-manrope text-[#D7D7D7] text-[12px] sm:text-[13px] leading-[1.3]">{award.subtitle}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         )}
       </div>
     </PageWrapper>

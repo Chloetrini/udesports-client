@@ -27,11 +27,10 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 
   // A single skeleton card — mirrors the real card's outer dimensions and split layout
   const PlayerCardSkeleton = () => (
-    <div className='w-full md:w-[240px] lg:w-[306px] h-[226px] md:h-[211px] lg:h-[272px] flex gap-2 relative'>
-      {/* left: main card area with silhouette — fills the available width on
-          mobile so the card takes the full screen width instead of sitting
-          in a fixed narrow column; locked back to a fixed size on md/lg. */}
-      <div className='h-full flex-1 md:flex-none md:w-[226px] lg:w-[226px] rounded-[10px] bg-[#f0f0f0] flex items-end justify-center overflow-hidden'>
+    <div className='w-[280px] md:w-[240px] lg:w-[306px] h-[226px] md:h-[211px] lg:h-[272px] flex gap-2 relative'>
+      {/* left: main card area with silhouette — a fixed, centered width on
+          mobile (matching md/lg) rather than stretching edge-to-edge. */}
+      <div className='h-full flex-1 rounded-[10px] bg-[#f0f0f0] flex items-end justify-center overflow-hidden'>
         {/* silhouette shape — a rounded block standing in for the player image */}
         <img
           src={silhouette}
@@ -51,7 +50,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
 
   if (isLoading) {
     return (
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gridAdjust gap-11 w-full justify-items-stretch md:justify-items-center'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gridAdjust gap-11 w-full justify-items-center'>
         {Array.from({ length: 8 }).map((_, i) => (
           <PlayerCardSkeleton key={i} />
         ))}
@@ -159,13 +158,13 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-11 w-full justify-items-stretch md:justify-items-center gridAdjust'>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-11 w-full justify-items-center gridAdjust'>
       {
         filteredData.map((result) => {
           return (
             <div key={result.id}
               onClick={() => onPlayerClick(result.id)}
-              className=' w-full md:w-[240px] lg:w-[306px] h-[226px] md:h-[211px] lg:h-[272px] flex gap-2 cursor-pointer relative rounded-[10px] transition-transform duration-300 hover:scale-105'>
+              className=' w-[280px] md:w-[240px] lg:w-[306px] h-[226px] md:h-[211px] lg:h-[272px] flex gap-2 cursor-pointer relative rounded-[10px] transition-transform duration-300 hover:scale-105'>
 
               <div className={`flex flex-row-reverse items-center gap-[8px] px-[9px] py-[4.5px] rounded-[99px] font-manrope text-[10px] font-bold absolute top-3 left-3 md:top-2 md:left-2 lg:top-3 lg:left-3 bg-[#155535] text-[#00D46A]`}>
                 {result?.status && STATUS_LABEL[result.status]}
@@ -173,7 +172,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 </div>
               </div>
 
-              <div className='h-full flex-1 md:flex-none md:w-[226px] lg:w-[226px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover relative overflow-hidden'>
+              <div className='h-full flex-1 rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover relative overflow-hidden'>
 
                 {/* photo - fills the whole card, anchored to the top
                     (object-top) so the head sits high on the card instead
