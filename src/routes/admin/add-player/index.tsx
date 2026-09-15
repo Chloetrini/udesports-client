@@ -394,6 +394,7 @@ const AddPlayer = () => {
               <option>RW</option>
               <option>ST</option>
               <option>FW</option>
+              <option>MF</option>
               <option>CM</option>
               <option>CB</option>
               <option>RB</option>
