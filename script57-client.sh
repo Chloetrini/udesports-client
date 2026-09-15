@@ -1,3 +1,9 @@
+#!/bin/bash
+set -e
+
+echo "Applying club badge size increase + fallback-logo removal..."
+
+cat > src/components/player-information/ClubBadge.tsx << 'EOF'
 import arrowDownIcon from "@/assets/arrow.png"
 
 interface ClubBadgeProps {
@@ -105,3 +111,44 @@ export default function ClubBadge({
     </div>
   )
 }
+EOF
+
+python3 - << 'PYEOF'
+import re
+
+path = "src/components/player-information/PlayerFullDetails.tsx"
+with open(path) as f:
+    content = f.read()
+
+content = content.replace(
+    'import noClubLogo from "@/assets/currentClubLogo.png"\n',
+    ''
+)
+content = content.replace(
+    '                currentClubLogo={player.currentClubLogo}\n                fallbackLogo={noClubLogo}\n                size="lg"',
+    '                currentClubLogo={player.currentClubLogo}\n                size="lg"'
+)
+
+with open(path, "w") as f:
+    f.write(content)
+
+print("PlayerFullDetails.tsx updated.")
+PYEOF
+
+echo ""
+echo "Done. Changed files:"
+echo "  - src/components/player-information/ClubBadge.tsx"
+echo "  - src/components/player-information/PlayerFullDetails.tsx"
+echo ""
+echo "What changed:"
+echo "  - Badge logos are now noticeably bigger on the grid card (sm) and"
+echo "    featured-players carousel (md); detail page (lg) unchanged (you'd"
+echo "    already bumped that one)."
+echo "  - Removed the fallback/placeholder logo entirely. If a club has no"
+echo "    logo on file, nothing renders for it (no generic UdeSport mark"
+echo "    shown as a stand-in) — a fresh signing with no transfer still"
+echo "    only shows their current club logo, same as before."
+echo ""
+echo "Now run:"
+echo "  npx tsc -p tsconfig.app.json --noEmit && npx eslint . && npm run build"
+echo "to double check, then commit and push as usual."

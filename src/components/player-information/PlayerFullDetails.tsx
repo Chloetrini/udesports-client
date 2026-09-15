@@ -3,7 +3,6 @@ import leftFootHighlight from "@/assets/leftFootHighlight.png"
 import leftFootDim from "@/assets/leftFootDim.png"
 import rightFootHighlight from "@/assets/rightFootHighlight.png"
 import rightFootDim from "@/assets/rightFootDim.png"
-import noClubLogo from "@/assets/currentClubLogo.png"
 import closeIcon from "@/assets/closeIcon.png"
 import silhouette from '@/assets/silhouette.png'
 import { Skeleton } from "@mui/material"
@@ -294,7 +293,6 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
                 previousClubLogo={player.previousClubLogo}
                 currentClubName={player.currentClubName}
                 currentClubLogo={player.currentClubLogo}
-                fallbackLogo={noClubLogo}
                 size="lg"
               />
             )}
