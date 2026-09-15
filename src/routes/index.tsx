@@ -457,4 +457,3 @@ const routes = [
 ] satisfies RouteObject[];
 
 export const router = createBrowserRouter(routes)
-

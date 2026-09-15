@@ -27,4 +27,3 @@ export const updateHeadlineItem = async (id: string, data: Record<string, unknow
 export const deleteHeadlineItem = async (id: string): Promise<void> => {
   await api.delete<undefined>(`/headlines/${id}`)
 }
-

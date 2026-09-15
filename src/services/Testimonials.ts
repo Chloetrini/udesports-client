@@ -27,4 +27,3 @@ export const updateTestimonial = async (id: string, data: Record<string, unknown
 export const deleteTestimonial = async (id: string): Promise<void> => {
   await api.delete<undefined>(`/testimonials/${id}`)
 }
-

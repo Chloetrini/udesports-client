@@ -39,4 +39,3 @@ function toRequestBody(data: Record<string, unknown>): FormData | Record<string,
   }
   return formData
 }
-

@@ -100,4 +100,3 @@ export const updateAdmin = async (
 export const deleteAdmin = async (id: string): Promise<void> => {
   await api.delete<undefined>(`/auth/admins/${id}`);
 };
-

@@ -105,7 +105,12 @@ export default function Settings() {
       setInviteName('')
       setInviteEmail('')
       setInviteRole('SUB_ADMIN')
-      if (!result.emailSent) {
+      // Defensive: a mismatched/older server response (or a proxy/edge cache
+      // returning a stale build) could omit `body` entirely — don't crash
+      // the page on that, just fall back to a generic confirmation.
+      if (!result) {
+        showApiErrorToast.success('Admin invited.')
+      } else if (!result.emailSent) {
         showApiErrorToast.warn("Admin created, but the invite email couldn't be sent right now — it's queued to retry automatically.")
       } else {
         showApiErrorToast.success(`Invite sent to ${result.admin.email}`)
@@ -357,4 +362,3 @@ export default function Settings() {
     </>
    )
 }
-

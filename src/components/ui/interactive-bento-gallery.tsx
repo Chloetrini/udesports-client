@@ -430,4 +430,3 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
 
 export default InteractiveBentoGallery
 
-

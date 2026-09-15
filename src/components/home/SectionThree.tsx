@@ -215,4 +215,3 @@ const SectionThree: React.FC = () => {
 };
 
 export default SectionThree;
-

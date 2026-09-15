@@ -11,4 +11,3 @@ export const unsubscribeFromNewsletter = async (token: string): Promise<string> 
   const res = await api.get<Record<string, never>>(`/newsletter/unsubscribe/${token}`)
   return res.message
 }
-
