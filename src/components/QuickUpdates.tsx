@@ -99,3 +99,6 @@ const QuickUpdates = () => {
 };
 
 export default QuickUpdates;
+
+
+

@@ -1,52 +1,30 @@
-import type { Headlines } from "@/types/dataTypes";
+import type { Headlines } from "@/types/dataTypes"
+import { api } from "@/lib/api"
 
-const headlines: Headlines[] = [
-  {
-    id: "q1",
-    category: "announcement",
-    headline: "UdeSport Announces New Player Partnership",
-  },
-  {
-    id: "q2",
-    category: "academy",
-    headline: "UdeSport Academy Welcomes New Young Talents",
-  },
-  {
-    id: "q3",
-    category: "negotiation",
-    headline: "Club Opens Talks for UdeSport Midfielder",
-  },
-  {
-    id: "q4",
-    category: "announcement",
-    headline: "UdeSport Confirms Player Transfer Agreement",
-  },
-  {
-    id: "q5",
-    category: "negotiation",
-    headline: "European Club Enters Talks for Rising Forward",
-  },
-];
-
-// export const fetchAllHeadlines = async (): Promise<Headlines[]> => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       resolve(headlines);
-//     }, 1000);
-//   });
-// };
-
+// Public — published headlines only, powers the scrolling ticker bar.
 export const fetchAllHeadlines = async (): Promise<Headlines[]> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const shouldFail = false;
+  const res = await api.get<{ count: number; headlines: Headlines[] }>("/headlines")
+  return res.body?.headlines ?? []
+}
 
-      if (shouldFail) {
-        reject(new Error("Failed to fetch headlines"));
-        return;
-      }
+// Admin-only — every headline, including unpublished drafts.
+export const fetchHeadlinesAdmin = async (): Promise<Headlines[]> => {
+  const res = await api.get<{ count: number; headlines: Headlines[] }>("/headlines/admin/all")
+  return res.body?.headlines ?? []
+}
 
-      resolve(headlines);
-    }, 1000);
-  });
-};
+// `isDraft: true` saves unpublished; the backend flips it to `published`.
+export const createHeadlineItem = async (data: Record<string, unknown>): Promise<Headlines> => {
+  const res = await api.post<{ headline: Headlines }>("/headlines", data)
+  return res.body!.headline
+}
+
+export const updateHeadlineItem = async (id: string, data: Record<string, unknown>): Promise<Headlines> => {
+  const res = await api.put<{ headline: Headlines }>(`/headlines/${id}`, data)
+  return res.body!.headline
+}
+
+export const deleteHeadlineItem = async (id: string): Promise<void> => {
+  await api.delete<undefined>(`/headlines/${id}`)
+}
+

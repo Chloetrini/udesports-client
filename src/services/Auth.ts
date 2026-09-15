@@ -38,3 +38,14 @@ export const resetPassword = async (
 ): Promise<void> => {
   await api.put<undefined>("/auth/reset-password", { email, code, password, confirmPassword });
 };
+
+// Activates an invited admin — token comes from the emailed invite link's
+// `?token=` query param.
+export const setPassword = async (
+  token: string,
+  password: string,
+  confirmPassword: string
+): Promise<void> => {
+  await api.put<undefined>(`/auth/set-password/${token}`, { password, confirmPassword });
+};
+

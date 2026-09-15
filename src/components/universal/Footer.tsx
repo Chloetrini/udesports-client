@@ -5,21 +5,31 @@ import ic_mail from '@/assets/ic_mail.png';
 import ic_phone from '@/assets/ic_phone.png';
 import icons_insta from '@/assets/icons_insta.png';
 import { NavLink } from 'react-router-dom';
+import { useSubscribeToNewsletter } from '@/hooks/useApi';
+import { toast } from 'react-toastify';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-
+  const subscribeMutation = useSubscribeToNewsletter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!email.trim()) {
+    const trimmed = email.trim();
+    if (!trimmed) {
       setError("Can't submit an empty input field");
       return;
     }
+    if (!EMAIL_RE.test(trimmed)) {
+      setError('Please enter a valid email address');
+      return;
+    }
     try {
-      console.log('Subscribing email:', email);
+      const message = await subscribeMutation.mutateAsync(trimmed);
+      toast.success(message || "You're subscribed!");
       setEmail('');
     } catch (err: unknown) {
       const message =
@@ -63,12 +73,13 @@ const Footer: React.FC = () => {
                 </div>
                 <button
                   type="submit"
+                  disabled={subscribeMutation.isPending}
                   className="
                     w-full sm:w-auto min-w-35 h-11.25 px-3 bg-[#00D46A] rounded-md text-[#FFFFFF] font-manrope font-medium text-sm flex items-center justify-center transition-all duration-200 shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C] hover:bg-[#00c45e] hover:shadow-[0_-1px_0_0_#38FF9C,1px_0_0_0_#38FF9C,-1px_0_0_0_#38FF9C,0_4px_12px_rgba(0,212,106,0.3)]
-                    active:scale-95
+                    active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed
                   "
                 >
-                  Subscribe
+                  {subscribeMutation.isPending ? 'Subscribing…' : 'Subscribe'}
                 </button>
               </form>
             </div>

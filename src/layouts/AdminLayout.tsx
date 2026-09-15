@@ -4,6 +4,11 @@ import {
   Users,
   Newspaper,
   Images,
+  Zap,
+  Quote,
+  IdCard,
+  Megaphone,
+  Award as AwardIcon,
   Bell,
   Settings,
   LogOut,
@@ -33,6 +38,11 @@ const navItems = [
       { label: "Players", path: "/admin/player-overview", icon: Users },
       { label: "News", path: "/admin/news", icon: Newspaper },
       { label: "Gallery", path: "/admin/gallery", icon: Images },
+      { label: "Quick Updates", path: "/admin/quick-updates", icon: Zap },
+      { label: "Testimonials", path: "/admin/testimonials", icon: Quote },
+      { label: "Staff", path: "/admin/staff", icon: IdCard },
+      { label: "Ticker Headlines", path: "/admin/headlines", icon: Megaphone },
+      { label: "Award & Certification", path: "/admin/awards", icon: AwardIcon },
     ],
   },
   {
@@ -280,3 +290,7 @@ export default function AdminLayout() {
     </div>
   );
 }
+
+
+
+

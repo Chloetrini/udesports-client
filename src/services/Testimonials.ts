@@ -1,55 +1,30 @@
- import type { Testimonial } from "@/types/dataTypes"
+import type { Testimonial } from "@/types/dataTypes"
+import { api } from "@/lib/api"
 
- const testimonials: Testimonial[] = [
-    {
-      "id": 1,
-      "quote": "UdeSport delivered exactly what we needed – a technically gifted, mentally prepared player who hit the ground running in the Bundesliga.",
-      "author": "Scout Director",
-      "club": "Bundesliga Club",
-      "country": "Germany",
-    },
-    {
-      "id": 2,
-      "quote": "We were impressed by the player's tactical awareness and adaptability to our system. A seamless integration into the squad.",
-      "author": "Head Coach",
-      "club": "Premier League Club",
-      "country": "England",
-    },
-    {
-      "id": 3,
-      "quote": "The professionalism and work ethic of the players from UdeSport is exceptional. They bring both skill and character.",
-      "author": "Technical Director",
-      "club": "Serie A Club",
-      "country": "Italy",
-    },
-    {
-      "id": 4,
-      "quote": "A game-changer for our midfield. UdeSport provided a player who not only performs but also elevates the team.",
-      "author": "Sporting Director",
-      "club": "La Liga Club",
-      "country": "Spain",
-    }
-  ]
+// Public — published testimonials only, powers the home page carousel.
+export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
+  const res = await api.get<{ count: number; testimonials: Testimonial[] }>("/testimonials")
+  return res.body?.testimonials ?? []
+}
 
-  // export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       resolve(testimonials)
-  //     }, 1000)
-  //   })
-  // }
+// Admin-only — every testimonial, including unpublished drafts.
+export const fetchTestimonialsAdmin = async (): Promise<Testimonial[]> => {
+  const res = await api.get<{ count: number; testimonials: Testimonial[] }>("/testimonials/admin/all")
+  return res.body?.testimonials ?? []
+}
 
-  export const fetchAllTestimonials = async (): Promise<Testimonial[]> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const shouldFail = false;
+// `isDraft: true` saves unpublished; the backend flips it to `published`.
+export const createTestimonial = async (data: Record<string, unknown>): Promise<Testimonial> => {
+  const res = await api.post<{ testimonial: Testimonial }>("/testimonials", data)
+  return res.body!.testimonial
+}
 
-      if (shouldFail) {
-        reject(new Error("Failed to fetch testimonials"));
-        return;
-      }
+export const updateTestimonial = async (id: string, data: Record<string, unknown>): Promise<Testimonial> => {
+  const res = await api.put<{ testimonial: Testimonial }>(`/testimonials/${id}`, data)
+  return res.body!.testimonial
+}
 
-      resolve(testimonials);
-    }, 1000);
-  });
-};
+export const deleteTestimonial = async (id: string): Promise<void> => {
+  await api.delete<undefined>(`/testimonials/${id}`)
+}
+

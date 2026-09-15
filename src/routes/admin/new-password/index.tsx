@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 
 import logo from "@/assets/udeLogo.png";
+import { useSetPassword } from "@/hooks/useApi";
 
 export default function NewPassword() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+  const setPasswordMutation = useSetPassword();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,17 +19,26 @@ export default function NewPassword() {
   const [errors, setErrors] = useState({
     password: "",
     confirmPassword: "",
+    form: "",
   });
-  function handleSubmit(e: React.FormEvent) {
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     const newErrors = {
       password: "",
       confirmPassword: "",
+      form: "",
     };
+
+    if (!token) {
+      newErrors.form = "This link is invalid or has expired. Please request a new invite.";
+    }
 
     if (!password.trim()) {
       newErrors.password = "New password is required.";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters.";
     }
 
     if (!confirmPassword.trim()) {
@@ -35,9 +48,17 @@ export default function NewPassword() {
     }
     setErrors(newErrors);
 
-    if (newErrors.password || newErrors.confirmPassword) return;
+    if (newErrors.password || newErrors.confirmPassword || newErrors.form) return;
 
-    navigate("/admin/login");
+    try {
+      await setPasswordMutation.mutateAsync({ token: token as string, password, confirmPassword });
+      navigate("/admin/login");
+    } catch (err) {
+      setErrors((prev) => ({
+        ...prev,
+        form: err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      }));
+    }
   }
 
   return (
@@ -73,6 +94,7 @@ export default function NewPassword() {
                   setErrors((prev) => ({
                     ...prev,
                     password: "",
+                    form: "",
                   }));
                 }}
                 className={`w-full border rounded-lg px-4 py-3 pr-12 focus:outline-none ${
@@ -87,7 +109,7 @@ export default function NewPassword() {
 
               <button
                 type="button"
-                onVolumeChange={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2"
               >
                 {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
@@ -112,6 +134,7 @@ export default function NewPassword() {
                   setErrors((prev) => ({
                     ...prev,
                     confirmPassword: "",
+                    form: "",
                   }));
                 }}
                 className={`w-full border rounded-lg px-4 py-3 pr-12 focus:outline-none ${
@@ -136,11 +159,16 @@ export default function NewPassword() {
             </div>
           </div>
 
+          {errors.form && (
+            <p className="text-sm text-red-500 text-center">{errors.form}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg transition-colors"
+            disabled={setPasswordMutation.isPending}
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Continue
+            {setPasswordMutation.isPending ? "Saving..." : "Continue"}
           </button>
 
           <p className="text-center text-sm text-gray-600">
@@ -158,3 +186,4 @@ export default function NewPassword() {
     </div>
   );
 }
+

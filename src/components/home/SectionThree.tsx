@@ -111,6 +111,23 @@ const SectionThree: React.FC = () => {
     );
   }
 
+  // No published testimonials yet (fresh install, or all drafted) — render
+  // the section without a card rather than crashing on testimonials[0].
+  if (testimonials.length === 0) {
+    return (
+      <PageWrapper className="p-[20px]">
+        <div className="flex flex-col lg:flex-row-reverse items-stretch gap-8 md:gap-20">
+          {LeftSide}
+          <div className="w-full max-w-3xl mx-auto bg-[#d4f8e6] dark:bg-[#0f2e1c] rounded-3xl flex items-center justify-center py-16 px-6">
+            <p className="font-manrope font-normal text-[#68717D] text-sm text-center">
+              Testimonials are coming soon.
+            </p>
+          </div>
+        </div>
+      </PageWrapper>
+    );
+  }
+
   const total = testimonials.length;
   const current = testimonials[currentIndex];
 
@@ -198,3 +215,4 @@ const SectionThree: React.FC = () => {
 };
 
 export default SectionThree;
+

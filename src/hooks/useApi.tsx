@@ -1,7 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchAllPlayers, fetchAllPlayersAdmin, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer } from '../services/Players'
-import { login as loginRequest, logout as logoutRequest, getMe } from '@/services/Auth'
-import { fetchAllTestimonials  } from '../services/Testimonials'
+import { login as loginRequest, logout as logoutRequest, getMe, setPassword as setPasswordRequest } from '@/services/Auth'
+import {
+  fetchAllTestimonials,
+  fetchTestimonialsAdmin,
+  createTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+} from '../services/Testimonials'
+import { subscribeToNewsletter, unsubscribeFromNewsletter } from '@/services/Newsletter'
 import {
   fetchNewsArticles,
   fetchNewsArticlesAdmin,
@@ -10,7 +17,13 @@ import {
   updateNewsArticle,
   deleteNewsArticle,
 } from '@/services/Articles'
-import { fetchAllHeadlines } from '@/services/Headlines'
+import {
+  fetchAllHeadlines,
+  fetchHeadlinesAdmin,
+  createHeadlineItem,
+  updateHeadlineItem,
+  deleteHeadlineItem,
+} from '@/services/Headlines'
 import {
   fetchGalleryImages,
   fetchGalleryImagesAdmin,
@@ -25,8 +38,20 @@ import {
   updateQuickUpdate,
   deleteQuickUpdate,
 } from '@/services/QuickUpdates'
-import { fetchStaff } from '@/services/Staff'
-import { fetchAwards } from '@/services/Awards'
+import {
+  fetchStaff,
+  fetchStaffAdmin,
+  createStaffMember,
+  updateStaffMember,
+  deleteStaffMember,
+} from '@/services/Staff'
+import {
+  fetchAwards,
+  fetchAwardsAdmin,
+  createAward,
+  updateAward,
+  deleteAward,
+} from '@/services/Awards'
 import {
   submitContactMessage,
   fetchNotifications,
@@ -128,10 +153,75 @@ export const useLogout = () => {
   })
 }
 
+// Activates an invited admin's account (sets their password from the
+// emailed invite link's token).
+export const useSetPassword = () => {
+  return useMutation({
+    mutationFn: ({
+      token,
+      password,
+      confirmPassword,
+    }: {
+      token: string
+      password: string
+      confirmPassword: string
+    }) => setPasswordRequest(token, password, confirmPassword),
+  })
+}
+
 export const useGetTestimonials = () => {
   return useQuery({
     queryKey: ['testimonials'],
     queryFn: fetchAllTestimonials
+  })
+}
+
+export const useGetTestimonialsAdmin = () => {
+  return useQuery({
+    queryKey: ['testimonials', 'admin'],
+    queryFn: fetchTestimonialsAdmin
+  })
+}
+
+export const useCreateTestimonial = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createTestimonial(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] })
+    },
+  })
+}
+
+export const useUpdateTestimonial = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateTestimonial(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] })
+    },
+  })
+}
+
+export const useDeleteTestimonial = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteTestimonial(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['testimonials'] })
+    },
+  })
+}
+
+export const useSubscribeToNewsletter = () => {
+  return useMutation({
+    mutationFn: (email: string) => subscribeToNewsletter(email),
+  })
+}
+
+export const useUnsubscribeFromNewsletter = () => {
+  return useMutation({
+    mutationFn: (token: string) => unsubscribeFromNewsletter(token),
   })
 }
 
@@ -146,6 +236,43 @@ export const useGetHeadlines = () => {
   return useQuery({
     queryKey: ['headlines'],
     queryFn: fetchAllHeadlines
+  })
+}
+
+export const useGetHeadlinesAdmin = () => {
+  return useQuery({
+    queryKey: ['headlines', 'admin'],
+    queryFn: fetchHeadlinesAdmin
+  })
+}
+
+export const useCreateHeadline = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createHeadlineItem(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['headlines'] })
+    },
+  })
+}
+
+export const useUpdateHeadline = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateHeadlineItem(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['headlines'] })
+    },
+  })
+}
+
+export const useDeleteHeadline = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteHeadlineItem(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['headlines'] })
+    },
   })
 }
 
@@ -300,10 +427,84 @@ export const useGetStaff = () => {
   })
 }
 
+export const useGetStaffAdmin = () => {
+  return useQuery({
+    queryKey: ["staff", "admin"],
+    queryFn: fetchStaffAdmin
+  })
+}
+
+export const useCreateStaffMember = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createStaffMember(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staff'] })
+    },
+  })
+}
+
+export const useUpdateStaffMember = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateStaffMember(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staff'] })
+    },
+  })
+}
+
+export const useDeleteStaffMember = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteStaffMember(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staff'] })
+    },
+  })
+}
+
 export const useGetAwards = () => {
   return useQuery({
     queryKey: ["awards"],
     queryFn: fetchAwards
+  })
+}
+
+export const useGetAwardsAdmin = () => {
+  return useQuery({
+    queryKey: ["awards", "admin"],
+    queryFn: fetchAwardsAdmin
+  })
+}
+
+export const useCreateAward = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createAward(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['awards'] })
+    },
+  })
+}
+
+export const useUpdateAward = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateAward(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['awards'] })
+    },
+  })
+}
+
+export const useDeleteAward = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteAward(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['awards'] })
+    },
   })
 }
 
@@ -352,3 +553,5 @@ export const useDeleteNotification = () => {
     },
   })
 }
+
+

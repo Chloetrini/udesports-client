@@ -115,6 +115,19 @@ const routes = [
                             const { default: Component } = await import("@/routes/main/gallery");
                             return { Component };
                         }
+                    },
+                    {
+                        path: "unsubscribe",
+                        handle: {
+                            seo: {
+                                title: 'Unsubscribe',
+                                description: 'Unsubscribe from UdeSport newsletter emails.',
+                            }
+                        },
+                        lazy: async () => {
+                            const { default: Component } = await import("@/routes/main/unsubscribe");
+                            return { Component };
+                        }
                     }
                 ]
             },
@@ -275,6 +288,81 @@ const routes = [
             },
 
             {
+                path: "quick-updates",
+                handle: {
+                    seo: {
+                        title: "Quick Updates",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/quick-updates");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "testimonials",
+                handle: {
+                    seo: {
+                        title: "Testimonials",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/testimonials");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "staff",
+                handle: {
+                    seo: {
+                        title: "Staff",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/staff");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "headlines",
+                handle: {
+                    seo: {
+                        title: "Ticker Headlines",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/headlines");
+                    return { Component };
+                },
+            },
+
+            {
+                path: "awards",
+                handle: {
+                    seo: {
+                        title: "Award & Certification",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/awards");
+                    return { Component };
+                },
+            },
+
+            {
                 path: "settings",
                 handle: {
                     seo: {
@@ -369,3 +457,4 @@ const routes = [
 ] satisfies RouteObject[];
 
 export const router = createBrowserRouter(routes)
+

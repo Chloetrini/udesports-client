@@ -346,3 +346,8 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 }
 
 export default PlayerFullDetails
+
+
+
+
+

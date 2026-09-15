@@ -1,4 +1,5 @@
-import { CircleUserRound, BadgeCheck, Award as AwardIcon } from "lucide-react"
+import { BadgeCheck, Award as AwardIcon } from "lucide-react"
+import noProfilePhoto from "@/assets/no profile photo.jpg"
 import PageWrapper from "@/components/page-wrapper"
 import { useGetStaff, useGetAwards } from "@/hooks/useApi"
 import udeSportLogo from "@/assets/udess.png"
@@ -119,28 +120,40 @@ const About = () => {
         {staffLoading ? (
           <div className="flex gap-4 overflow-x-auto pb-2">
             {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="w-[220px] h-[130px] rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse flex-shrink-0" />
+              <div key={i} className="w-[220px] sm:w-[258px] h-[300px] rounded-[40px] bg-gray-100 dark:bg-white/5 animate-pulse flex-shrink-0" />
             ))}
           </div>
+        ) : !staff || staff.length === 0 ? (
+          <p className="font-manrope text-[#8E8E8E] dark:text-gray-400 text-sm">Staff details coming soon.</p>
         ) : (
+          // Matches the Figma team-card design: green card, white hairline
+          // border, a square photo (real Cloudinary upload, falling back to
+          // the generic silhouette when a member has none yet), and the
+          // name/role stacked underneath with a verified checkmark.
           <div className="flex gap-4 overflow-x-auto pb-2 -mx-5 px-5 lg:mx-0 lg:px-0">
-            {staff?.map((member) => (
+            {staff.map((member) => (
               <div
                 key={member.id}
-                className="w-[220px] flex-shrink-0 rounded-xl border border-[#00D46A] p-4 flex flex-col items-start gap-3"
+                className="w-[220px] sm:w-[258px] flex-shrink-0 bg-[#00D46A] border-[1.5px] border-white rounded-[40px] p-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col items-start"
               >
-                <div className="w-14 h-14 rounded-full bg-[#060A0F] flex items-center justify-center">
-                  <CircleUserRound className="w-8 h-8 text-[#00D46A]" />
+                <div className="w-full aspect-square rounded-[32px] border border-white overflow-hidden bg-[#060A0F]/20">
+                  <img
+                    src={member.photo || noProfilePhoto}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <p className="font-manrope font-bold text-[#060A0F] dark:text-white text-[14px] leading-[21px]">
-                    {member.name}
-                  </p>
-                  {member.verified && (
-                    <BadgeCheck className="w-4 h-4 text-[#00A553] flex-shrink-0" />
-                  )}
+                <div className="flex flex-col gap-2 p-4 w-full">
+                  <div className="flex items-center gap-1">
+                    <p className="font-manrope font-medium text-white text-[16px] sm:text-[18px] leading-[1.5] truncate">
+                      {member.name}
+                    </p>
+                    {member.verified && (
+                      <BadgeCheck className="w-4 h-4 text-white flex-shrink-0" fill="#00A553" />
+                    )}
+                  </div>
+                  <p className="font-manrope text-[#EBEBEB] text-[14px] sm:text-[16px] leading-[1.5]">{member.role}</p>
                 </div>
-                <p className="font-manrope text-[#8E8E8E] dark:text-gray-400 text-[12px] leading-[1.3]">{member.role}</p>
               </div>
             ))}
           </div>
@@ -166,16 +179,24 @@ const About = () => {
               <div key={i} className="h-[140px] rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
             ))}
           </div>
+        ) : !awards || awards.length === 0 ? (
+          <p className="font-manrope text-[#8E8E8E] dark:text-gray-400 text-sm">Certifications coming soon.</p>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {awards?.map((award) => (
+            {awards.map((award) => (
               <div
                 key={award.id}
                 className="rounded-xl bg-[#060A0F] p-5 flex flex-col items-start gap-3"
               >
-                <div className="w-10 h-10 rounded-full bg-[#00D46A4D] flex items-center justify-center">
-                  <AwardIcon className="w-5 h-5 text-[#00D46A]" />
-                </div>
+                {award.image ? (
+                  <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center">
+                    <img src={award.image} alt={award.name} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-[#00D46A4D] flex items-center justify-center">
+                    <AwardIcon className="w-5 h-5 text-[#00D46A]" />
+                  </div>
+                )}
                 <div>
                   <p className="font-manrope font-bold text-white text-[14px] leading-[21px]">{award.name}</p>
                   <p className="font-manrope text-[#8E8E8E] text-[12px] leading-[1.3]">{award.subtitle}</p>
@@ -190,4 +211,5 @@ const About = () => {
 }
 
 export default About
+
 

@@ -74,31 +74,47 @@ export interface NewsArticle {
 //   articlePhoto: string;
 // }
 
+// Matches the backend `Testimonial` model — "author" here is a free-text
+// label (e.g. "Scout Director"), not an internal admin.
 export interface Testimonial {
-  id: number;
+  id: string;
   quote: string;
   author: string;
   club: string;
   country: string;
+  published: boolean;
+  createdAt: string;
 }
 
 export interface StaffMember {
-  id: number;
+  id: string;
   name: string;
   role: string;
+  photo: string | null;
   verified: boolean;
+  order: number;
+  published: boolean;
+  createdAt: string;
 }
 
 export interface Award {
-  id: number;
+  id: string;
   name: string;
   subtitle: string;
+  image: string | null;
+  order: number;
+  published: boolean;
+  createdAt: string;
 }
+
+export type HeadlineCategory = "transfer" | "negotiation" | "academy" | "announcement";
 
 export interface Headlines {
   id: string;
-  category: string;
+  category: HeadlineCategory;
   headline: string;
+  published: boolean;
+  createdAt: string;
 }
 
 // Matches the backend GalleryItem model exactly. A gallery item is a single
@@ -142,3 +158,6 @@ export interface AppNotification {
   isRead: boolean;
   createdAt: string;
 }
+
+
+

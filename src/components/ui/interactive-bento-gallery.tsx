@@ -118,7 +118,13 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
         <img
             src={item.url}
             alt={item.title}
-            className={`${className} object-cover cursor-pointer`}
+            // caller-provided className comes last so an explicit object-fit
+            // (e.g. the modal's object-contain) actually wins instead of
+            // always being overridden by the object-cover default below —
+            // previously the modal's "object-contain" was silently losing
+            // to this "object-cover", cropping/zooming photos in the popup
+            // instead of showing the whole image.
+            className={`object-cover cursor-pointer ${className}`}
             onClick={onClick}
             loading="lazy"
             decoding="async"
@@ -158,8 +164,8 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={selectedItem.id}
-                                className="relative w-full aspect-[16/9] max-w-[95%] sm:max-w-[85%] md:max-w-3xl 
-                                         h-auto max-h-[70vh] rounded-lg overflow-hidden shadow-md"
+                                className="relative w-full aspect-[16/9] max-w-[95%] sm:max-w-[85%] md:max-w-3xl
+                                         h-auto max-h-[78vh] sm:max-h-[75vh] md:max-h-[70vh] rounded-lg overflow-hidden shadow-md"
                                 initial={{ y: 20, scale: 0.97 }}
                                 animate={{
                                     y: 0,
@@ -179,12 +185,12 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                                 onClick={onClose}
                             >
                                 <MediaItem item={selectedItem} className="w-full h-full object-contain bg-gray-900/20" onClick={onClose} />
-                                <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 
-                                              bg-gradient-to-t from-black/50 to-transparent">
-                                    <h3 className="text-white text-base sm:text-lg md:text-xl font-semibold">
+                                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 pb-4 sm:pb-5
+                                              bg-gradient-to-t from-black/85 via-black/40 to-transparent">
+                                    <h3 className="text-white text-lg sm:text-lg md:text-xl font-semibold">
                                         {selectedItem.title}
                                     </h3>
-                                    <p className="text-white/80 text-xs sm:text-sm mt-1">
+                                    <p className="text-white/85 text-sm sm:text-sm mt-1">
                                         {selectedItem.desc}
                                     </p>
                                 </div>
@@ -423,4 +429,5 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
 };
 
 export default InteractiveBentoGallery
+
 
