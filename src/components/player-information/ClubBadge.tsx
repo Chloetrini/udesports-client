@@ -1,6 +1,6 @@
 import { ArrowDown } from "lucide-react"
 import udeSportLogo from "@/assets/udeSportLogo.png"
-
+import arrowDownIcon from "@/assets/arrow.png"
 interface ClubBadgeProps {
   previousClubName?: string | null
   previousClubLogo?: string | null
@@ -39,11 +39,11 @@ export default function ClubBadge({
         {hasTransfer && (
           <>
             <div className="flex items-center gap-4">
-              <div className="w-[38px] h-[38px] flex items-center justify-center shrink-0 opacity-70">
+              <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0 opacity-70">
                 <img
                   src={previousClubLogo || fallbackLogo}
                   alt=""
-                  className="max-w-[38px] max-h-[38px] object-contain"
+                  className="max-w-[60px] max-h-[60px] object-contain"
                 />
               </div>
               <div>
@@ -51,15 +51,15 @@ export default function ClubBadge({
                 <p className="font-manrope text-[15px] text-[#060A0F] dark:text-white">{previousClubName}</p>
               </div>
             </div>
-            <ArrowDown className="w-4 h-4 text-[#00D46A] ml-4" />
+            <img src={arrowDownIcon} alt="Arrow Down" className="w-4 h-4 text-[#00D46A] ml-4" />
           </>
         )}
         <div className="flex items-center gap-4">
-          <div className="w-[50px] h-[50px] flex items-center justify-center shrink-0">
+          <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0">
             <img
               src={currentClubLogo || fallbackLogo}
               alt=""
-              className="max-w-[50px] max-h-[50px] object-contain"
+              className="max-w-[60px] max-h-[60px] object-contain"
             />
           </div>
           <div>
@@ -90,7 +90,7 @@ export default function ClubBadge({
         alt=""
         className={`${dims.previous} object-contain opacity-60`}
       />
-      <ArrowDown className={`${dims.arrow} text-white/80`} strokeWidth={3} />
+      <img src={arrowDownIcon} alt="Arrow Down" className={`${dims.arrow} text-white/80`} />
       <img
         src={currentClubLogo || fallbackLogo}
         alt=""
