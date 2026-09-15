@@ -261,8 +261,9 @@ const SectionTwo = () => {
                         )
                       )}
 
-                      {/* APP. — optional, only shown once an admin has recorded an appearance count */}
-                      {result.playerAppearance > 0 && (
+                      {/* APP. — optional, only shown once an admin has recorded an appearance count.
+                          Free-text field (can hold "382+"), so check against "0"/blank rather than a numeric > 0. */}
+                      {result.playerAppearance && result.playerAppearance !== "0" && (
                         <div className="w-full justify-center items-center flex flex-col">
                           <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">APP.</span>
                           <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.playerAppearance}</span>

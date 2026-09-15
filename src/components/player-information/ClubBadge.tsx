@@ -38,11 +38,11 @@ export default function ClubBadge({
         {hasTransfer && previousClubLogo && (
           <>
             <div className="flex items-center gap-4">
-              <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0 opacity-70">
+              <div className="w-[40px] h-[40px] flex items-center justify-center shrink-0 opacity-70">
                 <img
                   src={previousClubLogo}
                   alt=""
-                  className="max-w-[60px] max-h-[60px] object-contain"
+                  className="max-w-[40px] max-h-[40px] object-contain"
                 />
               </div>
               <div>
@@ -50,16 +50,16 @@ export default function ClubBadge({
                 <p className="font-manrope text-[15px] text-[#060A0F] dark:text-white">{previousClubName}</p>
               </div>
             </div>
-            <img src={arrowDownIcon} alt="Arrow Down" className="w-4 h-4 text-[#00D46A] ml-4" />
+            <img src={arrowDownIcon} alt="Arrow Down" className="w-4 h-4 text-[#00D46A] ml-3" />
           </>
         )}
         {currentClubLogo && (
           <div className="flex items-center gap-4">
-            <div className="w-[60px] h-[60px] flex items-center justify-center shrink-0">
+            <div className="w-[40px] h-[40px] flex items-center justify-center shrink-0">
               <img
                 src={currentClubLogo}
                 alt=""
-                className="max-w-[60px] max-h-[60px] object-contain"
+                className="max-w-[40px] max-h-[40px] object-contain"
               />
             </div>
             <div>
@@ -77,8 +77,8 @@ export default function ClubBadge({
   // size === "sm" | "md" — compact icon-only stack for the card badge
   const dims =
     size === "md"
-      ? { current: "w-[66px] h-[66px]", previous: "w-[40px] h-[40px]", arrow: "w-[20px] h-[20px]", gap: "gap-1" }
-      : { current: "w-[34px] h-[34px] lg:w-[40px] lg:h-[40px]", previous: "w-[22px] h-[22px] lg:w-[26px] lg:h-[26px]", arrow: "w-[12px] h-[12px]", gap: "gap-0.5" }
+      ? { current: "w-[66px] h-[66px]", previous: "w-[66px] h-[66px]", arrow: "w-[20px] h-[20px]", gap: "gap-2" }
+      : { current: "w-[34px] h-[34px] lg:w-[40px] lg:h-[40px]", previous: "w-[30px] h-[30px] lg:w-[35px] lg:h-[35px]", arrow: "w-[12px] h-[12px]", gap: "gap-1" }
 
   if (!hasTransfer) {
     if (!currentClubLogo) return null

@@ -164,12 +164,12 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
   return (
     <div
       onClick={onClose}
-      className="backdrop-blur-none fixed inset-0 z-[999] flex items-center justify-center md:backdrop-blur-sm md:bg-black/40 p-4"
+      className="backdrop-blur-none fixed inset-0 z-[999] flex items-center justify-center md:backdrop-blur-sm md:bg-black/40 md:p-4 p-0"
     >
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-screen h-screen pt-10 py-5 md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white dark:bg-[#0d1117] text-[#060A0F] dark:text-white md:rounded-2xl flex flex-col gap-10 md:gap-5 overflow-y-auto relative"
+        className="w-screen h-screen pt-10 py-5 md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white dark:bg-[#0d1117] text-[#060A0F] dark:text-white md:rounded-2xl flex flex-col gap-10 md:gap-5 overflow-y-auto relative p-[20px]"
       >
         {/* close icon - sits in the top-right corner, above the name; calls onClose */}
         <img
@@ -300,7 +300,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
         </div>
 
         {/* Bio-data and History */}
-        <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-15 lg:gap-40">
+        <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-15 lg:gap-30">
           <div className="w-full md:w-[320px]">
             <p className="pb-2 font-bebas text-[26px] text-[#00D46A]">BIO DATA</p>
             <div>

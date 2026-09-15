@@ -200,7 +200,7 @@ export default function PlayerView() {
   )
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function Stat({ label, value }: { label: string; value: number | string }) {
   return (
     <div>
       <p className="text-lg font-bold text-gray-900 dark:text-white leading-none">{value}</p>

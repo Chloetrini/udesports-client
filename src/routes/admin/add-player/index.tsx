@@ -85,7 +85,7 @@ const AddPlayer = () => {
   const [assists, setAssists] = useState(0);
   const [saves, setSaves] = useState(0);
   const [cleanSheets, setCleanSheets] = useState(0);
-  const [playerAppearance, setPlayerAppearance] = useState(0);
+  const [playerAppearance, setPlayerAppearance] = useState("");
   const [ratings, setRatings] = useState("");
   const [background, setBackground] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
@@ -116,7 +116,7 @@ const AddPlayer = () => {
     setAssists(player.assists);
     setSaves(player.saves ?? 0);
     setCleanSheets(player.cleanSheets ?? 0);
-    setPlayerAppearance(player.playerAppearance ?? 0);
+    setPlayerAppearance(player.playerAppearance ?? "");
     setRatings(player.rating?.toString() || "");
     setBackground(player.playerHistory || "");
     setPhotoPreview(player.playerPhoto || "");
@@ -239,7 +239,7 @@ const AddPlayer = () => {
       assists,
       saves,
       cleanSheets,
-      playerAppearance,
+      playerAppearance: playerAppearance.trim() || "0",
       rating: ratings ? Number(ratings) : undefined,
       playerHistory: background,
       previousClubName: previousClubName.trim() || undefined,
@@ -568,31 +568,32 @@ const AddPlayer = () => {
             </>
           )}
 
-          {/* Ratings */}
+          {/* Ratings — free-text so decimal points (e.g. 8.5) can be typed
+              directly, without the browser's number-input step arrows. */}
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Ratings</label>
             <input
               value={ratings}
               onChange={(e) => setRatings(e.target.value)}
-              type="number"
-              placeholder="0"
-              min={0}
+              type="text"
+              inputMode="decimal"
+              placeholder="e.g. 8.5"
               className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           {/* Appearances — backs the "APP." box on the public player cards.
-              This field existed on the backend and the card display already,
-              but had no input anywhere in this form to actually set it. */}
+              Free-text (not a number input) so a trailing "+" can be typed
+              directly (e.g. "382+"), without the browser's step arrows. */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Appearances</label>
             <input
-              value={playerAppearance === 0 ? "" : playerAppearance}
-              onChange={(e) => setPlayerAppearance(e.target.value === "" ? 0 : Number(e.target.value))}
-              type="number"
-              placeholder="0"
-              min={0}
+              value={playerAppearance}
+              onChange={(e) => setPlayerAppearance(e.target.value)}
+              type="text"
+              inputMode="text"
+              placeholder="e.g. 382+"
               className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>

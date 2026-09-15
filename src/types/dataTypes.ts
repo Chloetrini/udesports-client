@@ -35,7 +35,8 @@ export type Player = {
   currentClubName: string | null,
   currentClubLogo: string | null,
   playerHistory: string | null,
-  playerAppearance: number
+  // Free-text so it can hold a trailing "+" (e.g. "382+"), not a plain count.
+  playerAppearance: string
   isFeatured:boolean
   published: boolean
   createdAt: string
