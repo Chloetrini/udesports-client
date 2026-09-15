@@ -144,7 +144,7 @@ const Contact = () => {
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Input Full Name"
-                    className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-2.5 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
+                    className="w-full rounded-lg border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-2.5 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
                   />
                 </div>
 
@@ -159,7 +159,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="emailaddress@gmail.com"
-                    className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-2.5 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
+                    className="w-full rounded-lg border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-2.5 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
                   />
                 </div>
               </div>
@@ -175,7 +175,7 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   placeholder="Transfer enquiry / Academy / General"
-                  className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-3 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
+                  className="w-full rounded-lg border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-3 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors"
                 />
               </div>
 
@@ -190,7 +190,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us more about your enquiry..."
-                  className="w-full border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-3 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors resize-none"
+                  className="w-full rounded-lg border border-[rgba(0,0,0,0.29)] dark:border-white/20 bg-transparent dark:bg-white/5 px-4 py-3 font-manrope text-[13px] leading-[18px] text-[#060A0F] dark:text-white placeholder:text-[rgba(0,0,0,0.32)] dark:placeholder:text-gray-500 focus:outline-none focus:border-[#00D46A] transition-colors resize-none"
                 />
               </div>
 

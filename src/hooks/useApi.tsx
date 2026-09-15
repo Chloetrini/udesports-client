@@ -1,6 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchAllPlayers, fetchAllPlayersAdmin, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer } from '../services/Players'
-import { login as loginRequest, logout as logoutRequest, getMe, setPassword as setPasswordRequest } from '@/services/Auth'
+import {
+  login as loginRequest,
+  logout as logoutRequest,
+  getMe,
+  setPassword as setPasswordRequest,
+  updateProfile as updateProfileRequest,
+  getAllAdmins,
+  inviteAdmin as inviteAdminRequest,
+  updateAdmin as updateAdminRequest,
+  deleteAdmin as deleteAdminRequest,
+} from '@/services/Auth'
 import {
   fetchAllTestimonials,
   fetchTestimonialsAdmin,
@@ -166,6 +176,57 @@ export const useSetPassword = () => {
       password: string
       confirmPassword: string
     }) => setPasswordRequest(token, password, confirmPassword),
+  })
+}
+
+// The logged-in admin editing their own name/email/password.
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: { name?: string; email?: string; currentPassword?: string; newPassword?: string }) =>
+      updateProfileRequest(data),
+    onSuccess: (admin) => {
+      queryClient.setQueryData(['me'], { admin })
+    },
+  })
+}
+
+// Super Admin only — team management (invite / list / edit / delete).
+export const useGetAdmins = () => {
+  return useQuery({
+    queryKey: ['admins'],
+    queryFn: getAllAdmins,
+  })
+}
+
+export const useInviteAdmin = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: { name: string; email: string; role: 'ADMIN' | 'SUB_ADMIN' }) => inviteAdminRequest(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admins'] })
+    },
+  })
+}
+
+export const useUpdateAdmin = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { name?: string; email?: string; role?: 'ADMIN' | 'SUB_ADMIN' } }) =>
+      updateAdminRequest(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admins'] })
+    },
+  })
+}
+
+export const useDeleteAdmin = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteAdminRequest(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admins'] })
+    },
   })
 }
 
