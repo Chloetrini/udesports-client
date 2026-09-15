@@ -53,7 +53,7 @@ const SectionTwo = () => {
         <p className="font-manrope font-normal text-[#68717D] dark:text-gray-300 text-[14px] leading-5.25 tracking-normal">
           View all Players
         </p>
-        <img className="w-[17.86px] h-[17.86px]" src={arrow1} alt="" />
+        <img className="w-[17.86px] h-[17.86px] dark:invert" src={arrow1} alt="" />
       </button>
     </div>
   );

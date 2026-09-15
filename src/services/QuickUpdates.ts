@@ -1,40 +1,29 @@
 import type { QuickUpdate } from "@/types/dataTypes"
+import { api } from "@/lib/api"
 
-const quickUpdates: QuickUpdate[] = [
-  {
-    id: "1",
-    headline: "Omeruo's move to Leganés confirmed by both clubs",
-    category: "TRANSFER",
-    createdAt: "2026-03-16T09:00:00.000Z",
-    author: { name: "Anwar Pandaan", avatarUrl: "" },
-  },
-  {
-    id: "2",
-    headline: "U-17 trial intake reaches capacity across all three centres",
-    category: "ACADEMY",
-    createdAt: "2026-03-16T09:00:00.000Z",
-    author: { name: "Anwar Pandaan", avatarUrl: "" },
-  },
-  {
-    id: "3",
-    headline: "UdeSport passes 50 professional placements since founding",
-    category: "MILESTONE",
-    createdAt: "2026-03-16T09:00:00.000Z",
-    author: { name: "Anwar Pandaan", avatarUrl: "" },
-  },
-  {
-    id: "4",
-    headline: "Two U-20 midfielders in talks with Bundesliga clubs",
-    category: "INTERNATIONAL",
-    createdAt: "2026-03-16T09:00:00.000Z",
-    author: { name: "Anwar Pandaan", avatarUrl: "" },
-  },
-]
-
+// Public — published quick updates only, powers the News page sidebar.
 export const fetchQuickUpdates = async (): Promise<QuickUpdate[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(quickUpdates)
-    }, 1000)
-  })
+  const res = await api.get<{ count: number; updates: QuickUpdate[] }>("/quick-updates")
+  return res.body?.updates ?? []
+}
+
+// Admin-only — every update, including unpublished drafts.
+export const fetchQuickUpdatesAdmin = async (): Promise<QuickUpdate[]> => {
+  const res = await api.get<{ count: number; updates: QuickUpdate[] }>("/quick-updates/admin/all")
+  return res.body?.updates ?? []
+}
+
+// `isDraft: true` saves unpublished; the backend flips it to `published`.
+export const createQuickUpdate = async (data: Record<string, unknown>): Promise<QuickUpdate> => {
+  const res = await api.post<{ update: QuickUpdate }>("/quick-updates", data)
+  return res.body!.update
+}
+
+export const updateQuickUpdate = async (id: string, data: Record<string, unknown>): Promise<QuickUpdate> => {
+  const res = await api.put<{ update: QuickUpdate }>(`/quick-updates/${id}`, data)
+  return res.body!.update
+}
+
+export const deleteQuickUpdate = async (id: string): Promise<void> => {
+  await api.delete<undefined>(`/quick-updates/${id}`)
 }

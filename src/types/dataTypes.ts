@@ -34,6 +34,8 @@ export type Player = {
   playerAppearance: number
   isFeatured:boolean
   published: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export type AdminRole = "SUPER_ADMIN" | "ADMIN" | "SUB_ADMIN";
@@ -115,14 +117,16 @@ export interface GalleryImages {
 }
 export type QuickUpdateCategory = 'TRANSFER' | 'ACADEMY' | 'ANNOUNCEMENT' | 'MILESTONE' | 'INTERNATIONAL';
 
+// Matches the backend `QuickUpdate` model — no per-item author photo (same
+// convention as News), so the UI always shows the generic placeholder.
 export interface QuickUpdate {
   id: string;
   headline: string;
   category: QuickUpdateCategory;
+  published: boolean;
   createdAt: string;
   author: {
     name: string;
-    avatarUrl: string;
   };
 }
 

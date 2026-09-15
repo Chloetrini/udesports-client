@@ -11,10 +11,17 @@ const PlayerInformation = () => {
 
   const [ageFilter, setAgeFilter] = useState<AgeGroup>("All")
   const [statusFilter, setStatusFilter] = useState<Status>("All")
-  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null)
-  const [searchInput, setSearchInput] = useState("")
 
   const playerId = location.state?.playerId
+
+  // Seeded from the incoming router state so a player card clicked from
+  // another page (e.g. the home page's featured carousel) opens straight
+  // to that player's detail popup on first render — previously this was
+  // initialized to null and only the effect below (which never fires on
+  // the very first render, since prevPlayerId starts equal to playerId)
+  // could set it, so the popup silently never opened on initial navigation.
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(playerId ?? null)
+  const [searchInput, setSearchInput] = useState("")
 
   // Adjust state during render instead of in an effect — avoids an extra
   // post-commit render pass when navigation carries a new playerId.
@@ -84,5 +91,3 @@ const PlayerInformation = () => {
 }
 
 export default PlayerInformation
-
-

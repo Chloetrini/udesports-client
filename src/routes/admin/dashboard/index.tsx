@@ -1,42 +1,26 @@
 // import React from 'react'
-import { Users, ArrowLeftRight, Handshake, FileText, Newspaper, RefreshCw, Mail, Trophy } from "lucide-react"
+import { Users, ArrowLeftRight, Handshake, FileText, Newspaper, RefreshCw } from "lucide-react"
 import { useNavigate } from "react-router"
 import { adminUser } from "@/lib/adminUser"
 import { useGetNewsArticles, useGetPlayersAdmin } from "@/hooks/useApi";
+import { formatRelativeTime } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
 
+// News category label, mirrored from the public News page's map — the
+// dashboard only needs it for the one-line "Recent Activity" description.
+const NEWS_CATEGORY_LABEL: Record<string, string> = {
+  TRANSFER: "Transfer",
+  ACADEMY: "Academy",
+  ANNOUNCEMENT: "Announcement",
+};
 
-const recentActivity = [
-    {
-        title: 'K. Omeruo transfer confirmed Leganés',
-        meta: "Transfer · Serie A · La Liga",
-        time: "2h ago",
-        icon: ArrowLeftRight
-    },
-    {
-        title: 'News article published - U-17 Trials Open',
-        meta: 'Academy · Admin',
-        time: "2h ago",
-        icon: Newspaper
-    },
-    {
-        title: 'C. Eze status changed → Negotiation',
-        meta: "Transfer · Serie A · Premiere league",
-        time: "2h ago",
-        icon: RefreshCw
-    },
-    {
-        title: 'New message  Marco Bianchi, Juventus FC',
-        meta: 'Scout Enquiry · Unread',
-        time: "2h ago",
-        icon: Mail
-    },
-    {
-        title: 'V. Osimhen wins Serie A Player of Month',
-        meta: 'Transfer · Serie A · La Liga',
-        time: "2h ago",
-        icon: Trophy
-    }
-]
+type ActivityItem = {
+  title: string;
+  meta: string;
+  timestamp: string;
+  icon: LucideIcon;
+};
+
 
 function StatCardSkeleton() {
     return (
@@ -111,6 +95,43 @@ export default function Dashboard() {
         (article) => article.published === true
     ).length ?? 0;
 
+    const retiredPlayers = players?.filter(
+        (player) => player.status === "RETIRED"
+    ).length ?? 0;
+
+    // Built from real player/article timestamps rather than fabricated
+    // events — a transfer confirmation or negotiation-status change comes
+    // from a player's updatedAt, a "published" line comes from an
+    // article's createdAt. Merged and sorted newest-first, capped to 5.
+    const recentActivity: ActivityItem[] = [
+        ...(players ?? [])
+            .filter((player) => player.status === "TRANSFERRED")
+            .map((player) => ({
+                title: `${player.playerName} transfer confirmed${player.newClubName ? ` to ${player.newClubName}` : ""}`,
+                meta: `Transfer${player.currentClubName ? ` · ${player.currentClubName}` : ""}`,
+                timestamp: player.updatedAt,
+                icon: ArrowLeftRight,
+            })),
+        ...(players ?? [])
+            .filter((player) => player.status === "NEGOTIATION")
+            .map((player) => ({
+                title: `${player.playerName} status changed → Negotiation`,
+                meta: `Transfer${player.currentClubName ? ` · ${player.currentClubName}` : ""}`,
+                timestamp: player.updatedAt,
+                icon: RefreshCw,
+            })),
+        ...(articles ?? [])
+            .filter((article) => article.published)
+            .map((article) => ({
+                title: `News article published - ${article.headline}`,
+                meta: `${NEWS_CATEGORY_LABEL[article.category] ?? article.category} · Admin`,
+                timestamp: article.createdAt,
+                icon: Newspaper,
+            })),
+    ]
+        .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+        .slice(0, 5);
+
     // Each card navigates somewhere useful instead of sitting static — the
     // player-status cards jump straight to the (already-filterable) Player
     // Overview page with that status pre-selected via router state, so
@@ -163,8 +184,8 @@ export default function Dashboard() {
             color: 'text-blue-700 dark:text-blue-400'
         },
         {
-            label: 'Combined Value',
-            value: '$340M',
+            label: 'Retired Players',
+            value: retiredPlayers,
             color: 'text-orange-400'
         },
         {
@@ -244,6 +265,8 @@ export default function Dashboard() {
                     <div className="divide-y divide-gray-200 dark:divide-white/10 space-y-3">
                         {loadingPlayers || loadingArticles
                             ? Array.from({ length: 5 }).map((_, i) => <ListRowSkeleton key={i} />)
+                            : recentActivity.length === 0
+                            ? <p className="text-xs text-gray-400 py-2">No recent activity yet.</p>
                             : recentActivity.map((item, i) => (
                             <div key={i} className="
             flex items-start justify-between pb-2
@@ -258,7 +281,7 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                                 <p className="text-xs text-gray-400 shrink-0 ml-4">
-                                    {item.time}
+                                    {formatRelativeTime(item.timestamp)}
                                 </p>
                             </div>
                         ))}

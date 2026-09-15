@@ -56,7 +56,7 @@ const SectionFive: React.FC = () => {
           style={{ lineHeight: '21px' }}
         >
           All News
-          <img src={arrow1} alt="arrow" />
+          <img className="dark:invert" src={arrow1} alt="arrow" />
         </button>
       </div>
     </div>
@@ -160,7 +160,16 @@ const SectionFive: React.FC = () => {
         {topArticles.map((article: NewsArticle) => (
           <div
             key={article.id}
-            className="bg-white dark:bg-[#111820] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full"
+            role="link"
+            tabIndex={0}
+            onClick={() => navigate(`/news/${article.id}`)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navigate(`/news/${article.id}`);
+              }
+            }}
+            className="bg-white dark:bg-[#111820] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full cursor-pointer"
           >
             <img
               src={article.coverImage ? article.coverImage : news}
@@ -196,12 +205,9 @@ const SectionFive: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                
-                  <a href={"/news/" + article.id}
-                  className="font-manrope font-bold text-[#00A553] text-sm hover:underline transition-all inline-block whitespace-nowrap"
-                >
+                <span className="font-manrope font-bold text-[#00A553] text-sm inline-block whitespace-nowrap">
                   Read more →
-                </a>
+                </span>
               </div>
             </div>
           </div>

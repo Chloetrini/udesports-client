@@ -18,7 +18,13 @@ import {
   updateGalleryItem,
   deleteGalleryItem,
 } from '@/services/GalleryImages'
-import { fetchQuickUpdates } from '@/services/QuickUpdates'
+import {
+  fetchQuickUpdates,
+  fetchQuickUpdatesAdmin,
+  createQuickUpdate,
+  updateQuickUpdate,
+  deleteQuickUpdate,
+} from '@/services/QuickUpdates'
 import { fetchStaff } from '@/services/Staff'
 import { fetchAwards } from '@/services/Awards'
 import {
@@ -246,6 +252,44 @@ export const useGetQuickUpdates = () => {
   return useQuery({
     queryKey: ["quickUpdates"],
     queryFn: fetchQuickUpdates
+  })
+}
+
+// Admin-only — includes drafts.
+export const useGetQuickUpdatesAdmin = () => {
+  return useQuery({
+    queryKey: ["quickUpdates", "admin"],
+    queryFn: fetchQuickUpdatesAdmin
+  })
+}
+
+export const useCreateQuickUpdate = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (data: Record<string, unknown>) => createQuickUpdate(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quickUpdates'] })
+    },
+  })
+}
+
+export const useUpdateQuickUpdate = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Record<string, unknown> }) => updateQuickUpdate(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quickUpdates'] })
+    },
+  })
+}
+
+export const useDeleteQuickUpdate = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteQuickUpdate(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quickUpdates'] })
+    },
   })
 }
 

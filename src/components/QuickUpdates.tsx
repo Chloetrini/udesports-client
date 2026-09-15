@@ -56,7 +56,7 @@ const QuickUpdates = () => {
           <div key={update.id} className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <img
-                src={update.author.avatarUrl || noAuthorPhoto}
+                src={noAuthorPhoto}
                 alt={update.author.name}
                 className="h-6 w-6 rounded-full object-cover"
               />
@@ -99,5 +99,3 @@ const QuickUpdates = () => {
 };
 
 export default QuickUpdates;
-
-
