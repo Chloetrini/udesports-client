@@ -176,30 +176,38 @@ const About = () => {
         {awardsLoading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="h-[140px] rounded-xl bg-gray-100 dark:bg-white/5 animate-pulse" />
+              <div key={i} className="aspect-[3/4] rounded-2xl bg-gray-100 dark:bg-white/5 animate-pulse" />
             ))}
           </div>
         ) : !awards || awards.length === 0 ? (
           <p className="font-manrope text-[#8E8E8E] dark:text-gray-400 text-sm">Certifications coming soon.</p>
         ) : (
+          // Full-bleed certificate/logo image with a dark gradient scrim at
+          // the bottom holding the name + subtitle, matching the Figma card
+          // (not a small icon with a caption underneath).
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {awards.map((award) => (
               <div
                 key={award.id}
-                className="rounded-xl bg-[#060A0F] p-5 flex flex-col items-start gap-3"
+                className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-[#060A0F]"
               >
                 {award.image ? (
-                  <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center">
-                    <img src={award.image} alt={award.name} className="w-full h-full object-cover" />
-                  </div>
+                  <img
+                    src={award.image}
+                    alt={award.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-[#00D46A4D] flex items-center justify-center">
-                    <AwardIcon className="w-5 h-5 text-[#00D46A]" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-[#00D46A4D] flex items-center justify-center">
+                      <AwardIcon className="w-5 h-5 text-[#00D46A]" />
+                    </div>
                   </div>
                 )}
-                <div>
-                  <p className="font-manrope font-bold text-white text-[14px] leading-[21px]">{award.name}</p>
-                  <p className="font-manrope text-[#8E8E8E] text-[12px] leading-[1.3]">{award.subtitle}</p>
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 p-4">
+                  <p className="font-manrope font-bold text-white text-[14px] sm:text-[16px] leading-[1.3]">{award.name}</p>
+                  <p className="font-manrope text-[#D7D7D7] text-[12px] sm:text-[13px] leading-[1.3]">{award.subtitle}</p>
                 </div>
               </div>
             ))}
