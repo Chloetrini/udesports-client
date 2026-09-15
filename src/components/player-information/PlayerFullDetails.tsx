@@ -10,6 +10,7 @@ import { Skeleton } from "@mui/material"
 import { useEffect } from "react"
 import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus"
 import PlayerImage from "./PlayerImage"
+import ClubBadge from "./ClubBadge"
 
 // Backend sends DOB as an ISO 8601 string (e.g. "1996-03-03T00:00:00.000Z") —
 // format it for display instead of showing the raw string.
@@ -283,17 +284,19 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
               }
             </div>
 
-            {/* Optional field — only shown once an admin actually sets a current club */}
+            {/* Optional block — only shown once an admin actually sets a current
+                club. Shows a previous → current transfer stack whenever a
+                previous club is also on record, or just the current club
+                otherwise (e.g. a fresh signing with no transfer history). */}
             {player?.currentClubName && (
-              <div className="flex items-center gap-4">
-                <div className="w-[50px] h-[50px] flex items-center justify-center shrink-0">
-                  <img src={player.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="max-w-[50px] max-h-[50px] object-contain" />
-                </div>
-                <div>
-                  <p className="font-manrope font-medium text-lg text-[#060A0F] dark:text-white">Club Name</p>
-                  <p className="font-manrope text-[16px] text-[#060A0F] dark:text-white">{player.currentClubName}</p>
-                </div>
-              </div>
+              <ClubBadge
+                previousClubName={player.previousClubName}
+                previousClubLogo={player.previousClubLogo}
+                currentClubName={player.currentClubName}
+                currentClubLogo={player.currentClubLogo}
+                fallbackLogo={noClubLogo}
+                size="lg"
+              />
             )}
           </div>
         </div>

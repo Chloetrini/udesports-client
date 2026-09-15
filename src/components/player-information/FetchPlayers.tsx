@@ -1,13 +1,13 @@
 import { useGetPlayers } from '@/hooks/useApi';
 import Skeleton from '@mui/material/Skeleton';
 import noPlayers from '@/assets/noPlayers.png'
-import udeSportLogo from '@/assets/udeSportLogo.png'
 import { getAge } from '@/hooks/getAge';
 import silhouette from '@/assets/silhouette.png'
 import type { AgeGroup, Status } from './FilterPlayers';
 import { STATUS_LABEL } from '@/lib/playerStatus';
 import PlayerImage from './PlayerImage';
 import { Award } from 'lucide-react';
+import ClubBadge from './ClubBadge';
 
 
 type FetchPlayersProps = {
@@ -242,8 +242,9 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 )}
 
                 {/* current club — always rendered so every card is the same
-                    height; shows a "Retired" badge for a retired player, and
-                    the default udeSportLogo mark as a placeholder otherwise. */}
+                    height; shows a "Retired" badge for a retired player, a
+                    previous → current transfer stack when a previous club is
+                    on record, or just the current club logo otherwise. */}
                 <div
                   className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] flex justify-center items-end pb-3'>
                   {result.status === "RETIRED" ? (
@@ -256,7 +257,12 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                       </span>
                     </div>
                   ) : (
-                    <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className='w-[30px] h-[30px]' />
+                    <ClubBadge
+                      previousClubName={result.previousClubName}
+                      previousClubLogo={result.previousClubLogo}
+                      currentClubName={result.currentClubName}
+                      currentClubLogo={result.currentClubLogo}
+                    />
                   )}
                 </div>
 

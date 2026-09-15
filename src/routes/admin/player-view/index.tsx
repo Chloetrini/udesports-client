@@ -176,12 +176,12 @@ export default function PlayerView() {
             ) : (
               <p className="text-sm text-gray-400">No current club set</p>
             )}
-            {player.newClubName && (
+            {player.previousClubName && (
               <div className="flex items-center gap-3">
-                <img src={player.newClubLogo || noClubLogo} alt="" className="w-10 h-10 object-contain" />
+                <img src={player.previousClubLogo || noClubLogo} alt="" className="w-10 h-10 object-contain" />
                 <div>
-                  <p className="text-xs text-gray-400">New Club</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{player.newClubName}</p>
+                  <p className="text-xs text-gray-400">Previous Club</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{player.previousClubName}</p>
                 </div>
               </div>
             )}

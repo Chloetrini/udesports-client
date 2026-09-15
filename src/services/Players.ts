@@ -39,8 +39,8 @@ export const deletePlayer = async (id: string): Promise<void> => {
 function toRequestBody(data: Record<string, unknown>): FormData | Record<string, unknown> {
   const hasFile =
     data.playerPhoto instanceof File ||
-    data.currentClubLogo instanceof File ||
-    data.newClubLogo instanceof File;
+    data.previousClubLogo instanceof File ||
+    data.currentClubLogo instanceof File;
   if (!hasFile) return data;
 
   const formData = new FormData();

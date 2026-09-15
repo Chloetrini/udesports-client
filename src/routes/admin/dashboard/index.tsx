@@ -107,8 +107,8 @@ export default function Dashboard() {
         ...(players ?? [])
             .filter((player) => player.status === "TRANSFERRED")
             .map((player) => ({
-                title: `${player.playerName} transfer confirmed${player.newClubName ? ` to ${player.newClubName}` : ""}`,
-                meta: `Transfer${player.currentClubName ? ` · ${player.currentClubName}` : ""}`,
+                title: `${player.playerName} transfer confirmed${player.currentClubName ? ` to ${player.currentClubName}` : ""}`,
+                meta: `Transfer${player.previousClubName ? ` · ${player.previousClubName}` : ""}`,
                 timestamp: player.updatedAt,
                 icon: ArrowLeftRight,
             })),
@@ -116,7 +116,7 @@ export default function Dashboard() {
             .filter((player) => player.status === "NEGOTIATION")
             .map((player) => ({
                 title: `${player.playerName} status changed → Negotiation`,
-                meta: `Transfer${player.currentClubName ? ` · ${player.currentClubName}` : ""}`,
+                meta: `Transfer${player.previousClubName ? ` · ${player.previousClubName}` : ""}`,
                 timestamp: player.updatedAt,
                 icon: RefreshCw,
             })),
