@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react';
 
@@ -173,12 +174,16 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
         <>
             {/* dimmed backdrop — only really visible now that the modal itself
                 is inset on mobile instead of covering the full screen; tapping
-                it closes the modal, same as the close button. */}
+                it closes the modal, same as the close button.
+                z-[60] (not z-0) so it sits above the sticky navbar (z-50)
+                as well as the page header — otherwise either one renders on
+                top of the dimmed backdrop instead of being hidden behind
+                it. */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/60 z-0"
+                className="fixed inset-0 bg-black/60 z-[60]"
                 onClick={onClose}
             />
             <motion.div
@@ -290,7 +295,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                         y: prev.y + info.offset.y
                     }));
                 }}
-                className="fixed z-50 left-1/2 bottom-4 -translate-x-1/2 touch-none"
+                className="fixed z-[80] left-1/2 bottom-4 -translate-x-1/2 touch-none"
             >
                 <motion.div
                     className="relative rounded-xl bg-sky-400/20 backdrop-blur-xl 
@@ -350,7 +355,8 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                     </div>
                 </motion.div>
             </motion.div>
-        </>
+        </>,
+        document.body
     );
 };
 

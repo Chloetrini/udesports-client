@@ -26,12 +26,17 @@ export type Player = {
   saves: number,
   cleanSheets: number,
   rating: number | null,
+  // previousClubName/Logo: the club a player left — set only when a
+  // transfer actually happened, left blank for a fresh signing.
+  // currentClubName/Logo: the club a player is at right now — always the
+  // primary field, shown on every player card/detail page.
+  previousClubName: string | null,
+  previousClubLogo: string | null,
   currentClubName: string | null,
   currentClubLogo: string | null,
-  newClubName: string | null,
-  newClubLogo: string | null,
   playerHistory: string | null,
-  playerAppearance: number
+  // Free-text so it can hold a trailing "+" (e.g. "382+"), not a plain count.
+  playerAppearance: string
   isFeatured:boolean
   published: boolean
   createdAt: string

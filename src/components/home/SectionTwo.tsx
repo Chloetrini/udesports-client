@@ -7,12 +7,12 @@ import {
 import AutoScroll from 'embla-carousel-auto-scroll';
 import arrow1 from '@/assets/arrow1.png';
 import silhouette from '@/assets/silhouette.png';
-import udeSportLogo from '@/assets/udeSportLogo.png';
 import { useGetPlayers } from '@/hooks/useApi';
 import type { Player } from '@/types/dataTypes';
 import { getAge } from '@/hooks/getAge';
 import { STATUS_LABEL } from '@/lib/playerStatus';
 import { Award } from 'lucide-react';
+import ClubBadge from '@/components/player-information/ClubBadge';
 import PlayerImage from '@/components/player-information/PlayerImage';
 import PageWrapper from '../page-wrapper';
 
@@ -261,8 +261,9 @@ const SectionTwo = () => {
                         )
                       )}
 
-                      {/* APP. — optional, only shown once an admin has recorded an appearance count */}
-                      {result.playerAppearance > 0 && (
+                      {/* APP. — optional, only shown once an admin has recorded an appearance count.
+                          Free-text field (can hold "382+"), so check against "0"/blank rather than a numeric > 0. */}
+                      {result.playerAppearance && result.playerAppearance !== "0" && (
                         <div className="w-full justify-center items-center flex flex-col">
                           <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">APP.</span>
                           <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.playerAppearance}</span>
@@ -270,8 +271,9 @@ const SectionTwo = () => {
                       )}
 
                       {/* current club — always rendered so every card is the same
-                          height; shows a "Retired" badge for a retired player, and
-                          the default udeSportLogo mark as a placeholder otherwise. */}
+                          height; shows a "Retired" badge for a retired player, a
+                          previous → current transfer stack when a previous club
+                          is on record, or just the current club logo otherwise. */}
                       <div className="bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[67px] h-[152px] lg:w-[101px] lg:h-[229px] flex justify-center items-end pb-5">
                         {result.status === "RETIRED" ? (
                           <div className="flex flex-col items-center gap-1.5">
@@ -283,10 +285,12 @@ const SectionTwo = () => {
                             </span>
                           </div>
                         ) : (
-                          <img
-                            src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo}
-                            alt=""
-                            className='w-[53px] h-[53px]'
+                          <ClubBadge
+                            previousClubName={result.previousClubName}
+                            previousClubLogo={result.previousClubLogo}
+                            currentClubName={result.currentClubName}
+                            currentClubLogo={result.currentClubLogo}
+                            size="md"
                           />
                         )}
                       </div>

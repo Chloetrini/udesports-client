@@ -85,17 +85,17 @@ const AddPlayer = () => {
   const [assists, setAssists] = useState(0);
   const [saves, setSaves] = useState(0);
   const [cleanSheets, setCleanSheets] = useState(0);
-  const [playerAppearance, setPlayerAppearance] = useState(0);
+  const [playerAppearance, setPlayerAppearance] = useState("");
   const [ratings, setRatings] = useState("");
   const [background, setBackground] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string>("");
+  const [previousClubName, setPreviousClubName] = useState("");
+  const [previousClubLogo, setPreviousClubLogo] = useState("");
+  const [previousClubLogoFile, setPreviousClubLogoFile] = useState<File | null>(null);
   const [currentClubName, setCurrentClubName] = useState("");
   const [currentClubLogo, setCurrentClubLogo] = useState("");
   const [currentClubLogoFile, setCurrentClubLogoFile] = useState<File | null>(null);
-  const [newClubName, setNewClubName] = useState("");
-  const [newClubLogo, setNewClubLogo] = useState("");
-  const [newClubLogoFile, setNewClubLogoFile] = useState<File | null>(null);
   const [isFeatured, setIsFeatured] = useState(false);
 
   const [error, setError] = useState<Record<string, string>>({});
@@ -116,14 +116,14 @@ const AddPlayer = () => {
     setAssists(player.assists);
     setSaves(player.saves ?? 0);
     setCleanSheets(player.cleanSheets ?? 0);
-    setPlayerAppearance(player.playerAppearance ?? 0);
+    setPlayerAppearance(player.playerAppearance ?? "");
     setRatings(player.rating?.toString() || "");
     setBackground(player.playerHistory || "");
     setPhotoPreview(player.playerPhoto || "");
+    setPreviousClubName(player.previousClubName || "");
+    setPreviousClubLogo(player.previousClubLogo || "");
     setCurrentClubName(player.currentClubName || "");
     setCurrentClubLogo(player.currentClubLogo || "");
-    setNewClubName(player.newClubName || "");
-    setNewClubLogo(player.newClubLogo || "");
     setIsFeatured(!!player.isFeatured);
   }, [player]);
 
@@ -153,12 +153,12 @@ const AddPlayer = () => {
     setPhoto(file);
   }
 
-  // Shared validation for a club-logo file upload (current or new club) —
-  // same rules as the player photo, just a smaller size cap since these are
-  // simple badge/crest images, not portraits.
+  // Shared validation for a club-logo file upload (previous or current
+  // club) — same rules as the player photo, just a smaller size cap since
+  // these are simple badge/crest images, not portraits.
   function handleLogoFileChange(
     e: React.ChangeEvent<HTMLInputElement>,
-    field: "currentClubLogo" | "newClubLogo",
+    field: "previousClubLogo" | "currentClubLogo",
     setFile: (file: File | null) => void
   ) {
     const file = e.target.files?.[0];
@@ -239,13 +239,13 @@ const AddPlayer = () => {
       assists,
       saves,
       cleanSheets,
-      playerAppearance,
+      playerAppearance: playerAppearance.trim() || "0",
       rating: ratings ? Number(ratings) : undefined,
       playerHistory: background,
+      previousClubName: previousClubName.trim() || undefined,
+      previousClubLogo: previousClubLogo.trim() || undefined,
       currentClubName: currentClubName.trim() || undefined,
       currentClubLogo: currentClubLogo.trim() || undefined,
-      newClubName: newClubName.trim() || undefined,
-      newClubLogo: newClubLogo.trim() || undefined,
       isFeatured,
       published: publishTarget,
     };
@@ -261,11 +261,11 @@ const AddPlayer = () => {
     // Same pattern for club logos: an uploaded file takes priority over the
     // pasted URL (the URL field is disabled while a file is selected, so in
     // practice only one or the other is ever set at a time).
+    if (previousClubLogoFile) {
+      payload.previousClubLogo = previousClubLogoFile;
+    }
     if (currentClubLogoFile) {
       payload.currentClubLogo = currentClubLogoFile;
-    }
-    if (newClubLogoFile) {
-      payload.newClubLogo = newClubLogoFile;
     }
 
     try {
@@ -394,6 +394,7 @@ const AddPlayer = () => {
               <option>RW</option>
               <option>ST</option>
               <option>FW</option>
+              <option>MF</option>
               <option>CM</option>
               <option>CB</option>
               <option>RB</option>
@@ -568,56 +569,62 @@ const AddPlayer = () => {
             </>
           )}
 
-          {/* Ratings */}
+          {/* Ratings — free-text so decimal points (e.g. 8.5) can be typed
+              directly, without the browser's number-input step arrows. */}
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Ratings</label>
             <input
               value={ratings}
               onChange={(e) => setRatings(e.target.value)}
-              type="number"
-              placeholder="0"
-              min={0}
+              type="text"
+              inputMode="decimal"
+              placeholder="e.g. 8.5"
               className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
 
           {/* Appearances — backs the "APP." box on the public player cards.
-              This field existed on the backend and the card display already,
-              but had no input anywhere in this form to actually set it. */}
+              Free-text (not a number input) so a trailing "+" can be typed
+              directly (e.g. "382+"), without the browser's step arrows. */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Appearances</label>
             <input
-              value={playerAppearance === 0 ? "" : playerAppearance}
-              onChange={(e) => setPlayerAppearance(e.target.value === "" ? 0 : Number(e.target.value))}
-              type="number"
-              placeholder="0"
-              min={0}
+              value={playerAppearance}
+              onChange={(e) => setPlayerAppearance(e.target.value)}
+              type="text"
+              inputMode="text"
+              placeholder="e.g. 382+"
               className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
             />
           </div>
         </div>
 
         {/* Club information — shown on the public player cards/detail page.
-            Grouped as "Current Club" / "New Club" units (name + logo
+            Grouped as "Current Club" / "Previous Club" units (name + logo
             together) instead of four equal-width grid cells, since the logo
             field needs a lot more vertical room (URL input + file upload row
             + remove button + error) than a plain name field — mixing them
             into one 4-up grid made the row heights mismatch badly, especially
-            once the file-upload option was added. */}
+            once the file-upload option was added.
+            "Current Club" is the primary field — it's what every card shows.
+            "Previous Club" is optional and only matters for a transfer: leave
+            it blank for a fresh signing and only the current club renders;
+            fill both in and the public site shows a previous → current
+            transfer graphic instead. */}
         {status === "RETIRED" && (
           <div className="mt-5 flex items-start gap-2 rounded-lg border border-amber-300/50 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
             <span aria-hidden="true">ℹ️</span>
             <span>
               This player is marked <strong>Retired</strong> — the public site shows a "Retired" badge
-              instead of a club logo, so the current/new club fields below won't be displayed. You can
-              still fill them in for your own records; they'll just be hidden until the status changes.
+              instead of a club logo, so the current/previous club fields below won't be displayed. You
+              can still fill them in for your own records; they'll just be hidden until the status changes.
             </span>
           </div>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
-          {/* Current club */}
+          {/* Current club — always the primary field */}
           <div className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 p-4">
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Current Club
@@ -666,19 +673,19 @@ const AddPlayer = () => {
             </div>
           </div>
 
-          {/* New club (in-progress transfer) */}
+          {/* Previous club — optional, only fill in for a transfer */}
           <div className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/10 p-4">
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-              New Club <span className="normal-case font-normal">(if recently transferred)</span>
+              Previous Club <span className="normal-case font-normal">(only if transferred)</span>
             </p>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-gray-600 dark:text-gray-300">Club Name</label>
               <input
                 type="text"
-                placeholder="If recently transferred"
-                value={newClubName}
-                onChange={(e) => setNewClubName(e.target.value)}
+                placeholder="Leave blank for a new signing"
+                value={previousClubName}
+                onChange={(e) => setPreviousClubName(e.target.value)}
                 className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
             </div>
@@ -688,9 +695,9 @@ const AddPlayer = () => {
               <input
                 type="text"
                 placeholder="Paste an image URL..."
-                value={newClubLogo}
-                onChange={(e) => setNewClubLogo(e.target.value)}
-                disabled={!!newClubLogoFile}
+                value={previousClubLogo}
+                onChange={(e) => setPreviousClubLogo(e.target.value)}
+                disabled={!!previousClubLogoFile}
                 className="border border-gray-200 dark:border-white/15 px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-green-400 bg-white dark:bg-white/5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 disabled:opacity-50"
               />
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
@@ -698,20 +705,20 @@ const AddPlayer = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleLogoFileChange(e, "newClubLogo", setNewClubLogoFile)}
+                  onChange={(e) => handleLogoFileChange(e, "previousClubLogo", setPreviousClubLogoFile)}
                   className="text-xs text-gray-600 dark:text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-green-500 file:text-gray-900 hover:file:bg-green-600 cursor-pointer"
                 />
-                {newClubLogoFile && (
+                {previousClubLogoFile && (
                   <button
                     type="button"
-                    onClick={() => setNewClubLogoFile(null)}
+                    onClick={() => setPreviousClubLogoFile(null)}
                     className="text-[11px] text-red-500 hover:underline cursor-pointer"
                   >
                     Remove
                   </button>
                 )}
               </div>
-              {error.newClubLogo && <p className="text-xs text-red-500">{error.newClubLogo}</p>}
+              {error.previousClubLogo && <p className="text-xs text-red-500">{error.previousClubLogo}</p>}
             </div>
           </div>
         </div>

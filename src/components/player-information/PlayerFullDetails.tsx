@@ -3,13 +3,13 @@ import leftFootHighlight from "@/assets/leftFootHighlight.png"
 import leftFootDim from "@/assets/leftFootDim.png"
 import rightFootHighlight from "@/assets/rightFootHighlight.png"
 import rightFootDim from "@/assets/rightFootDim.png"
-import noClubLogo from "@/assets/currentClubLogo.png"
 import closeIcon from "@/assets/closeIcon.png"
 import silhouette from '@/assets/silhouette.png'
 import { Skeleton } from "@mui/material"
 import { useEffect } from "react"
 import { STATUS_LABEL, STATUS_STYLE } from "@/lib/playerStatus"
 import PlayerImage from "./PlayerImage"
+import ClubBadge from "./ClubBadge"
 
 // Backend sends DOB as an ISO 8601 string (e.g. "1996-03-03T00:00:00.000Z") —
 // format it for display instead of showing the raw string.
@@ -164,12 +164,12 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
   return (
     <div
       onClick={onClose}
-      className="backdrop-blur-none fixed inset-0 z-[999] flex items-center justify-center md:backdrop-blur-sm md:bg-black/40 p-4"
+      className="backdrop-blur-none fixed inset-0 z-[999] flex items-center justify-center md:backdrop-blur-sm md:bg-black/40 md:p-4 p-0"
     >
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-screen h-screen pt-10 py-5 md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white dark:bg-[#0d1117] text-[#060A0F] dark:text-white md:rounded-2xl flex flex-col gap-10 md:gap-5 overflow-y-auto relative"
+        className="w-screen h-screen pt-10 py-5 md:h-fit md:w-fit md:max-w-[90vw] md:max-h-[90vh] md:px-7 md:py-8 bg-white dark:bg-[#0d1117] text-[#060A0F] dark:text-white md:rounded-2xl flex flex-col gap-10 md:gap-5 overflow-y-auto relative p-[20px]"
       >
         {/* close icon - sits in the top-right corner, above the name; calls onClose */}
         <img
@@ -283,23 +283,26 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
               }
             </div>
 
-            {/* Optional field — only shown once an admin actually sets a current club */}
-            {player?.currentClubName && (
-              <div className="flex items-center gap-4">
-                <div className="w-[50px] h-[50px] flex items-center justify-center shrink-0">
-                  <img src={player.currentClubLogo ? player.currentClubLogo : noClubLogo} alt="" className="max-w-[50px] max-h-[50px] object-contain" />
-                </div>
-                <div>
-                  <p className="font-manrope font-medium text-lg text-[#060A0F] dark:text-white">Club Name</p>
-                  <p className="font-manrope text-[16px] text-[#060A0F] dark:text-white">{player.currentClubName}</p>
-                </div>
-              </div>
+            {/* Optional block — only shown once an admin has actually put
+                some club on record (current, previous, or both). ClubBadge
+                itself decides how to render that: a transfer stack when
+                both current and previous are set, the current club alone
+                for a fresh signing, or the previous club labeled "Last
+                Club" for a free agent with no current club. */}
+            {(player?.currentClubName || player?.previousClubName) && (
+              <ClubBadge
+                previousClubName={player.previousClubName}
+                previousClubLogo={player.previousClubLogo}
+                currentClubName={player.currentClubName}
+                currentClubLogo={player.currentClubLogo}
+                size="lg"
+              />
             )}
           </div>
         </div>
 
         {/* Bio-data and History */}
-        <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-15 lg:gap-40">
+        <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-15 lg:gap-30">
           <div className="w-full md:w-[320px]">
             <p className="pb-2 font-bebas text-[26px] text-[#00D46A]">BIO DATA</p>
             <div>

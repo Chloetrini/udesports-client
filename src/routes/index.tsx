@@ -180,6 +180,22 @@ const routes = [
             },
 
             {
+                path: "player-overview/bulk-import",
+                handle: {
+                    seo: {
+                        noIndex: true,
+                        title: "Bulk Import Players",
+                        description:
+                            "View and manage your UdeSport account, events, and activities",
+                    },
+                },
+                lazy: async () => {
+                    const { default: Component } = await import("@/routes/admin/bulk-import");
+                    return { Component };
+                },
+            },
+
+            {
                 path: "player-overview/add",
                 handle: {
                     seo: {
