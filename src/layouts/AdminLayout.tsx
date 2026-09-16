@@ -102,7 +102,7 @@ function Topbar({ onMenuClick, admin }: { onMenuClick: () => void; admin?: Admin
         </button>
         <button className="flex items-center gap-1.5 text-xs lg:text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/15 px-2 lg:px-3 py-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
           onClick={() => navigate("/")}>
-          Visit Sites
+          Visit Site
           <ArrowUpRight size={15} />
         </button>
         {admin && (

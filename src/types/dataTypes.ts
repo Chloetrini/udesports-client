@@ -125,6 +125,7 @@ export interface GalleryImages {
   id: string;
   headline: string | null;
   instaUrl: string | null;
+  focal?: string;
   description: string | null;
   coverImage: string | null;
   published: boolean;
