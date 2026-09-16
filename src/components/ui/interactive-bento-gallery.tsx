@@ -11,12 +11,26 @@ interface MediaItemType {
     desc: string;
     url: string;
     span: string;
+    // Optional manual override for where a crop should center, as a CSS
+    // object-position value (e.g. "50% 15%", "top"). Use this for the rare
+    // photo where automatic face-cropping (see Gallery.tsx) gets it wrong —
+    // group shots, side profiles, etc. Defaults to a slightly top-biased
+    // position rather than dead-center, since portraits usually have their
+    // subject's face in the upper half of the frame. Only relevant to the
+    // grid thumbnail — the modal shows the full, uncropped image and never
+    // applies this.
+    focal?: string;
+    // Uncropped source, used only for the modal's main image so clicking a
+    // photo always shows the whole thing regardless of the face-focused
+    // crop used for the grid thumbnail. Falls back to `url` if not given.
+    fullUrl?: string;
 }
 
 const MediaItem = ({ item, className, onClick }: { item: MediaItemType, className?: string, onClick?: () => void }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isInView, setIsInView] = useState(false);
     const [isBuffering, setIsBuffering] = useState(true);
+    const objectPosition = item.focal ?? '50% 25%';
 
     useEffect(() => {
         const options = {
@@ -97,6 +111,7 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
                     loop
                     preload="auto"
                     style={{
+                        objectPosition,
                         opacity: isBuffering ? 0.8 : 1,
                         transition: 'opacity 0.2s',
                         transform: 'translateZ(0)',
@@ -125,6 +140,7 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
             // to this "object-cover", cropping/zooming photos in the popup
             // instead of showing the whole image.
             className={`object-cover cursor-pointer ${className}`}
+            style={{ objectPosition }}
             onClick={onClick}
             loading="lazy"
             decoding="async"
@@ -143,6 +159,15 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
     const [dockPosition, setDockPosition] = useState({ x: 0, y: 0 });
 
     if (!isOpen) return null;
+
+    // The modal always shows the full, uncropped photo — never the
+    // face-focused crop used for the grid thumbnail — and doesn't need a
+    // focal-point override since nothing is being cropped here.
+    const modalItem: MediaItemType = {
+        ...selectedItem,
+        url: selectedItem.fullUrl ?? selectedItem.url,
+        focal: undefined,
+    };
 
     return (
         <>
@@ -166,16 +191,25 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                     damping: 30
                 }}
                 className="fixed inset-4 sm:inset-0 sm:w-full sm:min-h-screen sm:h-[90vh] md:h-[600px] bg-white dark:bg-[#0d1117] backdrop-blur-lg
-                          rounded-2xl sm:rounded-lg md:rounded-xl overflow-hidden z-10 shadow-2xl"
+                          rounded-2xl sm:rounded-lg md:rounded-xl overflow-hidden z-50 shadow-2xl"
 
             >
                 <div className="h-full flex flex-col">
-                    <div className="flex-1 p-2 sm:p-3 md:p-4 flex items-center justify-center bg-gray-50/50">
+                    <div className="flex-1 min-h-0 p-2 sm:p-3 md:p-4 flex items-center justify-center bg-gray-50/50">
                         <AnimatePresence mode="wait">
+                            {/* Wrapper shrink-wraps to the image's own rendered
+                                size (inline-block, no fixed aspect ratio) instead
+                                of forcing every photo into the same 16:9 box.
+                                The image itself carries the size caps (see
+                                MediaItem className below) so it renders as large
+                                as possible within the same bounding limits for
+                                every photo — landscape shots max out on width,
+                                portraits max out on height — which is what keeps
+                                sizing consistent across differently-shaped
+                                photos without ever cropping any of them. */}
                             <motion.div
                                 key={selectedItem.id}
-                                className="relative w-full aspect-[16/9] max-w-[95%] sm:max-w-[85%] md:max-w-3xl
-                                         h-auto max-h-[78vh] sm:max-h-[75vh] md:max-h-[70vh] rounded-lg overflow-hidden shadow-md"
+                                className="relative inline-block max-w-[95%] sm:max-w-[85%] md:max-w-3xl rounded-lg overflow-hidden shadow-md"
                                 initial={{ y: 20, scale: 0.97 }}
                                 animate={{
                                     y: 0,
@@ -194,8 +228,17 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                                 }}
                                 onClick={onClose}
                             >
-                                <MediaItem item={selectedItem} className="w-full h-full object-contain bg-gray-900/20" onClick={onClose} />
-                                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 pb-4 sm:pb-5
+                                <MediaItem
+                                    item={modalItem}
+                                    className="block max-w-full max-h-[60vh] sm:max-h-[75vh] md:max-h-[70vh] w-auto h-auto object-contain"
+                                    onClick={onClose}
+                                />
+                                {/* Caption overlay — sm and up only. On mobile the
+                                    caption moves out from on top of the photo into
+                                    its own block below (see GalleryModal's caption
+                                    block further down), since long captions were
+                                    covering too much of the image on small screens. */}
+                                <div className="hidden sm:block absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 pb-4 sm:pb-5
                                               bg-gradient-to-t from-black/85 via-black/40 to-transparent">
                                     <h3 className="text-white text-lg sm:text-lg md:text-xl font-semibold">
                                         {selectedItem.title}
@@ -206,6 +249,19 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                                 </div>
                             </motion.div>
                         </AnimatePresence>
+                    </div>
+
+                    {/* Mobile-only caption, below the image instead of overlaying
+                        it. Scrolls independently so a long description can never
+                        push the image out or get clipped by the card's
+                        overflow-hidden. */}
+                    <div className="sm:hidden shrink-0  overflow-y-auto px-4 mb-15 border-t border-gray-200 dark:border-gray-800">
+                        <h3 className="text-[#060A0F] dark:text-white text-base font-semibold">
+                            {selectedItem.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
+                            {selectedItem.desc}
+                        </p>
                     </div>
                 </div>
 
@@ -274,6 +330,10 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                                     transition: { type: "spring", stiffness: 400, damping: 25 }
                                 }}
                             >
+                                {/* Dock thumbnails intentionally keep the cropped,
+                                    face-focused `item` (not modalItem) — they're
+                                    small navigation icons, not the "see the whole
+                                    photo" surface. */}
                                 <MediaItem item={item} className="w-full h-full" onClick={() => setSelectedItem(item)} />
                                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-white/20" />
                                 {selectedItem.id === item.id && (
@@ -318,7 +378,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
     }, [selectedItem]);
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="container mx-auto px-4 py-8 max-w-5xl">
             {(title || description) && (
                 <div className="mb-8 text-center">
                     {title && (
@@ -335,7 +395,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
                     )}
                     {description && (
                         <motion.p
-                            className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400"
+                            className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400 "
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.1 }}
@@ -356,7 +416,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
                     />
                 ) : (
                     <motion.div
-                        className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 auto-rows-[70px] sm:auto-rows-[75px] md:auto-rows-[80px]"
+                        className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 auto-rows-[200px] sm:auto-rows-[75px] md:auto-rows-[80px]"
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
@@ -439,4 +499,3 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
 };
 
 export default InteractiveBentoGallery
-

@@ -12,6 +12,25 @@ const SPAN_PATTERNS = [
 
 const SKELETON_COUNT = 8;
 
+// Reframes a Cloudinary image so the subject's face is centered and safely
+// inside the frame *before* it's cropped to whatever aspect ratio a given
+// bento tile ends up needing. This is what actually fixes clipped
+// heads/faces: instead of letting CSS object-cover crop a face-agnostic
+// rectangle (which cuts top/bottom on tall images and can slice through a
+// face), Cloudinary detects the face and delivers an image already framed
+// around it, at a portrait aspect ratio. Because the source is already
+// taller than it is wide, any further object-cover cropping in a wider
+// grid tile only trims the sides — which almost never touches a face —
+// instead of the top or bottom.
+// Falls back to the original URL untouched for non-Cloudinary sources
+// (e.g. the test video URL), where MediaItemType.focal can be used instead.
+function withFaceCrop(url: string, aspect = "4:5") {
+  if (!url || !url.includes("res.cloudinary.com") || !url.includes("/upload/")) {
+    return url;
+  }
+  return url.replace("/upload/", `/upload/c_fill,g_auto:face,ar_${aspect}/`);
+}
+
 // Mirrors InteractiveBentoGallery's own grid classes so the skeleton doesn't
 // jump/reflow once real images swap in.
 function GallerySkeleton() {
@@ -79,8 +98,16 @@ export default function Gallery() {
     type: "image",
     title: photo.headline ?? "",
     desc: photo.description ?? "",
-    url: photo.coverImage ?? "",
+    url: withFaceCrop(photo.coverImage ?? ""),
+    // Full, uncropped image — used only by the modal so clicking a photo
+    // always shows the whole thing regardless of the face-focused crop
+    // used for the grid thumbnail.
+    fullUrl: photo.coverImage ?? "",
     span: SPAN_PATTERNS[index % SPAN_PATTERNS.length],
+    // Manual override for the rare photo the auto face-crop gets wrong —
+    // e.g. photo.focal: "50% 10%". Leave unset to use the component's
+    // top-biased default.
+    focal: photo.focal,
   }));
 
   return (

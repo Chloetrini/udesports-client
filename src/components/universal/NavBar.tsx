@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Sun, Moon, LayoutDashboard } from 'lucide-react';
 import udeLogo from '@/assets/logo.png';
 import hamburgerLogo from '@/assets/hamburgerLogo.png';
@@ -9,6 +9,7 @@ import { useMe } from '@/hooks/useApi';
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation()
     const { theme, toggleTheme } = useTheme();
     // Quietly checks whether an admin session cookie is already active (e.g.
     // the admin browsing the public site in another tab) so we can offer a
@@ -38,8 +39,8 @@ const NavBar: React.FC = () => {
     };
 
     return (
-        <div className="navbar-wrapper bg-black/80 backdrop-blur-xl sticky top-0 z-50">
-            <PageWrapper className="navbar-inner p-[20px]">
+        <div className={`navbar-wrapper bg-black/80 backdrop-blur-xl  z-50 ${location.pathname !== "/players" ? "sticky top-0" : "" }`}>
+            <PageWrapper className="navbar-inner px-5">
                 <div className="navbar-content flex items-center justify-between px-4 sm:px-6 py-4">
                     {/* Logo */}
                     <div className="">
@@ -133,7 +134,7 @@ const NavBar: React.FC = () => {
                     className={`
         md:hidden overflow-hidden
         bg-[#000000] border-t border-[#00D46A]
-        transition-all duration-300 ease-in-out
+        transition-all duration-300 ease-in-out -mx-5
         ${isMenuOpen
                             ? 'max-h-[500px] opacity-100 translate-y-0 py-6 px-4'
                             : 'max-h-0 opacity-0 -translate-y-2 py-0 px-4'

@@ -13,7 +13,7 @@ const About = () => {
   return (
     <PageWrapper className="w-full px-5 lg:px-10 py-14 bg-white dark:bg-black transition-colors duration-300">
       {/* Hero */}
-      <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 mb-20">
+      <div className="flex flex-col lg:flex-row items-center md:items-start gap-10 lg:gap-16 mb-20">
         <div className="flex-1 flex flex-col gap-6">
           <div className="bg-[#00D46A4D] flex flex-row justify-center items-center gap-2 rounded-3xl py-2 px-3 w-fit">
             <span className="bg-[#00D46A] w-2 h-2 rounded-full"></span>
@@ -36,7 +36,7 @@ const About = () => {
 
         <div className="flex-1 w-full">
           <div className="bg-[#060A0F] rounded-2xl border-b-4 border-l-4 border-[#00D46A] w-full aspect-video flex items-center justify-center">
-            <img src={udeSportLogo} alt="UdeSport crest" className="w-24 h-24 lg:w-32 lg:h-32" />
+            <img src={udeSportLogo} alt="UdeSport crest" className="scale-50 md:scale-70" />
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@ const About = () => {
             plugins={[AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
             className="w-full -mx-5 px-5 lg:mx-0 lg:px-0"
           >
-            <CarouselContent className="ml-0 gap-4">
+            <CarouselContent className="ml-0 gap-4 mb-2">
               {staff.map((member) => (
                 <CarouselItem key={member.id} className="basis-auto pl-0">
                   <div className="w-[220px] sm:w-[258px] bg-[#00D46A] border-[1.5px] border-white rounded-[40px] p-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col items-start">

@@ -158,7 +158,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-11 w-full justify-items-center gridAdjust'>
+<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-15 justify-items-center gridAdjust content-start self-start'>
       {
         filteredData.map((result) => {
           return (
@@ -256,7 +256,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                       </span>
                     </div>
                   ) : (
-                    <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className='w-[30px] h-[30px]' />
+                    <img src={result.currentClubLogo ? result.currentClubLogo : udeSportLogo} alt="" className={!result.currentClubLogo ? "w-[30px] h-[40px]" : `w-[30px] h-[30px]`} />
                   )}
                 </div>
 

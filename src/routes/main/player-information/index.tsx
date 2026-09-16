@@ -56,7 +56,7 @@ const PlayerInformation = () => {
       </div>
 
       {!selectedPlayerId && (
-        <section className='md:sticky top-0 z-9999 bg-white dark:bg-black mx-[-20px] lg:mx-[-40px]'>
+        <section className='md:sticky top-0 z-9999 bg-white dark:bg-black -mx-5'>
           <FilterPlayers
             ageFilter={ageFilter}
             setAgeFilter={setAgeFilter}
@@ -68,7 +68,7 @@ const PlayerInformation = () => {
         </section>
       )}
 
-      <div className='flex justify-center mb-20 md:mb-30 lg:mb-50'>
+      <div className='flex justify-center mb-20 md:mb-30 lg:mb-50 min-h-screen py-5'>
         <FetchPlayers
           ageFilter={ageFilter}
           statusFilter={statusFilter}
