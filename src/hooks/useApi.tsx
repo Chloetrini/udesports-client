@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { fetchAllPlayers, fetchAllPlayersAdmin, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer } from '../services/Players'
+import { fetchAllPlayers, fetchAllPlayersAdmin, fetchSinglePlayer, createPlayer, updatePlayer, deletePlayer, bulkCreatePlayers } from '../services/Players'
 import {
   login as loginRequest,
   logout as logoutRequest,
@@ -101,6 +101,16 @@ export const useCreatePlayer = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: Record<string, unknown>) => createPlayer(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['players'] })
+    },
+  })
+}
+
+export const useBulkCreatePlayers = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (players: Record<string, unknown>[]) => bulkCreatePlayers(players),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['players'] })
     },

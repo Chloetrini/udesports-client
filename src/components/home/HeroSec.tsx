@@ -78,7 +78,7 @@ const HeroSec: React.FC = () => {
             <div className="text-center flex flex-col items-center">
               <div className="flex flex-row items-start relative">
                 <p className="font-manrope font-bold text-[#FFFFFF] text-[clamp(40px,10vw,110px)] leading-none">
-                  38
+                  100
                 </p>
                 <span className="font-bebas font-regular text-[#00D46A] text-[clamp(30px,6vw,50px)] -ml-1">+</span>
               </div>

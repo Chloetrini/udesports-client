@@ -29,6 +29,23 @@ export const updatePlayer = async (id: string, data: Record<string, unknown>): P
   return res.body!.player;
 };
 
+export interface BulkImportRowResult {
+  playerName: string;
+  success: boolean;
+  error?: string;
+}
+
+// Bulk import — text/JSON only (no photo/logo files here, same as a CSV
+// can't carry binary images). Every row is created as a draft; the server
+// processes each row independently and reports per-row success/failure
+// instead of failing the whole batch on one bad row.
+export const bulkCreatePlayers = async (
+  players: Record<string, unknown>[]
+): Promise<BulkImportRowResult[]> => {
+  const res = await api.post<{ results: BulkImportRowResult[] }>("/players/bulk", { players });
+  return res.body?.results ?? [];
+};
+
 export const deletePlayer = async (id: string): Promise<void> => {
   await api.delete<undefined>(`/players/${id}`);
 };

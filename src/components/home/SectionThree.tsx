@@ -23,7 +23,7 @@ const SectionThree: React.FC = () => {
         </h2>
         <p className="font-manrope font-bold text-[#8E8E8E] dark:text-gray-400 text-[clamp(14px,2vw,18px)] leading-6.75 tracking-normal uppercase max-w-[500px]">
           Every player on this roster has been developed, tested, and proven.
-          These are not prospects. These are professionals in the making.
+          These are not prospects. These are professionals.
         </p>
       </div>
     </div>

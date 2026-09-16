@@ -283,11 +283,13 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
               }
             </div>
 
-            {/* Optional block — only shown once an admin actually sets a current
-                club. Shows a previous → current transfer stack whenever a
-                previous club is also on record, or just the current club
-                otherwise (e.g. a fresh signing with no transfer history). */}
-            {player?.currentClubName && (
+            {/* Optional block — only shown once an admin has actually put
+                some club on record (current, previous, or both). ClubBadge
+                itself decides how to render that: a transfer stack when
+                both current and previous are set, the current club alone
+                for a fresh signing, or the previous club labeled "Last
+                Club" for a free agent with no current club. */}
+            {(player?.currentClubName || player?.previousClubName) && (
               <ClubBadge
                 previousClubName={player.previousClubName}
                 previousClubLogo={player.previousClubLogo}

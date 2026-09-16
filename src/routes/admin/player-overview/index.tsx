@@ -1,5 +1,5 @@
 // import React from 'react'
-import { Search, Plus } from "lucide-react"
+import { Search, Plus, Upload } from "lucide-react"
 import { useNavigate, useLocation } from "react-router"
 import { useState } from "react"
 import { useGetPlayersAdmin, useDeletePlayer } from "@/hooks/useApi";
@@ -80,10 +80,16 @@ return(
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">PLAYER</h1>
                 <p className="text-xs text-gray-400 mt-0.5">Add, edit, and manage player profiles and status</p>
             </div>
-            <button onClick={() => navigate("/admin/player-overview/add")} className="flex items-center justify-center gap-1 bg-green-500 hover:bg-green-600 text-black text-xs font-medium px-4 py-2 rounded-lg transition-colors shrink-0">
-                 <Plus size={10}/>
-                 Add Player
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              <button onClick={() => navigate("/admin/player-overview/bulk-import")} className="flex items-center justify-center gap-1 border border-gray-200 dark:border-white/15 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/10 text-xs font-medium px-4 py-2 rounded-lg transition-colors">
+                   <Upload size={10}/>
+                   Bulk Import
+              </button>
+              <button onClick={() => navigate("/admin/player-overview/add")} className="flex items-center justify-center gap-1 bg-green-500 hover:bg-green-600 text-black text-xs font-medium px-4 py-2 rounded-lg transition-colors">
+                   <Plus size={10}/>
+                   Add Player
+              </button>
+            </div>
           </div>
 
 {/* Filters */}
