@@ -24,7 +24,7 @@
 
 @media (min-width: 1024px) and (max-width: 1200px){
   .gridAdjust {
-    grid-template-columns: repeat(3, minmax(0, 1fr));;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .flexColAdjust {
     flex-direction: column;

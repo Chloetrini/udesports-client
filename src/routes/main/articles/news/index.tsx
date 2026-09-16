@@ -86,7 +86,7 @@ const News = () => {
     isError,
   } = useGetNewsArticles();
 
-  if (isError) return <p className="dark:text-white">Something went wrong loading news.</p>;
+  if (isError) return <p className="dark:text-white min-h-screen text-center">Something went wrong loading news.</p>;
 
   // The public endpoint only ever returns published articles, so no extra
   // filtering is needed here — just order them newest first.

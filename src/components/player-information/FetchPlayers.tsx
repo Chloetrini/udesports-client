@@ -158,7 +158,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
   }
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-11 w-full justify-items-center gridAdjust'>
+<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-15 justify-items-center gridAdjust content-start self-start'>
       {
         filteredData.map((result) => {
           return (

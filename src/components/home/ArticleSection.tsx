@@ -166,7 +166,7 @@ const SectionFive: React.FC = () => {
         plugins={[AutoScroll({ speed: 1, stopOnInteraction: false, stopOnMouseEnter: true })]}
         className="w-full -mx-5 px-5"
       >
-        <CarouselContent className="ml-0 gap-6 md:gap-8">
+        <CarouselContent className="ml-0 gap-6 md:gap-8 mb-5">
           {topArticles.map((article: NewsArticle) => (
             <CarouselItem key={article.id} className="basis-auto pl-0">
               <div

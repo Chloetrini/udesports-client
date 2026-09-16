@@ -203,7 +203,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
           </div>
 
           <div className="flex flex-col gap-6">
-            <h1 className="font-bebas text-[48px] leading-7">{player?.playerFullName}</h1>
+            <h1 className="font-bebas text-[48px] leading-10">{player?.playerFullName}</h1>
 
             {/* Player Status */}
 
@@ -270,11 +270,11 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
 
                   <div className="flex ml-4 lg:ml-6 gap-3">
                     <div className="relative">
-                      <img src={player?.preferredFoot === "Left" ? leftFootHighlight : leftFootDim} alt="" className="w-[35px] h-[70px] lg:w-[50px] lg:h-[90px]" />
+                      <img src={player?.preferredFoot === "Both" ? leftFootHighlight : player?.preferredFoot === "Left" ? leftFootHighlight : leftFootDim} alt="" className="w-[35px] h-[70px] lg:w-[50px] lg:h-[90px]" />
                       <p className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${player?.preferredFoot === "Left" ? "text-white" : "text-[#676768]"}`}>L</p>
                     </div>
                     <div className="relative">
-                      <img src={player?.preferredFoot === "Right" ? rightFootHighlight : rightFootDim} alt="" className="w-[35px] h-[70px] lg:w-[50px] lg:h-[90px]" />
+                      <img src={player?.preferredFoot === "Both" ? rightFootHighlight : player?.preferredFoot === "Right" ? rightFootHighlight : rightFootDim} alt="" className="w-[35px] h-[70px] lg:w-[50px] lg:h-[90px]" />
                       <p className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${player?.preferredFoot === "Right" ? "text-white" : "text-[#676768]"}`}>R</p>
                     </div>
                   </div>
