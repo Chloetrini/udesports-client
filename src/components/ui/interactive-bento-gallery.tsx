@@ -170,7 +170,10 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
         focal: undefined,
     };
 
-    return (
+    // Rendered via a portal straight onto <body> — required for the iOS
+    // Safari fix where a page ancestor's overflow:hidden breaks this
+    // modal's position:fixed containing block if it's rendered in place.
+    return createPortal(
         <>
             {/* dimmed backdrop — only really visible now that the modal itself
                 is inset on mobile instead of covering the full screen; tapping
