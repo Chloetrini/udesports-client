@@ -237,8 +237,8 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                     Free-text field (can hold "382+"), so check against "0"/blank rather than a numeric > 0. */}
                 {result.playerAppearance && result.playerAppearance !== "0" && (
                   <div className='w-full justify-center items-center flex flex-col'>
-                    <span className='font-manrope font-bold text-[11px] leading-[100%]'>APP.</span>
-                    <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.playerAppearance}</span>
+                    <span className='font-manrope font-bold text-[15px] leading-[100%]'>APP.</span>
+                    <span className='font-wdxl-lubrifont-sc font-normal text-[32px] leading-[100%]'>{result.playerAppearance}</span>
                   </div>
                 )}
 
@@ -247,7 +247,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                     previous → current transfer stack when a previous club is
                     on record, or just the current club logo otherwise. */}
                 <div
-                  className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[57px] lg:h-[130px] flex justify-center items-end pb-3'>
+                  className='bg-[url(./assets/bgEffect.png)] bg-contain bg-[#00D46A] w-[48px] h-[108px] lg:w-[62px] lg:h-[130px] flex justify-center items-end pb-3'>
                   {result.status === "RETIRED" ? (
                     <div className='flex flex-col items-center gap-1'>
                       <div className='w-[22px] h-[22px] lg:w-[26px] lg:h-[26px] rounded-full bg-white/15 border border-white/30 flex items-center justify-center'>

@@ -387,7 +387,7 @@ const InteractiveBentoGallery: React.FC<InteractiveBentoGalleryProps> = ({ media
     }, [selectedItem]);
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <div >
             {(title || description) && (
                 <div className="mb-8 text-center">
                     {title && (

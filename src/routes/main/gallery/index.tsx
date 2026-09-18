@@ -1,6 +1,12 @@
 import { useGetGalleryImages } from "@/hooks/useApi";
 import PageWrapper from "@/components/page-wrapper";
 import InteractiveBentoGallery from "@/components/ui/interactive-bento-gallery";
+import { Seo } from "@/components/seo";
+
+const GALLERY_SEO = {
+  title: "Gallery",
+  description: "Photos from training, transfers, and tournaments — UdeSport's journey from Lagos to the world.",
+};
 
 // Bento span patterns cycled across however many photos come back from the API
 const SPAN_PATTERNS = [
@@ -77,6 +83,7 @@ export default function Gallery() {
   if (isLoading) {
     return (
       <main className="min-h-screen bg-white dark:bg-black transition-colors duration-300 overflow-x-hidden flex justify-center">
+        <Seo {...GALLERY_SEO} />
         <PageWrapper className=" p-[20px]">
           <GalleryHeader />
           <GallerySkeleton />
@@ -86,11 +93,21 @@ export default function Gallery() {
   }
 
   if (isError) {
-    return <div className="min-h-screen bg-white dark:bg-black text-[#060A0F] dark:text-white p-6">Failed to load gallery.</div>;
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-[#060A0F] dark:text-white p-6">
+        <Seo {...GALLERY_SEO} />
+        Failed to load gallery.
+      </div>
+    );
   }
 
   if (galleryImages.length === 0) {
-    return <div className="min-h-screen bg-white dark:bg-black text-[#060A0F] dark:text-white p-6">No gallery images available.</div>;
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-[#060A0F] dark:text-white p-6">
+        <Seo {...GALLERY_SEO} />
+        No gallery images available.
+      </div>
+    );
   }
 
   const mediaItems = galleryImages.map((photo, index) => ({
@@ -112,6 +129,7 @@ export default function Gallery() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-black transition-colors duration-300 overflow-x-hidden flex justify-center">
+      <Seo {...GALLERY_SEO} />
       <PageWrapper className=" p-[20px]">
         <GalleryHeader />
 
