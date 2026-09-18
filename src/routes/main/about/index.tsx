@@ -5,6 +5,7 @@ import { useGetStaff, useGetAwards } from "@/hooks/useApi"
 import udeSportLogo from "@/assets/udess.png"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import AutoScroll from "embla-carousel-auto-scroll"
+import { Seo } from "@/components/seo"
 
 const About = () => {
   const { data: staff, isLoading: staffLoading } = useGetStaff()
@@ -12,6 +13,10 @@ const About = () => {
 
   return (
     <PageWrapper className="w-full px-5 lg:px-10 py-14 bg-white dark:bg-black transition-colors duration-300">
+      <Seo
+        title="About Us"
+        description="Meet the team behind UdeSport and see our track record of verified player placements at professional clubs across Europe, Asia, and Africa."
+      />
       {/* Hero */}
       <div className="flex flex-col lg:flex-row items-center md:items-start gap-10 lg:gap-16 mb-20">
         <div className="flex-1 flex flex-col gap-6">

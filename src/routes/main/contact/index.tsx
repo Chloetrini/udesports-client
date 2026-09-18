@@ -5,6 +5,7 @@ import ic_mail from "@/assets/ic_mail.png"
 import icons_insta from "@/assets/icons_insta.png"
 import { useSubmitContactMessage } from "@/hooks/useApi"
 import { toast } from "react-toastify"
+import { Seo } from "@/components/seo"
 
 const contactDetails = [
   {
@@ -72,6 +73,10 @@ const Contact = () => {
 
   return (
     <div className="w-full px-5 lg:px-16 py-14 container mx-auto bg-white dark:bg-black transition-colors duration-300">
+      <Seo
+        title="Contact Us"
+        description="Get in touch with UdeSport — Lekki, Lagos. Reach out for scouting inquiries, player placements, or partnership opportunities."
+      />
       <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-5">
         {/* Left — Let's Talk */}
         <div className="flex flex-col gap-5 w-full lg:max-w-[662px]">

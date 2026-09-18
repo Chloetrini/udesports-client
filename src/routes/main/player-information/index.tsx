@@ -5,6 +5,7 @@ import FilterPlayers, { type AgeGroup, type Status } from '@/components/player-i
 import PlayerFullDetails from '@/components/player-information/PlayerFullDetails'
 import ScrollToTopButton from '@/components/ui/ScrollToTopButton'
 import PageWrapper from '@/components/page-wrapper'
+import { Seo } from '@/components/seo'
 
 const PlayerInformation = () => {
   const location = useLocation()
@@ -42,6 +43,10 @@ const PlayerInformation = () => {
 
   return (
     <PageWrapper className='relative w-full min-h-screen p-[20px] monitorAdjust '>
+      <Seo
+        title="Player Roster"
+        description="Browse UdeSport's full roster of scouted and placed footballers — filter by age group, status, and position."
+      />
 
       <div className='flex flex-col gap-[8px] mt-20 mb-5 relative'>
         <div className='w-[100px] h-[37px] flex gap-[8px] items-center justify-center bg-[#00D46A4D] rounded-full font-manrope text-[#00A553] font-bold'>
