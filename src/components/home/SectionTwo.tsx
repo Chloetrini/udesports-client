@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import AutoScroll from 'embla-carousel-auto-scroll';
 import arrow1 from '@/assets/arrow1.png';
@@ -13,6 +15,7 @@ import { getAge } from '@/hooks/getAge';
 import { STATUS_LABEL } from '@/lib/playerStatus';
 import { Award } from 'lucide-react';
 import ClubBadge from '@/components/player-information/ClubBadge';
+import { MarqueeStat } from '@/components/ui/marquee-stat';
 import PlayerImage from '@/components/player-information/PlayerImage';
 import PageWrapper from '../page-wrapper';
 
@@ -20,6 +23,30 @@ import PageWrapper from '../page-wrapper';
 const SectionTwo = () => {
   const navigate = useNavigate();
   const { data: players, isLoading, error } = useGetPlayers();
+
+  // Lazily created once and reused across renders (a plain useState
+  // initializer, not a ref, so it's safe to read during render below).
+  const [autoScroll] = useState(() =>
+    AutoScroll({
+      speed: 1,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    })
+  );
+
+  // On mobile, a tap on a player card (it navigates to /players) fires
+  // Embla's internal "pointerDown" event without a drag. AutoScroll's own
+  // resume logic then waits for a "settle" event to restart itself — but a
+  // stationary tap never produces one, so the carousel silently stops
+  // scrolling for good after the first touch. Forcing play() on every
+  // pointerUp guarantees it always resumes, regardless of whether anything
+  // actually scrolled.
+  const handleCarouselApi = (api: CarouselApi) => {
+    if (!api) return;
+    api.on('pointerUp', () => {
+      autoScroll.play();
+    });
+  };
 
   const handleViewPlayers = () => {
     navigate('/players');
@@ -175,13 +202,8 @@ const SectionTwo = () => {
               align: 'start',
               loop: true,
             }}
-            plugins={[
-              AutoScroll({
-                speed: 1,
-                stopOnInteraction: false,
-                stopOnMouseEnter: true,
-              }),
-            ]}
+            plugins={[autoScroll]}
+            setApi={handleCarouselApi}
             className="w-full"
           >
             <CarouselContent
@@ -249,14 +271,14 @@ const SectionTwo = () => {
                         (result.saves + result.cleanSheets) > 0 && (
                           <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] flex flex-col justify-center items-center">
                             <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">SV/CS</span>
-                            <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.saves + result.cleanSheets}</span>
+                            <MarqueeStat value={result.saves + result.cleanSheets} className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]" />
                           </div>
                         )
                       ) : (
                         (result.goals + result.assists) > 0 && (
                           <div className="bg-[#00D46A] w-full h-[88px] lg:h-[134px] flex flex-col justify-center items-center">
                             <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">G/A</span>
-                            <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.goals + result.assists}</span>
+                            <MarqueeStat value={result.goals + result.assists} className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]" />
                           </div>
                         )
                       )}
@@ -266,7 +288,7 @@ const SectionTwo = () => {
                       {result.playerAppearance && result.playerAppearance !== "0" && (
                         <div className="w-full justify-center items-center flex flex-col">
                           <span className="font-manrope font-bold text-[15px] lg:text-[19px] leading-[100%]">APP.</span>
-                          <span className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]">{result.playerAppearance}</span>
+                          <MarqueeStat value={result.playerAppearance} className="font-wdxl-lubrifont-sc font-normal text-[56px] lg:text-[60px] leading-[100%]" />
                         </div>
                       )}
 
