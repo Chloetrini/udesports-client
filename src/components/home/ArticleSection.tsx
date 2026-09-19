@@ -150,6 +150,12 @@ const SectionFive: React.FC = () => {
     );
   }
 
+  // Same loop config as Featured Players / Instagram Archive — no manual
+  // duplication of the real article list. With only a couple of articles
+  // published there just isn't enough content width for the auto-scroll to
+  // travel, so it will sit still instead of scrolling — that's expected,
+  // not broken, and it starts scrolling/looping normally as soon as a few
+  // more articles are published.
   const topArticles = articles.slice(0, 3);
 
   return (

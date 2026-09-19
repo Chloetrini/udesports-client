@@ -206,7 +206,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
 
             >
                 <div className="h-full flex flex-col">
-                    <div className="flex-1 min-h-0 p-2 sm:p-3 md:p-4 flex items-center justify-center bg-gray-50/50">
+                    <div className="flex-1 min-h-0 p-2 sm:p-3 md:p-4 flex items-center justify-center bg-gray-50 dark:bg-[#0d1117]">
                         <AnimatePresence mode="wait">
                             {/* Wrapper shrink-wraps to the image's own rendered
                                 size (inline-block, no fixed aspect ratio) instead
