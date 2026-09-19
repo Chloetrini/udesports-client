@@ -8,6 +8,14 @@ import { STATUS_LABEL } from '@/lib/playerStatus';
 import PlayerImage from './PlayerImage';
 import { Award } from 'lucide-react';
 import ClubBadge from './ClubBadge';
+
+// Maps the numeric filter buttons (17/21/23) to the ageGroup strings
+// actually stored on each player.
+const AGE_GROUP_LABEL: Record<17 | 21 | 23, "U-17" | "U-21" | "U-23"> = {
+  17: "U-17",
+  21: "U-21",
+  23: "U-23",
+}
 import { MarqueeStat } from '@/components/ui/marquee-stat';
 
 
@@ -110,12 +118,17 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
   }
 
   const filteredData = data.filter((player) => {
-    const currentAge = getAge(player.DOB)
-    // "Professional" isn't a numeric age bracket like 17/21/23 — it matches
-    // the player's ageGroup field directly instead of a computed-age threshold.
+    // Match the player's own assigned ageGroup category ("U-17"/"U-21"/
+    // "U-23"/"Professional", set in the admin panel) directly — previously
+    // this recomputed the player's current age from their DOB and compared
+    // it to a numeric threshold instead, which ignored the ageGroup an
+    // admin had actually set and meant the 17/21/23 filter buttons rarely
+    // matched anything.
     const ageMatch =
       ageFilter === "All" ||
-      (ageFilter === "Professional" ? player.ageGroup === "Professional" : currentAge <= ageFilter)
+      (ageFilter === "Professional"
+        ? player.ageGroup === "Professional"
+        : player.ageGroup === AGE_GROUP_LABEL[ageFilter])
 
     const statusMatch =
       statusFilter === "All" || STATUS_LABEL[player.status] === statusFilter
