@@ -181,7 +181,10 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                 z-[60] (not z-0) so it sits above the sticky navbar (z-50)
                 as well as the page header — otherwise either one renders on
                 top of the dimmed backdrop instead of being hidden behind
-                it. */}
+                it. The modal panel below is z-[65], specifically above this
+                z-[60] — it used to share the navbar's z-50, which put the
+                backdrop above the panel too and left clicking a photo
+                showing nothing but a dimmed screen. */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -199,7 +202,7 @@ const GalleryModal = ({ selectedItem, isOpen, onClose, setSelectedItem, mediaIte
                     damping: 30
                 }}
                 className="fixed inset-4 sm:inset-0 sm:w-full sm:min-h-screen sm:h-[90vh] md:h-[600px] bg-white dark:bg-[#0d1117] backdrop-blur-lg
-                          rounded-2xl sm:rounded-lg md:rounded-xl overflow-hidden z-50 shadow-2xl"
+                          rounded-2xl sm:rounded-lg md:rounded-xl overflow-hidden z-[65] shadow-2xl"
 
             >
                 <div className="h-full flex flex-col">

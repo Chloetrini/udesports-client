@@ -8,6 +8,7 @@ import { STATUS_LABEL } from '@/lib/playerStatus';
 import PlayerImage from './PlayerImage';
 import { Award } from 'lucide-react';
 import ClubBadge from './ClubBadge';
+import { MarqueeStat } from '@/components/ui/marquee-stat';
 
 
 type FetchPlayersProps = {
@@ -221,14 +222,14 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                   (result.saves + result.cleanSheets) > 0 && (
                     <div className='bg-[#00D46A] w-full h-[63px] lg:h-[75.9px] flex flex-col justify-center items-center'>
                       <span className='font-manrope font-bold text-[11px] leading-[100%]'>SV/CS</span>
-                      <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.saves + result.cleanSheets}</span>
+                      <MarqueeStat value={result.saves + result.cleanSheets} className="font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]" />
                     </div>
                   )
                 ) : (
                   (result.goals + result.assists) > 0 && (
                     <div className='bg-[#00D46A] w-full h-[63px] lg:h-[75.9px] flex flex-col justify-center items-center'>
                       <span className='font-manrope font-bold text-[11px] leading-[100%]'>G/A</span>
-                      <span className='font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]'>{result.goals + result.assists}</span>
+                      <MarqueeStat value={result.goals + result.assists} className="font-wdxl-lubrifont-sc font-normal text-[40px] leading-[100%]" />
                     </div>
                   )
                 )}
@@ -238,7 +239,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 {result.playerAppearance && result.playerAppearance !== "0" && (
                   <div className='w-full justify-center items-center flex flex-col'>
                     <span className='font-manrope font-bold text-[15px] leading-[100%]'>APP.</span>
-                    <span className='font-wdxl-lubrifont-sc font-normal text-[32px] leading-[100%]'>{result.playerAppearance}</span>
+                    <MarqueeStat value={result.playerAppearance} className="font-wdxl-lubrifont-sc font-normal text-[32px] leading-[100%]" />
                   </div>
                 )}
 

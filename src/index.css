@@ -44,3 +44,16 @@
     padding-right: 0;
   }
 }
+
+@keyframes marquee-bounce {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--marquee-distance, 0px));
+  }
+}
+
+.animate-marquee-bounce {
+  animation: marquee-bounce 2.6s ease-in-out infinite alternate;
+}
