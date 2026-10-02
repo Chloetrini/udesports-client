@@ -50,6 +50,10 @@ src/types/       dataTypes.ts
 - Auth is a JWT in an httpOnly cookie, so the Axios client uses `withCredentials: true`. Never store the token in `localStorage`.
 - Public pages set titles and metadata with the `seo.tsx` component.
 
+## Commits
+
+Author every commit as `Claude with Trini <noreply@anthropic.com>`, never plain "Claude". Set it before committing: `git config user.name "Claude with Trini" && git config user.email noreply@anthropic.com`.
+
 ## Gotchas
 
 - `npm run build` warns about chunks over 500 kB. It is known and not a failure.
