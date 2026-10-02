@@ -52,7 +52,7 @@ src/types/       dataTypes.ts
 
 ## Commits
 
-Author every commit as `Chloetrini <noreply@anthropic.com>`, never as "Claude" or "Claude with Trini". Set it before committing: `git config user.name "Chloetrini" && git config user.email noreply@anthropic.com`.
+Author every commit as `Chloetrini <trinityegbukwu1@gmail.com>`, never as "Claude" or "Claude with Trini". Set it before committing: `git config user.name "Chloetrini" && git config user.email trinityegbukwu1@gmail.com`.
 
 ## Gotchas
 
