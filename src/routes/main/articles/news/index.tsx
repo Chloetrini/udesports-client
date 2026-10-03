@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { useGetNewsArticles } from '@/hooks/useApi';
 import news from '@/assets/news.jpeg'
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
-import { estimateReadTime } from '@/lib/utils';
+import { optimizeImageUrl, estimateReadTime } from '@/lib/utils';
 import PageWrapper from '@/components/page-wrapper';
 import { Seo } from '@/components/seo';
 
@@ -52,7 +52,7 @@ export function ArticleCard({ article, variant }: { article: NewsArticle; varian
   return (
     <article className={`${variant === 'featured' ? 'article-card--featured' : 'article-card--grid'} font-manrope py-6 md:py-8 lg:py-10 flex flex-col gap-2 hover:scale-105 transition-transform`}>
       <Link to={`/news/${article.id}`}>
-        <img className='h-full w-full' src={article.coverImage ? article.coverImage : news} alt={article.headline} loading="lazy" />
+        <img className='h-full w-full' src={article.coverImage ? optimizeImageUrl(article.coverImage, 800) : news} alt={article.headline} loading="lazy" />
       </Link>
       <span className={`pill ${CATEGORY_STYLE[article.category]} w-36 text-center font-bold py-1`}>
         • {CATEGORY_LABEL[article.category]}

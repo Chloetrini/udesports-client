@@ -8,7 +8,7 @@ import {
   AnimatePresence,
   type Variants,
 } from "framer-motion"
-import { cn } from "@/lib/utils" // Assumes a 'lib/utils.ts' file for 'cn'
+import { optimizeImageUrl, cn } from "@/lib/utils" // Assumes a 'lib/utils.ts' file for 'cn'
 import { X } from "lucide-react"
 
 // Defines the structure for each item in the gallery
@@ -73,7 +73,7 @@ const MediaThumb = ({
 
   return (
     <img
-      src={item.url}
+      src={optimizeImageUrl(item.url, 900)}
       alt={item.title}
       className={className}
       loading="lazy"
