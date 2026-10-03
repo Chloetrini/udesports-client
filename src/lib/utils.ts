@@ -72,7 +72,7 @@ export function optimizeImageUrl(url: string | null | undefined, width: number):
   const i = url.indexOf(marker)
   if (!url.includes("res.cloudinary.com") || i === -1) return url
   const insertAt = i + marker.length
-  return `${url.slice(0, insertAt)}w_${width},q_auto,f_auto,c_limit/${url.slice(insertAt)}`
+  return `${url.slice(0, insertAt)}w_${width},c_limit,q_auto,f_auto/${url.slice(insertAt)}`
 }
 
 // "10 mins ago" / "3 hours ago" / "5 days ago" style relative timestamp,

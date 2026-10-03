@@ -32,7 +32,15 @@ type PlayerImageProps = {
 // it loaded, but could never load while it was hidden. Opacity keeps it in
 // the layout (so the browser actually requests it) while still keeping it
 // invisible until it's ready.
-const PlayerImage = ({ src, alt, className, skeletonClassName, width = 500 }: PlayerImageProps) => {
+// Cloudinary builds each distinct size the first time it is requested, and that
+// cold build is what made player photos slow on a first visit. Snapping every
+// request to one of two sizes means there are only two variants per photo, and
+// the server pre-builds both at upload time (see PLAYER_PHOTO_EAGER on the
+// server). Keep these two numbers in sync with it.
+const snapWidth = (w: number) => (w <= 640 ? 640 : 960)
+
+const PlayerImage = ({ src, alt, className, skeletonClassName, width = 640 }: PlayerImageProps) => {
+  const snapped = snapWidth(width)
   const [loaded, setLoaded] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -46,9 +54,12 @@ const PlayerImage = ({ src, alt, className, skeletonClassName, width = 500 }: Pl
         <div className={`${skeletonClassName ?? className} bg-gray-200 dark:bg-white/10 animate-pulse`} />
       )}
       <img
-        src={optimizeImageUrl(src, width)}
+        src={optimizeImageUrl(src, snapped)}
         alt={alt}
-        loading="lazy"
+        // the large detail-page photo is above the fold: fetch it right away
+        loading={snapped > 640 ? 'eager' : 'lazy'}
+        fetchPriority={snapped > 640 ? 'high' : undefined}
+        decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setFailed(true)}
         className={`${className} transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'}`}
