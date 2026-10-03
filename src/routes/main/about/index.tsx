@@ -1,4 +1,5 @@
 import { BadgeCheck, Award as AwardIcon } from "lucide-react"
+import { optimizeImageUrl } from '@/lib/utils'
 import noProfilePhoto from "@/assets/no profile photo.jpg"
 import PageWrapper from "@/components/page-wrapper"
 import { useGetStaff, useGetAwards } from "@/hooks/useApi"
@@ -151,7 +152,7 @@ const About = () => {
                   <div className="w-[220px] sm:w-[258px] bg-[#00D46A] border-[1.5px] border-white rounded-[40px] p-2 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] flex flex-col items-start">
                     <div className="w-full aspect-square rounded-[32px] border border-white overflow-hidden bg-[#060A0F]/20">
                       <img
-                        src={member.photo || noProfilePhoto}
+                        src={member.photo ? optimizeImageUrl(member.photo, 600) : noProfilePhoto}
                         alt={member.name}
                         className="w-full h-full object-cover"
                       />
@@ -213,7 +214,7 @@ const About = () => {
                   <div className="relative w-[160px] sm:w-[200px] lg:w-[240px] aspect-[3/4] rounded-2xl overflow-hidden bg-[#060A0F]">
                     {award.image ? (
                       <img
-                        src={award.image}
+                        src={optimizeImageUrl(award.image, 600)}
                         alt={award.name}
                         className="absolute inset-0 w-full h-full object-cover"
                       />

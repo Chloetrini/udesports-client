@@ -4,7 +4,7 @@ import type { NewsArticle, NewsCategory } from "@/types/dataTypes";
 // commented-out block below. Re-add these imports (views/shares/pinterest/
 // facebook icons + formatCount) if that block is restored.
 import { useParams } from "react-router";
-import { calculateReadTime, estimateReadTime, formatDate } from "@/lib/utils";
+import { optimizeImageUrl, calculateReadTime, estimateReadTime, formatDate } from "@/lib/utils";
 import { Seo } from "@/components/seo";
 import { useGetNewsArticles, useGetSingleNewsArticle } from "@/hooks/useApi";
 import news from '@/assets/news.jpeg'
@@ -36,7 +36,8 @@ function RelatedArticleCard({ article }: { article: NewsArticle }) {
   return (
     <article className="flex flex-col gap-2 hover:scale-105 transition-transform">
       <img
-        src={article.coverImage ? article.coverImage : news}
+        src={article.coverImage ? optimizeImageUrl(article.coverImage, 600) : news}
+        loading="lazy"
         alt={article.headline}
         className="h-48 w-full rounded-2xl object-cover"
       />
@@ -211,7 +212,8 @@ const SingleNews = () => {
       <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-0 lg:h-fit">
         <div className="w-full lg:w-8/12">
           <img
-            src={article.coverImage ? article.coverImage : news}
+            src={article.coverImage ? optimizeImageUrl(article.coverImage, 1400) : news}
+            fetchPriority="high"
             alt={article.headline}
             className="h-64 w-full rounded-2xl object-cover md:h-80 lg:h-96"
           />

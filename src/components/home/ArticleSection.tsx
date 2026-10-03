@@ -5,7 +5,7 @@ import arrow1 from '@/assets/arrow1.png';
 import type { NewsArticle, NewsCategory } from '@/types/dataTypes';
 import noAuthorPhoto from '@/assets/no profile photo.jpg'
 import news from '@/assets/news.jpeg'
-import { estimateReadTime, formatDate } from '@/lib/utils';
+import { optimizeImageUrl, estimateReadTime, formatDate } from '@/lib/utils';
 import PageWrapper from '../page-wrapper';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import AutoScroll from 'embla-carousel-auto-scroll';
@@ -200,7 +200,9 @@ const SectionFive: React.FC = () => {
                   className="w-[320px] md:w-[380px] bg-white dark:bg-[#111820] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full cursor-pointer"
                 >
                   <img
-                    src={article.coverImage ? article.coverImage : news}
+                    src={article.coverImage ? optimizeImageUrl(article.coverImage, 800) : news}
+                    loading="lazy"
+                    decoding="async"
                     alt={article.headline}
                     className="w-full h-48 md:h-56 object-cover flex-shrink-0"
                   />

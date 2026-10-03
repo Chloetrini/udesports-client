@@ -1,4 +1,5 @@
 "use client"
+import { optimizeImageUrl } from '@/lib/utils'
 import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -132,7 +133,7 @@ const MediaItem = ({ item, className, onClick }: { item: MediaItemType, classNam
 
     return (
         <img
-            src={item.url}
+            src={optimizeImageUrl(item.url, 900)}
             alt={item.title}
             // caller-provided className comes last so an explicit object-fit
             // (e.g. the modal's object-contain) actually wins instead of

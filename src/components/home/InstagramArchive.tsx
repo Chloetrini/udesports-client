@@ -1,4 +1,5 @@
 import instagramIcon from '@/assets/icons_insta.png';
+import { optimizeImageUrl } from '@/lib/utils'
 import {
   Carousel,
   CarouselContent,
@@ -57,7 +58,8 @@ const InstagramArchive = () => {
                     className={`block w-[280px] h-[380px] rounded-2xl overflow-hidden relative group ${photo.instaUrl ? "cursor-pointer" : "cursor-default"} transition-transform duration-300 hover:scale-[0.98]`}
                   >
                     <img
-                      src={photo.coverImage ?? ""}
+                      src={optimizeImageUrl(photo.coverImage, 600)}
+                      decoding="async"
                       alt={photo.headline ?? ""}
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover"
