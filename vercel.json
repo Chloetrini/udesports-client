@@ -1,7 +1,20 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && mv dist/index.html dist/shell.html",
   "outputDirectory": "dist",
+  "functions": {
+    "api/render.ts": {
+      "includeFiles": "dist/shell.html",
+      "maxDuration": 10
+    }
+  },
+  "headers": [
+    {
+      "source": "/shell.html",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+    }
+  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/sitemap.xml", "destination": "/api/render?__path=/sitemap.xml" },
+    { "source": "/((?!api/|assets/).*)", "destination": "/api/render?__path=/$1" }
   ]
 }

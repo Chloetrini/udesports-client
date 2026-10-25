@@ -5,21 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="AZiYfDjNje0y3Q4wUoUaySux-yV4sfXG9ffPsL5afXE" />
-    <title>UdeSport | Football Scouting, Player Management &amp; Placement</title>
-
-    <!-- Static fallback SEO tags — react-helmet-async overrides these per
-         route once the app hydrates, but crawlers/link previews that don't
-         run JS (or catch the page in the moment before hydration) still get
-         a real title, description, and social preview instead of nothing. -->
-    <meta name="description" content="UdeSport is Nigeria's most prolific football scouting and player placement academy — 38+ verified placements at professional clubs across Europe, Asia, and Africa." />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="UdeSport" />
-    <meta property="og:title" content="UdeSport | Football Scouting, Player Management &amp; Placement" />
-    <meta property="og:description" content="UdeSport is Nigeria's most prolific football scouting and player placement academy — 38+ verified placements at professional clubs across Europe, Asia, and Africa." />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="UdeSport | Football Scouting, Player Management &amp; Placement" />
-    <meta name="twitter:description" content="UdeSport is Nigeria's most prolific football scouting and player placement academy — 38+ verified placements at professional clubs across Europe, Asia, and Africa." />
+    <!--app-head:start-->
+    <!-- Default SEO tags. In production api/render.ts replaces everything
+         between these markers with route-specific tags (and server-rendered
+         page content in #root) — see the comment at the top of that file.
+         src/main.tsx removes data-ssr tags before mounting; the app's
+         <Seo> component renders its own. -->
+    <title data-ssr>UdeSport | Football Scouting, Player Management &amp; Placement</title>
+    <meta data-ssr name="description" content="UdeSport is Nigeria's most prolific football scouting and player placement academy — 38+ verified placements at professional clubs across Europe, Asia, and Africa." />
+    <meta data-ssr name="robots" content="index, follow, max-image-preview:large" />
+    <meta data-ssr property="og:type" content="website" />
+    <meta data-ssr property="og:site_name" content="UdeSport" />
+    <meta data-ssr property="og:title" content="UdeSport | Football Scouting, Player Management &amp; Placement" />
+    <meta data-ssr property="og:description" content="UdeSport is Nigeria's most prolific football scouting and player placement academy — 38+ verified placements at professional clubs across Europe, Asia, and Africa." />
+    <meta data-ssr property="og:image" content="https://www.udesportsmgt.com/og-image.jpg" />
+    <meta data-ssr property="og:image:width" content="1200" />
+    <meta data-ssr property="og:image:height" content="630" />
+    <meta data-ssr name="twitter:card" content="summary_large_image" />
+    <meta data-ssr name="twitter:title" content="UdeSport | Football Scouting, Player Management &amp; Placement" />
+    <meta data-ssr name="twitter:description" content="UdeSport is Nigeria's most prolific football scouting and player placement academy — 38+ verified placements at professional clubs across Europe, Asia, and Africa." />
+    <meta data-ssr name="twitter:image" content="https://www.udesportsmgt.com/og-image.jpg" />
+    <!--app-head:end-->
+    <link rel="apple-touch-icon" href="/logo.png" />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <meta name="theme-color" content="#00D46A" />

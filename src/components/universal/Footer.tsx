@@ -4,6 +4,7 @@ import prime_twitter from '@/assets/prime_twitter.png';
 import ic_mail from '@/assets/ic_mail.png';
 import ic_phone from '@/assets/ic_phone.png';
 import icons_insta from '@/assets/icons_insta.png';
+import { CONTACT_EMAIL, CONTACT_PHONE, INSTAGRAM_URL } from '@/lib/site';
 import { NavLink } from 'react-router-dom';
 import { useSubscribeToNewsletter } from '@/hooks/useApi';
 import { toast } from 'react-toastify';
@@ -150,15 +151,15 @@ const Footer: React.FC = () => {
                 <button className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' onClick={() => console.log('Twitter clicked')} aria-label="Twitter">
                   <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={prime_twitter} alt="prime_twitter" />
                 </button>
-                <button className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' onClick={() => console.log('Mail clicked')} aria-label="Email">
-                  <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={ic_mail} alt="ic_mail" />
-                </button>
-                <button className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' onClick={() => console.log('Phone clicked')} aria-label="Phone">
-                  <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={ic_phone} alt="ic_phone" />
-                </button>
-                <button className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' onClick={() => console.log('Instagram clicked')} aria-label="Instagram">
-                  <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={icons_insta} alt="icons_insta" />
-                </button>
+                <a className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' href={`mailto:${CONTACT_EMAIL}`} aria-label="Email UdeSport">
+                  <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={ic_mail} alt="" />
+                </a>
+                <a className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' href={`tel:${CONTACT_PHONE}`} aria-label="Call UdeSport">
+                  <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={ic_phone} alt="" />
+                </a>
+                <a className='bg-transparent border-none cursor-pointer transition-transform hover:scale-110 focus:outline-none' href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="UdeSport on Instagram">
+                  <img className='w-5 h-5 md:w-6 md:h-[21.75px]' src={icons_insta} alt="" />
+                </a>
               </div>
             </div>
           </div>

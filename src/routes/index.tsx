@@ -14,12 +14,6 @@ const routes = [
         Component: RootLayout,
         ErrorBoundary: ErrorBoundary,
         hydrateFallbackElement: <SuspenseUI />,
-        handle: {
-            seo: {
-                title: 'UdeSport – Home',
-                description: 'Welcome to Ude Sport - Your source for the latest sports transfers and updates.',
-            },
-        },
         children: [
             {
                 Component: MainLayout,
@@ -35,13 +29,6 @@ const routes = [
 
                     {
                         path: "about",
-                        handle: {
-                            seo: {
-                                title: "About UdeSport",
-                                description:
-                                    "UdeSport is Nigeria's most prolific football management and development academy — learn about our scouting methodology, staff, and certifications.",
-                            },
-                        },
                         lazy: async () => {
                             const { default: Component } = await import("@/routes/main/about");
                             return { Component };
@@ -49,13 +36,6 @@ const routes = [
                     },
                      {
                         path: "contact",
-                        handle: {
-                            seo: {
-                                title: "Contact UdeSport",
-                                description:
-                                    "Get in touch with UdeSport — scouting enquiries, academy questions, or club representation.",
-                            },
-                        },
                         lazy: async () => {
                             const { default: Component } = await import("@/routes/main/contact");
                             return { Component };
@@ -64,13 +44,6 @@ const routes = [
 
                     {
                         path: "players",
-                        handle: {
-                            seo: {
-                                title: "Player Information",
-                                description:
-                                    "Explore UdeSport's professional football players, profiles, statistics, and transfer information.",
-                            },
-                        },
                         lazy: async () => {
                             const { default: Component } = await import("@/routes/main/player-information");
                             return { Component };
@@ -79,12 +52,6 @@ const routes = [
 
                     {
                         path: "news",
-                        handle: {
-                            seo: {
-                                title: 'News & Transfers',
-                                description: 'Transfer updates, trials, and academy news from UdeSport.',
-                            }
-                        },
                         lazy: async () => {
                             const { default: Component } = await import("@/routes/main/articles/news");
                             return { Component };
@@ -92,12 +59,6 @@ const routes = [
                     },
                     {
                         path: "news/:id",
-                        handle: {
-                            seo: {
-                                title: 'News',
-                                description: 'Full article — UdeSport News & Transfers.',
-                            }
-                        },
                         lazy: async () => {
                             const { default: Component } = await import("@/routes/main/articles/full-news");
                             return { Component };
@@ -105,13 +66,6 @@ const routes = [
                     },
                     {
                         path: "gallery",
-                        handle: {
-                            seo: {
-                                title: 'Gallery',
-                                description:
-                                    "Photos and videos from UdeSport's academy sessions, trials, and player placements.",
-                            }
-                        },
                         lazy: async () => {
                             const { default: Component } = await import("@/routes/main/gallery");
                             return { Component };
@@ -121,6 +75,7 @@ const routes = [
                         path: "unsubscribe",
                         handle: {
                             seo: {
+                                noIndex: true,
                                 title: 'Unsubscribe',
                                 description: 'Unsubscribe from UdeSport newsletter emails.',
                             }

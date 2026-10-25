@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async'
+import { DEFAULT_OG_IMAGE, SITE_URL } from '@/lib/site'
 
 // A JSON-LD structured data object (schema.org). Keeping this as a loose
 // record rather than typing out every schema.org shape — callers build a
@@ -35,9 +36,13 @@ export function Seo({ title, description, image, url, noIndex, jsonLd }: SeoProp
   const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME
 
   // Canonical/og:url: use an explicit `url` when the route passes one,
-  // otherwise fall back to the page's own current address so every route
-  // gets a correct canonical link without having to hardcode one per route.
-  const canonicalUrl = url ?? (typeof window !== 'undefined' ? window.location.href : undefined)
+  // otherwise the current path on the canonical domain — never
+  // window.location.href, which would carry query strings, #hashes, and
+  // preview/apex hostnames into the canonical link. Must match what
+  // api/render.ts emits server-side.
+  const canonicalUrl =
+    url ?? (typeof window !== 'undefined' ? `${SITE_URL}${window.location.pathname.replace(/(.)\/+$/, '$1')}` : undefined)
+  const ogImage = image ?? DEFAULT_OG_IMAGE
 
   const jsonLdBlocks = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 
@@ -45,18 +50,20 @@ export function Seo({ title, description, image, url, noIndex, jsonLd }: SeoProp
     <Helmet>
       <title>{fullTitle}</title>
       {description && <meta name="description" content={description} />}
-      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} />
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+      {canonicalUrl && !noIndex && <link rel="canonical" href={canonicalUrl} />}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={fullTitle} />
       {description && <meta property="og:description" content={description} />}
-      {image && <meta property="og:image" content={image} />}
+      <meta property="og:image" content={ogImage} />
+      {!image && <meta property="og:image:width" content="1200" />}
+      {!image && <meta property="og:image:height" content="630" />}
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       <meta property="og:site_name" content={SITE_NAME} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       {description && <meta name="twitter:description" content={description} />}
-      {image && <meta name="twitter:image" content={image} />}
+      <meta name="twitter:image" content={ogImage} />
       {jsonLdBlocks.map((block, i) => (
         <script key={i} type="application/ld+json">
           {JSON.stringify(block)}

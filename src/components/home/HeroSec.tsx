@@ -46,7 +46,7 @@ const HeroSec: React.FC = () => {
           <div className="flex-1">
             <motion.h1 variants={itemVariants} className="font-bebas font-normal text-white leading-[1.3]">
               <span className="block text-[clamp(40px,8vw,96px)]">
-                <img src={frame} alt="" className="w-full max-w-125" />
+                <img src={frame} alt="We build legends, not just players." className="w-full max-w-125" />
               </span>
             </motion.h1>
 
