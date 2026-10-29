@@ -252,9 +252,9 @@ export default function TestimonialsAdmin() {
                   disabled={isSaving}
                   className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isSaving ? "Saving…" : editingTestimonial ? "Save Changes" : "+ Publish"}
+                  {isSaving ? "Saving…" : editingTestimonial ? "Save & Publish" : "+ Publish"}
                 </button>
-                {!editingTestimonial && (
+                {(
                   <button
                     onClick={() => handleSave(false)}
                     disabled={isSaving}

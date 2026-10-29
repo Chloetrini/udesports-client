@@ -288,9 +288,9 @@ export default function StaffAdmin() {
                   disabled={isSaving}
                   className="bg-green-500 hover:bg-green-600 text-gray-900 hover:text-white text-sm font-medium px-6 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {isSaving ? "Saving…" : editingMember ? "Save Changes" : "+ Publish"}
+                  {isSaving ? "Saving…" : editingMember ? "Save & Publish" : "+ Publish"}
                 </button>
-                {!editingMember && (
+                {(
                   <button
                     onClick={() => handleSave(false)}
                     disabled={isSaving}
