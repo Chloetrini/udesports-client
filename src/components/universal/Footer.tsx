@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
   return (
     <footer className='flex flex-col'>
       {/* Section 1 */}
-      <div className="bg-[url(./assets/bgFooter.png)] bg-no-repeat bg-cover">
+      <div className="bg-[url(./assets/bgFooter.webp)] bg-no-repeat bg-cover">
         <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="flex justify-center">
             <div className="w-full max-w-3xl">

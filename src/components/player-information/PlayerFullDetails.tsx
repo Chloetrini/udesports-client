@@ -191,7 +191,7 @@ const PlayerFullDetails = ({ id, onClose }: PlayerFullDetailsProps) => {
         </div>
 
         <div className="flex flex-col items-center md:flex-row gap-15 lg:gap-20 md:mt-4 mb-10 md:mb-0">
-          <div className="relative w-[330px] h-[290px]  md:w-[360px] md:h-[300px] rounded-[10px] bg-[url(./assets/PlayerFullDetailsBG.png)] bg-cover">
+          <div className="relative w-[330px] h-[290px]  md:w-[360px] md:h-[300px] rounded-[10px] bg-[url(./assets/PlayerFullDetailsBG.webp)] bg-cover">
             <div className='absolute inset-0 z-10 flex items-end justify-center '>
               <PlayerImage
                 src={player?.playerPhoto ? player?.playerPhoto : silhouette}

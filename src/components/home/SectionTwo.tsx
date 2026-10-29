@@ -224,7 +224,7 @@ const SectionTwo = () => {
                       <div className="w-[11px] h-[11px] lg:w-[14px] lg:h-[14px] rounded-full bg-[#00D46A]"></div>
                     </div>
 
-                    <div className="h-full w-[317px] md:w-[340px] lg:w-[399px] rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover relative overflow-hidden">
+                    <div className="h-full w-[317px] md:w-[340px] lg:w-[399px] rounded-[10px] bg-[url(./assets/playerCard.webp)] bg-cover relative overflow-hidden">
                       {/* photo - fills the whole card, anchored to the top
                           (object-top) so the head sits high on the card
                           instead of being pushed down toward the panel. */}

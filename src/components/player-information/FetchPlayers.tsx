@@ -186,7 +186,7 @@ const FetchPlayers = ({ ageFilter, statusFilter, searchInput, onPlayerClick, onC
                 </div>
               </div>
 
-              <div className='h-full flex-1 rounded-[10px] bg-[url(./assets/playerCard.png)] bg-cover relative overflow-hidden'>
+              <div className='h-full flex-1 rounded-[10px] bg-[url(./assets/playerCard.webp)] bg-cover relative overflow-hidden'>
 
                 {/* photo - fills the whole card, anchored to the top
                     (object-top) so the head sits high on the card instead

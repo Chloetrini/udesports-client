@@ -34,7 +34,7 @@ const HeroSec: React.FC = () => {
   };
 
   return (
-    <section className="bg-[url(./assets/bgMobile.png)] md:bg-[url(./assets/bgphoto.png)] bg-no-repeat bg-cover bg-center min-h-screen flex items-center py-16">
+    <section className="bg-[url(./assets/bgMobile.png)] md:bg-[url(./assets/bgphoto.webp)] bg-no-repeat bg-cover bg-center min-h-screen flex items-center py-16">
       <PageWrapper className="p-[20px]">
         <motion.div
           className="flex flex-col md:flex-row items-start md:items-center gap-8 lg:gap-12 pb-12 md:pb-20"
